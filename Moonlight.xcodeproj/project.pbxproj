@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,9 +18,6 @@
 		9865DC37213287FE0005B9B9 /* StreamFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89462719F646E200339C8A /* StreamFrameViewController.m */; };
 		9865DC38213287FE0005B9B9 /* LoadingFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4A23B71A9D3637004D2EF2 /* LoadingFrameViewController.m */; };
 		9865DC3E21332D660005B9B9 /* MainFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89462519F646E200339C8A /* MainFrameViewController.m */; };
-		98882A0C2AF60F9E00C5A11C /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98882A0A2AF60F9000C5A11C /* libavcodec.a */; };
-		98882A0D2AF60FA000C5A11C /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98882A0B2AF60F9000C5A11C /* libavformat.a */; };
-		98882A0E2AF60FA300C5A11C /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98882A092AF60F9000C5A11C /* libavutil.a */; };
 		988FCD42293B091B003050E2 /* KeyboardInputField.m in Sources */ = {isa = PBXBuildFile; fileRef = 988FCD40293B091B003050E2 /* KeyboardInputField.m */; };
 		9896219A23D56E8100211983 /* X1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9896219623D15C7000211983 /* X1Kit.swift */; };
 		9897B6A62212732C00966419 /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 9897B6A0221260EF00966419 /* Controller.m */; };
@@ -260,12 +257,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9865DC30213260B40005B9B9 /* libmoonlight-common-tv.a in Frameworks */,
-				98882A0D2AF60FA000C5A11C /* libavformat.a in Frameworks */,
-				98882A0E2AF60FA300C5A11C /* libavutil.a in Frameworks */,
 				F74BEFA42C1A80E400224667 /* OpenSSL in Frameworks */,
 				FB1A67E821324DE300507771 /* libopus.a in Frameworks */,
 				98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */,
-				98882A0C2AF60F9E00C5A11C /* libavcodec.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -660,11 +654,12 @@
 		FB290CE619B2C406004C83CF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				KnownAssetTags = (
 					New,
 				);
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1640;
 				ORGANIZATIONNAME = "Moonlight Game Streaming Project";
 				TargetAttributes = {
 					FB1A67522132419700507771 = {
@@ -680,7 +675,6 @@
 				};
 			};
 			buildConfigurationList = FB290CE919B2C406004C83CF /* Build configuration list for PBXProject "Moonlight" */;
-			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -691,6 +685,7 @@
 			packageReferences = (
 				F74BEF9A2C1A705600224667 /* XCRemoteSwiftPackageReference "OpenSSL-Package" */,
 			);
+			preferredProjectObjectVersion = 77;
 			productRefGroup = FB290CEF19B2C406004C83CF /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -829,14 +824,14 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Launch Image";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = PPLPFKSLF9;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				DEVELOPMENT_TEAM = 2B8H6LSHBD;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Limelight/Limelight-Prefix.pch";
@@ -871,7 +866,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 17.6;
+				TVOS_DEPLOYMENT_TARGET = 18.0;
 			};
 			name = Debug;
 		};
@@ -882,15 +877,15 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Launch Image";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = PPLPFKSLF9;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				DEVELOPMENT_TEAM = 2B8H6LSHBD;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Limelight/Limelight-Prefix.pch";
@@ -925,7 +920,7 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Moonlight-Swift.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 17.6;
+				TVOS_DEPLOYMENT_TARGET = 18.0;
 			};
 			name = Release;
 		};
@@ -934,7 +929,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -959,9 +954,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = PPLPFKSLF9;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -987,7 +984,7 @@
 				);
 				SDKROOT = appletvos;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Debug;
@@ -997,7 +994,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1022,9 +1019,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = PPLPFKSLF9;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
@@ -1044,7 +1043,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = appletvos;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1079,7 +1078,7 @@
 			repositoryURL = "https://github.com/krzyzanowskim/OpenSSL-Package.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 3.1.5004;
+				minimumVersion = 3.3.3001;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

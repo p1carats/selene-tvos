@@ -40,8 +40,6 @@
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Bluetooth access allows Moonlight to connect to Citrix X1 mice.</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Bluetooth access allows Moonlight to connect to Citrix X1 mice.</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_nvstream._tcp</string>
@@ -49,8 +47,6 @@
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Moonlight uses the local network to connect to your gaming PC for streaming.</string>
 	<key>AVGameBypassSystemSpatialAudio</key>
-	<true/>
-	<key>UIDesignRequiresCompatibility</key>
 	<true/>
 	<key>LSSupportsGameMode</key>
 	<true/>
