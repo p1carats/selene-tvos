@@ -26,7 +26,6 @@ static const int REFERENCE_HEIGHT = 720;
     self = [self init];
     self->view = view;
     
-#if TARGET_OS_TV
     _remotePressRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(remoteButtonPressed:)];
     _remotePressRecognizer.allowedPressTypes = @[@(UIPressTypeSelect)];
 
@@ -35,7 +34,6 @@ static const int REFERENCE_HEIGHT = 720;
 
     [self->view addGestureRecognizer:_remotePressRecognizer];
     [self->view addGestureRecognizer:_remoteLongPressRecognizer];
-#endif
     
     return self;
 }
@@ -174,7 +172,6 @@ static const int REFERENCE_HEIGHT = 720;
     peakTouchCount = 0;
 }
 
-#if TARGET_OS_TV
 - (void)remoteButtonPressed:(id)sender {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         Log(LOG_D, @"Sending left mouse button press");
@@ -196,6 +193,5 @@ static const int REFERENCE_HEIGHT = 720;
     isDragging = true;
     LiSendMouseButtonEvent(BUTTON_ACTION_PRESS, BUTTON_LEFT);
 }
-#endif
 
 @end

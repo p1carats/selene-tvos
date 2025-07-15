@@ -32,18 +32,11 @@
 }
 
 - (void)initCommon {
-#if TARGET_OS_OSX
-    self.wantsLayer = YES;
-
-    self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawDuringViewResize;
-#endif
-
     _metalLayer = (CAMetalLayer *)self.layer;
 
     self.layer.delegate = self;
 }
 
-#if TARGET_OS_IOS || TARGET_OS_TV
 + (Class)layerClass {
     return [CAMetalLayer class];
 }
@@ -51,15 +44,6 @@
 - (void)didMoveToWindow {
     [self movedToWindow];
 }
-#else
-- (CALayer *)makeBackingLayer {
-    return [CAMetalLayer layer];
-}
-
-- (void)viewDidMoveToWindow {
-    [self movedToWindow];
-}
-#endif  // END TARGET_OS_IOS || TARGET_OS_TV
 
 - (void)movedToWindow {
     // Protect _continueRunLoop with a `@synchronized` block because it's accessed by the separate
@@ -80,11 +64,7 @@
     // didMoveToWindow after the view initialization, this is the first opportunity to notify
     // components of the drawable's size.
 #if AUTOMATICALLY_RESIZE
-#if TARGET_OS_IOS || TARGET_OS_TV
     [self resizeDrawable:self.window.screen.nativeScale];
-#else
-    [self resizeDrawable:self.window.screen.backingScaleFactor];
-#endif
 #else
     // Notify the delegate of the default drawable size when the system can calculate it.
     CGSize defaultDrawableSize = self.bounds.size;
@@ -126,7 +106,6 @@
 
 // Override all methods that indicate the view's size has changed.
 
-#if TARGET_OS_IOS || TARGET_OS_TV
 - (void)setContentScaleFactor:(CGFloat)contentScaleFactor {
     [super setContentScaleFactor:contentScaleFactor];
     [self resizeDrawable:self.window.screen.nativeScale];
@@ -146,22 +125,6 @@
     [super setBounds:bounds];
     [self resizeDrawable:self.window.screen.nativeScale];
 }
-#else
-- (void)viewDidChangeBackingProperties {
-    [super viewDidChangeBackingProperties];
-    [self resizeDrawable:self.window.screen.backingScaleFactor];
-}
-
-- (void)setFrameSize:(NSSize)size {
-    [super setFrameSize:size];
-    [self resizeDrawable:self.window.screen.backingScaleFactor];
-}
-
-- (void)setBoundsSize:(NSSize)size {
-    [super setBoundsSize:size];
-    [self resizeDrawable:self.window.screen.backingScaleFactor];
-}
-#endif
 
 - (void)resizeDrawable:(CGFloat)scaleFactor {
     CGSize newSize = self.bounds.size;

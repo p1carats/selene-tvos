@@ -137,49 +137,6 @@ static const NSUInteger MaxFramesInFlight = 3;
 
 }
 
-#if !TARGET_OS_TV
-- (void)applyEDRFromFrame:(Frame *)frame toLayer:(CAMetalLayer *)layer {
-    CFDictionaryRef ext = [frame getFormatDescExtensions];
-
-    Log(LOG_I, @"ext: %@", ext);
-
-    CFDataRef masteringData = CFDictionaryGetValue(ext, kCMFormatDescriptionExtension_MasteringDisplayColorVolume);
-    CFDataRef contentDataRef = CFDictionaryGetValue(ext, kCMFormatDescriptionExtension_ContentLightLevelInfo);
-
-    if (masteringData) {
-        Log(LOG_I, @"ext MDCV %@", masteringData);
-    }
-    if (contentDataRef) {
-        Log(LOG_I, @"ext CLLI %@", contentDataRef);
-    }
-
-    if (masteringData && CFDataGetLength(masteringData) == 24 && contentDataRef && CFDataGetLength(contentDataRef) == 4) {
-        NSData *displayData = (__bridge NSData *)masteringData;
-        NSData *contentData = (__bridge NSData *)contentDataRef;
-
-        layer.wantsExtendedDynamicRangeContent = YES;
-        layer.pixelFormat = MTLPixelFormatRGBA16Float;
-        CFStringRef name = kCGColorSpaceExtendedLinearITUR_2020;
-        CGColorSpaceRef colorspace = CGColorSpaceCreateWithName(name);
-        layer.colorspace = colorspace;
-
-        layer.EDRMetadata = [CAEDRMetadata HDR10MetadataWithDisplayInfo:displayData contentInfo:contentData opticalOutputScale:100.0f];
-
-        Log(LOG_I, @"EDRMetadata set from MDCV %@ and CLLI %@", displayData, contentData);
-    } else {
-        layer.wantsExtendedDynamicRangeContent = YES;
-        layer.pixelFormat = MTLPixelFormatRGBA16Float;
-        CFStringRef name = kCGColorSpaceExtendedLinearITUR_2020;
-        CGColorSpaceRef colorspace = CGColorSpaceCreateWithName(name);
-        layer.colorspace = colorspace;
-
-        layer.EDRMetadata = [CAEDRMetadata HDR10MetadataWithMinLuminance:0.0005f maxLuminance:1000.0f opticalOutputScale:100.0f];
-
-        Log(LOG_I, @"EDRMetadata set for 1000 nits");
-    }
-}
-#endif
-
 - (int)getFrameColorspaceAndRange:(Frame *)frame isFullRange:(BOOL *)isFullRange {
     CFDictionaryRef ext = [frame getFormatDescExtensions];
 
@@ -263,11 +220,6 @@ static const NSUInteger MaxFramesInFlight = 3;
 
             // These can only be changed on the main thread
             dispatch_sync(dispatch_get_main_queue(), ^{
-#if !TARGET_OS_TV
-                if (isHDR) {
-                    layer.wantsExtendedDynamicRangeContent = YES;
-                }
-#endif
                 layer.colorspace = newColorSpace;
                 layer.pixelFormat = newPixelFormat;
             });
@@ -376,11 +328,6 @@ static const NSUInteger MaxFramesInFlight = 3;
 
     FQLog(LOG_I, @"[%d / %.3f ms] Metal frame rendering", frame.frameNumber, frame.pts);
 
-#if !TARGET_OS_TV
-    // Experimental EDR handling based on frame metadata
-    //[self applyEDRFromFrame:frame toLayer:layer];
-#endif
-
     size_t planes = CVPixelBufferGetPlaneCount(frame.pixelBuffer);
     assert(planes <= MAX_VIDEO_PLANES);
 
@@ -481,12 +428,14 @@ static const NSUInteger MaxFramesInFlight = 3;
     [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];
     [renderEncoder endEncoding];
 
+#if !TARGET_OS_SIMULATOR
     __weak typeof(self) self_ = self;
     [_nextDrawable addPresentedHandler:^(id<MTLDrawable> d) {
         if (self_) {
             [self_ plotFrametime:d.presentedTime];
         }
     }];
+#endif
 
 #if TARGET_OS_SIMULATOR
     [commandBuffer presentDrawable:_nextDrawable];

@@ -1002,17 +1002,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
     }
 
     dispatch_once(&onceToken, ^{
-        // https://developer.apple.com/documentation/quartzcore/optimizing-promotion-refresh-rates-for-iphone-13-pro-and-ipad-pro?language=objc
-        UIDevice *device = [UIDevice currentDevice];
-        if (device.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-            supportedRates = @[@24, @30, @40, @60, @120];
-        }
-        else if (device.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-            supportedRates = @[@10, @12, @15, @16, @20, @24, @30, @40, @48, @60, @80, @120];
-        }
-        else {
-            supportedRates = @[@30, @60];
-        }
+        supportedRates = @[@30, @60];
     });
 
     CFTimeInterval streamFps = [_frameQueue estimatedFramerate];
