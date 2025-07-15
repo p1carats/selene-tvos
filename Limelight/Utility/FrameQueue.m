@@ -6,7 +6,7 @@
 #import "Logger.h"
 #import "FloatBuffer.h"
 #import "FrameQueue.h"
-#import "ImGuiPlots.h"
+#import "PlotManager.h"
 
 @implementation FrameQueue {
     NSMutableArray<id> *_buffer;

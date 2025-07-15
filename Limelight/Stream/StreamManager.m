@@ -149,7 +149,7 @@
 }
 
 - (NSString*) getStatsOverlayText {
-    video_stats_t stats;
+    VideoStats stats;
     
     if (!_connection) {
         return nil;
@@ -198,7 +198,7 @@
             _config.height,
             fps,
             [_connection getActiveCodecName],
-            avgVideoMbps, peakVideoMbps, (stats.renderingBackend == RENDER_METAL) ? @"Metal" : @"AVSampleBuffer",
+            avgVideoMbps, peakVideoMbps, (stats.renderingBackend == RenderingBackendMetal) ? @"Metal" : @"AVSampleBuffer",
             hostProcessingString,
             stats.frameQueueMetrics.avg,
             (stats.networkDroppedFrames / stats.totalFrames) * 100.0,

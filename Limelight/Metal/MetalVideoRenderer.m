@@ -2,7 +2,8 @@
 #import <CoreVideo/CoreVideo.h>
 #import <Metal/Metal.h>
 #import <MetalKit/MetalKit.h>
-#import "ImGuiPlots.h"
+#import "Plot.h"
+#import "PlotManager.h"
 
 #include <Limelight.h>
 
@@ -455,7 +456,7 @@ static const NSUInteger MaxFramesInFlight = 3;
 - (void)plotFrametime:(CFTimeInterval)presentedTime {
     if (_lastPresented > 0) {
         CFTimeInterval frametime = presentedTime - _lastPresented;
-        [[ImGuiPlots sharedInstance] observeFloat:PLOT_FRAMETIME value:(frametime * 1000.0)];
+        [[PlotManager sharedInstance] observeFloat:PlotTypeFrametime value:(frametime * 1000.0)];
     }
     _lastPresented = presentedTime;
 }

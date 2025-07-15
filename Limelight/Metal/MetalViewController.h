@@ -1,6 +1,6 @@
 #import <Metal/Metal.h>
 #import "FrameQueue.h"
-#import "ImGuiRenderer.h"
+#import "GraphRenderer.h"
 #import "MetalVideoRenderer.h"
 #import "MetalView.h"
 
@@ -13,6 +13,6 @@
 - (nonnull instancetype)initWithFrame:(CGRect)bounds
                             framerate:(float)framerate
                             enableHdr:(BOOL)enableHdr
-                       metricsHandler:(MetricsHandler _Nonnull)metricsHandler;
+                       metricsHandler:(nonnull MetricsHandler)metricsHandler;
 
 @end

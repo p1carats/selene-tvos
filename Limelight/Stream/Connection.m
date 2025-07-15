@@ -35,8 +35,8 @@ static OpusMSDecoder* opusDecoder;
 static id<ConnectionCallbacks> _callbacks;
 static int lastFrameNumber;
 static int activeVideoFormat;
-static video_stats_t currentVideoStats;
-static video_stats_t lastVideoStats;
+static VideoStats currentVideoStats;
+static VideoStats lastVideoStats;
 static NSLock* videoStatsLock;
 
 static SDL_AudioDeviceID audioDevice;
@@ -70,7 +70,7 @@ void DrCleanup(void)
     return bwTracker;
 }
 
--(BOOL) getVideoStats:(video_stats_t*)stats
+-(BOOL) getVideoStats:(VideoStats*)stats
 {
     // We return lastVideoStats because it is a complete 1 second window
     [videoStatsLock lock];

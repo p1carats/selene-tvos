@@ -8,7 +8,7 @@
 
 #import "Connection.h"
 #import "FloatBuffer.h"
-#import "ImGuiRenderer.h"
+#import "GraphRenderer.h"
 #import "MetalViewController.h"
 #import "StreamConfiguration.h"
 #import "StreamView.h"
@@ -21,7 +21,7 @@
 
 @property (nonatomic) StreamConfiguration* streamConfig;
 @property (nonatomic, strong) MetalViewController *metalViewController;
-@property (nonatomic, strong) ImGuiRenderer *imguiView;
+@property (nonatomic, strong) GraphRenderer *graphRenderer;
 
 -(void)updatePreferredDisplayMode:(BOOL)streamActive;
 

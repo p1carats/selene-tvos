@@ -26,7 +26,7 @@
 - (void)cleanup;
 - (void)setHdrMode:(BOOL)enabled;
 - (void)safeCopyMetricsTo:(PlotMetrics *)dst from:(PlotMetrics *)src;
-- (void)getAllStats:(video_stats_t *)stats;
+- (void)getAllStats:(VideoStats *)stats;
 - (void)optimizeRefreshRate;
 
 - (int)submitDecodeBuffer:(unsigned char *)data
