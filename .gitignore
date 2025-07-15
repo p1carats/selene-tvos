@@ -8,3 +8,4 @@ Moonlight.xcodeproj/xcshareddata/xcbaselines/
 Build
 DerivedData
 WorkspaceSettings.xcsettings
+.build/
