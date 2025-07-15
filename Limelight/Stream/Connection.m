@@ -113,24 +113,6 @@ void DrCleanup(void)
             else {
                 return @"HEVC Main 10 SDR 4:4:4";
             }
-        case VIDEO_FORMAT_AV1_MAIN8:
-            return @"AV1";
-        case VIDEO_FORMAT_AV1_HIGH8_444:
-            return @"AV1 4:4:4";
-        case VIDEO_FORMAT_AV1_MAIN10:
-            if (LiGetCurrentHostDisplayHdrMode()) {
-                return @"AV1 10-bit HDR";
-            }
-            else {
-                return @"AV1 10-bit SDR";
-            }
-        case VIDEO_FORMAT_AV1_HIGH10_444:
-            if (LiGetCurrentHostDisplayHdrMode()) {
-                return @"AV1 10-bit HDR 4:4:4";
-            }
-            else {
-                return @"AV1 10-bit SDR 4:4:4";
-            }
         default:
             return @"UNKNOWN";
     }
@@ -504,8 +486,7 @@ void ClSetControllerLED(uint16_t controllerNumber, uint8_t r, uint8_t g, uint8_t
     _drCallbacks.cleanup = DrCleanup;
     _drCallbacks.submitDecodeUnit = DrSubmitDecodeUnit;
     _drCallbacks.capabilities = CAPABILITY_DIRECT_SUBMIT |
-                                CAPABILITY_REFERENCE_FRAME_INVALIDATION_HEVC |
-                                CAPABILITY_REFERENCE_FRAME_INVALIDATION_AV1;
+                                CAPABILITY_REFERENCE_FRAME_INVALIDATION_HEVC;
 
     LiInitializeAudioCallbacks(&_arCallbacks);
     _arCallbacks.init = ArInit;
