@@ -10,7 +10,6 @@
 		693B3A9B218638CD00982F7B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 693B3A9A218638CD00982F7B /* Settings.bundle */; };
 		8FF6F2A62E2667110049E5B8 /* X1Mouse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF6F2A52E2667110049E5B8 /* X1Mouse.swift */; };
 		8FF6F2A92E26694C0049E5B8 /* GameStreamKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8FF6F2A82E26694C0049E5B8 /* GameStreamKit */; };
-		98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEA2791278300E43572 /* libSDL2.a */; };
 		9819CC1D254F1730008A7C8E /* RelativeTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9819CC13254F107A008A7C8E /* RelativeTouchHandler.m */; };
 		9827E7A42514366900F25707 /* HapticContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9827E7A22514366900F25707 /* HapticContext.m */; };
 		9865DC36213287F30005B9B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB290D0319B2C406004C83CF /* AppDelegate.m */; };
@@ -251,7 +250,6 @@
 			files = (
 				F74BEFA42C1A80E400224667 /* OpenSSL in Frameworks */,
 				FB1A67E821324DE300507771 /* libopus.a in Frameworks */,
-				98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */,
 				8FF6F2A92E26694C0049E5B8 /* GameStreamKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -654,7 +652,6 @@
 					"$(PROJECT_DIR)/GameStreamKit/Sources/moonlight-common-c/**",
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/libs/**",
-					"$(PROJECT_DIR)/third_party/imgui",
 				);
 				INFOPLIST_FILE = "Moonlight TV/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
@@ -665,12 +662,10 @@
 				"LIBRARY_SEARCH_PATHS[sdk=appletvos*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/opus/lib/tvOS",
-					"$(PROJECT_DIR)/libs/SDL2/lib/tvOS",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=appletvsimulator*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/opus/lib/tvOS-Sim",
-					"$(PROJECT_DIR)/libs/SDL2/lib/tvOS-Sim",
 				);
 				MARKETING_VERSION = 9.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = org.hybridized.Moonlight;
@@ -708,7 +703,6 @@
 					"$(PROJECT_DIR)/GameStreamKit/Sources/moonlight-common-c/**",
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/libs/**",
-					"$(PROJECT_DIR)/third_party/imgui",
 				);
 				INFOPLIST_FILE = "Moonlight TV/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
@@ -719,12 +713,10 @@
 				"LIBRARY_SEARCH_PATHS[sdk=appletvos*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/opus/lib/tvOS",
-					"$(PROJECT_DIR)/libs/SDL2/lib/tvOS",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=appletvsimulator*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/opus/lib/tvOS-Sim",
-					"$(PROJECT_DIR)/libs/SDL2/lib/tvOS-Sim",
 				);
 				MARKETING_VERSION = 9.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = org.hybridized.Moonlight;
@@ -769,7 +761,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = PPLPFKSLF9;
+				DEVELOPMENT_TEAM = 2B8H6LSHBD;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -834,7 +826,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
-				DEVELOPMENT_TEAM = PPLPFKSLF9;
+				DEVELOPMENT_TEAM = 2B8H6LSHBD;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
