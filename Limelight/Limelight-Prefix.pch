@@ -15,5 +15,3 @@
 #endif
 #import "Logger.h"
 #endif
-
-#import "MetalConfig.h"

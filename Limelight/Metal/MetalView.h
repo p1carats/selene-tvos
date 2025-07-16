@@ -1,8 +1,6 @@
 #import <Metal/Metal.h>
 #import <QuartzCore/CAMetalDisplayLink.h>
 #import <QuartzCore/CAMetalLayer.h>
-#import "MetalConfig.h"
-
 #import <UIKit/UIKit.h>
 
 // The protocol to provide resize and redraw callbacks to a delegate.
@@ -23,8 +21,6 @@
 @property (nonatomic) float framerate;
 
 - (void)initCommon;
-#if AUTOMATICALLY_RESIZE
 - (void)resizeDrawable:(CGFloat)scaleFactor;
-#endif
 
 @end

@@ -3,7 +3,6 @@
 // https://developer.apple.com/wwdc23/10123/
 
 #import "MetalView.h"
-#import "MetalConfig.h"
 
 @implementation MetalView {
     // The secondary thread containing the render loop.
@@ -56,6 +55,7 @@
     // Create and start a secondary NSThread that has another runloop. The NSThread
     // class calls the 'runThread' method at the start of the secondary thread's execution.
     _renderThread = [[NSThread alloc] initWithTarget:self selector:@selector(runThread) object:nil];
+    _renderThread.name = @"MetalVideoRenderer";
     _continueRunLoop = YES;
     _renderThread.qualityOfService = NSQualityOfServiceUserInteractive;
     [_renderThread start];
@@ -63,15 +63,7 @@
     // Perform any actions that need to know the size and scale of the drawable. When UIKit calls
     // didMoveToWindow after the view initialization, this is the first opportunity to notify
     // components of the drawable's size.
-#if AUTOMATICALLY_RESIZE
     [self resizeDrawable:self.window.screen.nativeScale];
-#else
-    // Notify the delegate of the default drawable size when the system can calculate it.
-    CGSize defaultDrawableSize = self.bounds.size;
-    defaultDrawableSize.width *= self.layer.contentsScale;
-    defaultDrawableSize.height *= self.layer.contentsScale;
-    [self.delegate drawableResize:defaultDrawableSize];
-#endif
 }
 
 - (void)runThread {
@@ -101,8 +93,6 @@
 }
 
 #pragma mark - Resizing
-
-#if AUTOMATICALLY_RESIZE
 
 // Override all methods that indicate the view's size has changed.
 
@@ -149,6 +139,5 @@
         [_delegate drawableResize:newSize];
     }
 }
-#endif  // END AUTOMATICALLY_RESIZE
 
 @end
