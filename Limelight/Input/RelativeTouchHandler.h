@@ -1,19 +1,19 @@
 //
 //  RelativeTouchHandler.h
-//  Moonlight
+//  Selene
 //
 //  Created by Cameron Gutman on 11/1/20.
 //  Copyright © 2020 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import "StreamView.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RelativeTouchHandler : UIResponder
+@class StreamView;
 
-@property (nonatomic) UIGestureRecognizer* remotePressRecognizer;
-@property (nonatomic) UIGestureRecognizer* remoteLongPressRecognizer;
+@interface RelativeTouchHandler : NSObject
+
+@property (nonatomic) UITapGestureRecognizer* remotePressRecognizer;
+@property (nonatomic) UILongPressGestureRecognizer* remoteLongPressRecognizer;
 
 -(id)initWithView:(StreamView*)view;
 

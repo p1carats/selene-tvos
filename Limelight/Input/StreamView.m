@@ -147,13 +147,6 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
                        MIN(MAX(y, videoOrigin.y), videoOrigin.y + videoSize.height) - videoOrigin.y);
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    Log(LOG_D, @"Touch down");
-    
-    // Notify of user interaction and start expiration timer
-    [self startInteractionTimer];
-}
-
 - (UIBarButtonItem *)createButtonWithImageNamed:(NSString *)imageName backgroundColor:(UIColor *)backgroundColor target:(id)target action:(SEL)action keyCode:(NSInteger)keyCode isToggleable:(BOOL)isToggleable {
     UIImage *image = [UIImage imageNamed:imageName];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -211,10 +204,6 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     }
 }
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    hasUserInteracted = YES;
-}
-
 - (void)pressesBegan:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event {
     BOOL handled = NO;
     
@@ -250,26 +239,6 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     
     if (!handled) {
         [super pressesEnded:presses withEvent:event];
-    }
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    Log(LOG_D, @"Touch up");
-    
-    hasUserInteracted = YES;
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-    [_touchHandler touchesCancelled:touches withEvent:event];
-}
-
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    if (@available(iOS 13.0, *)) {
-        // Disable the 3 finger tap gestures that trigger the copy/paste/undo toolbar on iOS 13+
-        return gestureRecognizer.name == nil || ![gestureRecognizer.name hasPrefix:@"kbProductivity."];
-    }
-    else {
-        return YES;
     }
 }
 
