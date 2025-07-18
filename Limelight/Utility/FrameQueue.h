@@ -1,8 +1,8 @@
-#import <Foundation/Foundation.h>
-#import <VideoToolbox/VideoToolbox.h>
+@import Foundation;
+@import VideoToolbox;
 
-#import "Frame.h"
-#import "FloatBuffer.h"
+@class Frame;
+@class FloatBuffer;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -10,7 +10,10 @@
 #import "ServerInfoResponse.h"
 #import "HttpManager.h"
 #import "PairManager.h"
+#import "HttpRequest.h"
 #import "DiscoveryManager.h"
+#import "AppListResponse.h"
+#import "Logger.h"
 
 @implementation ConnectionHelper
 

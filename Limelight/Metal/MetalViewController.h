@@ -1,10 +1,8 @@
-#import <Metal/Metal.h>
-#import "FrameQueue.h"
-#import "GraphRenderer.h"
-#import "MetalVideoRenderer.h"
-#import "MetalView.h"
+@import Metal;
+@import UIKit;
 
-#import <UIKit/UIKit.h>
+#import "GraphRenderer.h"
+#import "MetalView.h"
 
 @interface MetalViewController : UIViewController <MetalViewDelegate>
 

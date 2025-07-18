@@ -6,7 +6,8 @@
 //  Copyright © 2018 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
+@import UIKit;
 
 @interface KeyboardSupport : NSObject
 

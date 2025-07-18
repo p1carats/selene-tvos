@@ -6,9 +6,13 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "ControllerSupport.h"
+@import Foundation;
+@import UIKit;
+
 #import "Moonlight-Swift.h"
-#import "StreamConfiguration.h"
+
+@class ControllerSupport;
+@class StreamConfiguration;
 
 @protocol UserInteractionDelegate <NSObject>
 

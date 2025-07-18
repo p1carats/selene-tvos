@@ -6,6 +6,8 @@
 //  Copyright © 2020 Moonlight Game Streaming Project. All rights reserved.
 //
 
+@import Foundation;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class StreamView;

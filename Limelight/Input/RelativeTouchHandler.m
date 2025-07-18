@@ -6,7 +6,7 @@
 //  Copyright © 2020 Moonlight Game Streaming Project. All rights reserved.
 //
 
-@import UIKit.UIGestureRecognizerSubclass;
+@import UIKit;
 @import GameStreamKit;
 
 #import "RelativeTouchHandler.h"

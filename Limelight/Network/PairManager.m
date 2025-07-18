@@ -6,14 +6,15 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import Dispatch;
+
 #import "PairManager.h"
 #import "CryptoManager.h"
 #import "Utils.h"
-#import "HttpResponse.h"
 #import "HttpRequest.h"
+#import "HttpManager.h"
 #import "ServerInfoResponse.h"
-
-#include <dispatch/dispatch.h>
+#import "Logger.h"
 
 @implementation PairManager {
     HttpManager* _httpManager;

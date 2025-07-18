@@ -1,7 +1,8 @@
-#import <CoreVideo/CVImageBuffer.h>
+@import CoreVideo.CVImageBuffer;
+@import GameStreamKit;
+
 #import "Frame.h"
 #import "Logger.h"
-#include <Limelight.h>
 
 @implementation Frame {
     CFDictionaryRef _formatDescExt;

@@ -6,8 +6,12 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "StreamConfiguration.h"
-#import "Connection.h"
+@import Foundation;
+@import UIKit;
+
+@protocol ConnectionCallbacks;
+
+@class StreamConfiguration;
 
 @interface StreamManager : NSOperation
 

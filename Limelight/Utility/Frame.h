@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
-#import <VideoToolbox/VideoToolbox.h>
+@import Foundation;
+@import VideoToolbox;
 
 @interface Frame : NSObject
 @property (nonatomic) int frameNumber;

@@ -6,7 +6,9 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "HttpManager.h"
+@import Foundation;
+
+@class HttpManager;
 
 @protocol PairCallback <NSObject>
 

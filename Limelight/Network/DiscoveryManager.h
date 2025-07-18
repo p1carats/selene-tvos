@@ -6,8 +6,11 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
+
 #import "MDNSManager.h"
-#import "TemporaryHost.h"
+
+@class TemporaryHost;
 
 @protocol DiscoveryCallback <NSObject>
 

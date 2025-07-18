@@ -6,13 +6,15 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import GameStreamKit;
+
 #import "StreamView.h"
-#include <Limelight.h>
 #import "DataManager.h"
-#import "ControllerSupport.h"
 #import "KeyboardSupport.h"
+#import "StreamConfiguration.h"
 #import "RelativeTouchHandler.h"
 #import "KeyboardInputField.h"
+#import "TemporarySettings.h"
 
 static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
 

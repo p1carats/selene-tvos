@@ -7,6 +7,7 @@
 //
 
 #import "TemporaryApp.h"
+#import "TemporaryHost.h"
 
 @implementation TemporaryApp
 

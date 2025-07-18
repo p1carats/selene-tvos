@@ -9,8 +9,10 @@
 #ifndef Limelight_Logger_h
 #define Limelight_Logger_h
 
-#import <dispatch/dispatch.h>
-#import <stdarg.h>
+@import Foundation;
+@import UIKit;
+@import Dispatch;
+@import stdarg_h;
 
 #ifdef __cplusplus
 extern "C" {

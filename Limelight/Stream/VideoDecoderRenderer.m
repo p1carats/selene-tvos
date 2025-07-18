@@ -16,8 +16,12 @@
 #import "StreamView.h"
 #import "Plot.h"
 #import "PlatformThreads.h"
+#import "Frame.h"
+#import "ConnectionCallbacks.h"
+#import "FloatBuffer.h"
 #import "MetalViewController.h"
 #import "PlotManager.h"
+#import "Logger.h"
 
 // Define for extra logging related to frame pacing
 #define DISPLAYLINK_VERBOSE

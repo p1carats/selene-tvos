@@ -6,19 +6,21 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import GameStreamKit;
+
 #import "StreamManager.h"
 #import "CryptoManager.h"
 #import "HttpManager.h"
+#import "VideoDecoderRenderer.h"
 #import "Plot.h"
+#import "Connection.h"
 #import "Utils.h"
-
-#import "StreamView.h"
+#import "Logger.h"
+#import "ConnectionCallbacks.h"
+#import "StreamConfiguration.h"
+#import "BandwidthTracker.h"
 #import "ServerInfoResponse.h"
-#import "HttpResponse.h"
 #import "HttpRequest.h"
-#import "IdManager.h"
-
-#include <Limelight.h>
 
 @implementation StreamManager {
     StreamConfiguration* _config;

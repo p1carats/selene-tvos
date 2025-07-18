@@ -6,13 +6,14 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import OpenSSL.sha;
+@import OpenSSL.x509;
+@import OpenSSL.pem;
+@import OpenSSL.evp;
+
 #import "CryptoManager.h"
 #import "mkcert.h"
-
-#include <openssl/sha.h>
-#include <openssl/x509.h>
-#include <openssl/pem.h>
-#include <openssl/evp.h>
+#import "Logger.h"
 
 @implementation CryptoManager
 static const int SHA1_HASH_LENGTH = 20;
@@ -216,15 +217,8 @@ static NSData* p12 = nil;
         return NULL;
     }
     
-#if (OPENSSL_VERSION_NUMBER < 0x10002000L)
-    ASN1_BIT_STRING *asnSignature = x509->signature;
-#elif (OPENSSL_VERSION_NUMBER < 0x10100000L)
-    ASN1_BIT_STRING *asnSignature;
-    X509_get0_signature(&asnSignature, NULL, x509);
-#else
     const ASN1_BIT_STRING *asnSignature;
     X509_get0_signature(&asnSignature, NULL, x509);
-#endif
     
     NSData* sig = [NSData dataWithBytes:asnSignature->data length:asnSignature->length];
     

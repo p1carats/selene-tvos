@@ -6,8 +6,10 @@
 //  Copyright © 2015 Moonlight Stream. All rights reserved.
 //
 
-#import "Utils.h"
+@import Foundation;
+
 #import "Host+CoreDataClass.h"
+#import "Utils.h"
 
 @interface TemporaryHost : NSObject
 

@@ -31,10 +31,7 @@ void mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int years) {
     
     X509_set_version(cert, 2);
     ASN1_INTEGER_set(X509_get_serialNumber(cert), serial);
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
-    X509_gmtime_adj(X509_get_notBefore(cert), 0);
-    X509_gmtime_adj(X509_get_notAfter(cert), 60 * 60 * 24 * 365 * years);
-#else
+    
     ASN1_TIME* before = ASN1_STRING_dup(X509_get0_notBefore(cert));
     ASN1_TIME* after = ASN1_STRING_dup(X509_get0_notAfter(cert));
 
@@ -46,7 +43,6 @@ void mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int years) {
 
     ASN1_STRING_free(before);
     ASN1_STRING_free(after);
-#endif
 
     X509_set_pubkey(cert, pk);
 

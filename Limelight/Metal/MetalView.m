@@ -3,6 +3,7 @@
 // https://developer.apple.com/wwdc23/10123/
 
 #import "MetalView.h"
+#import "Logger.h"
 
 @implementation MetalView {
     // The secondary thread containing the render loop.

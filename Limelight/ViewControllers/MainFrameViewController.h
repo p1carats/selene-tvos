@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import UIKit;
+
 #import "DiscoveryManager.h"
 #import "PairManager.h"
-#import "StreamConfiguration.h"
 #import "UIComputerView.h"
 #import "UIAppView.h"
 #import "AppAssetManager.h"

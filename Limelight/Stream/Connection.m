@@ -9,13 +9,18 @@
 @import VideoToolbox;
 @import AVFoundation;
 @import os.lock;
+@import GameStreamKit;
+
+#include "opus_multistream.h"
 
 #import "Connection.h"
+#import "ConnectionCallbacks.h"
+#import "VideoDecoderRenderer.h"
+#import "StreamConfiguration.h"
+#import "BandwidthTracker.h"
 #import "Plot.h"
 #import "Utils.h"
-
-#include "Limelight.h"
-#include "opus_multistream.h"
+#import "Logger.h"
 
 @implementation Connection {
     SERVER_INFORMATION _serverInfo;

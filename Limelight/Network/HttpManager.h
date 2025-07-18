@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "HttpResponse.h"
-#import "HttpRequest.h"
-#import "StreamConfiguration.h"
-#import "TemporaryHost.h"
+@import Foundation;
+
+@class HttpRequest;
+@class StreamConfiguration;
+@class TemporaryHost;
 
 @interface HttpManager : NSObject <NSURLSessionDelegate>
 

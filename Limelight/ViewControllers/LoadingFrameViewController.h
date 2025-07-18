@@ -6,7 +6,8 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import UIKit;
 
 @interface LoadingFrameViewController : UIViewController
 

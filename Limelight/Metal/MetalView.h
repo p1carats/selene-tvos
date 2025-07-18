@@ -1,7 +1,7 @@
-#import <Metal/Metal.h>
-#import <QuartzCore/CAMetalDisplayLink.h>
-#import <QuartzCore/CAMetalLayer.h>
-#import <UIKit/UIKit.h>
+@import Metal;
+@import QuartzCore.CAMetalDisplayLink;
+@import QuartzCore.CAMetalLayer;
+@import UIKit;
 
 // The protocol to provide resize and redraw callbacks to a delegate.
 @protocol MetalViewDelegate <NSObject>

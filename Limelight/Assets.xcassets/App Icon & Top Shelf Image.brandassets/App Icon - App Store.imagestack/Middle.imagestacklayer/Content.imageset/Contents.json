@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "wedges-app.png",
+      "idiom" : "tv"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

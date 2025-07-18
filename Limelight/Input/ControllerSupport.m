@@ -6,11 +6,13 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import GameStreamKit;
+
 #import "ControllerSupport.h"
 #import "Controller.h"
-
-#import "DataManager.h"
-#include "Limelight.h"
+#import "HapticContext.h"
+#import "StreamConfiguration.h"
+#import "Logger.h"
 
 @import GameController;
 @import AudioToolbox;

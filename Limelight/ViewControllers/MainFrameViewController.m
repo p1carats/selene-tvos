@@ -5,16 +5,18 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import AVFoundation;
 @import ImageIO;
+@import VideoToolbox;
+@import GameStreamKit;
+
+#import <sys/utsname.h>
 
 #import "MainFrameViewController.h"
 #import "CryptoManager.h"
-#import "HttpManager.h"
+#import "HttpRequest.h"
 #import "Connection.h"
-#import "StreamManager.h"
-#import "Utils.h"
-#import "UIComputerView.h"
-#import "UIAppView.h"
+#import "StreamConfiguration.h"
 #import "DataManager.h"
 #import "TemporarySettings.h"
 #import "WakeOnLanManager.h"
@@ -26,12 +28,7 @@
 #import "TemporaryApp.h"
 #import "IdManager.h"
 #import "ConnectionHelper.h"
-
-#import <sys/utsname.h>
-
-#import <VideoToolbox/VideoToolbox.h>
-
-#include <Limelight.h>
+#import "Logger.h"
 
 @implementation MainFrameViewController {
     NSOperationQueue* _opQueue;

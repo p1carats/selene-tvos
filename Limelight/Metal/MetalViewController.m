@@ -7,8 +7,8 @@ The implementation of the cross-platform game view controller.
 
 #import "MetalViewController.h"
 #import "FrameQueue.h"
-#import "GraphRenderer.h"
 #import "MetalVideoRenderer.h"
+#import "Logger.h"
 
 @implementation MetalViewController {
     /// A queue to initialize the renderer asynchronously from the main thread.

@@ -7,12 +7,14 @@
 //
 
 @import AVFoundation;
+@import UIKit;
+@import GameStreamKit;
 
-#import "ConnectionCallbacks.h"
-#import "FrameQueue.h"
 #import "Plot.h"
 
-#include "Limelight.h"
+@class Frame;
+
+@protocol ConnectionCallbacks;
 
 @interface VideoDecoderRenderer : NSObject
 

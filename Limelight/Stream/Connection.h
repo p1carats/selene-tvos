@@ -6,11 +6,15 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "ConnectionCallbacks.h"
-#import "VideoDecoderRenderer.h"
-#import "StreamConfiguration.h"
-#import "BandwidthTracker.h"
+@import Foundation;
+
 #import "Plot.h"
+
+@class BandwidthTracker;
+@class VideoDecoderRenderer;
+@class StreamConfiguration;
+
+@protocol ConnectionCallbacks;
 
 #define CONN_TEST_SERVER "ios.conntest.moonlight-stream.org"
 

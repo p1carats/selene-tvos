@@ -9,6 +9,7 @@
 #import "AppAssetRetriever.h"
 #import "HttpManager.h"
 #import "AppAssetResponse.h"
+#import "TemporaryApp.h"
 #import "HttpRequest.h"
 #import "IdManager.h"
 

@@ -6,8 +6,7 @@
 //  Copyright © 2020 Moonlight Game Streaming Project. All rights reserved.
 //
 
-@import CoreHaptics;
-@import GameController;
+@import Foundation;
 
 @interface HapticContext : NSObject
 

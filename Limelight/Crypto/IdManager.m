@@ -8,6 +8,7 @@
 
 #import "IdManager.h"
 #import "DataManager.h"
+#import "Logger.h"
 
 @implementation IdManager
 

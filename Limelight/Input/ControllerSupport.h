@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "StreamConfiguration.h"
-#import "Controller.h"
+@import Foundation;
+
+@class StreamConfiguration;
+@class Controller;
 
 @protocol ControllerSupportDelegate <NSObject>
 

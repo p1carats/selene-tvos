@@ -1,8 +1,7 @@
-#import <QuartzCore/CAMetalLayer.h>
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
+@import QuartzCore.CAMetalLayer;
 
-#import "ConnectionCallbacks.h"
-#import "Frame.h"
+@class Frame;
 
 NS_ASSUME_NONNULL_BEGIN
 

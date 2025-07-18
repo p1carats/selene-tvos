@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "AppDelegate.h"
-#import "TemporaryHost.h"
-#import "TemporaryApp.h"
-#import "TemporarySettings.h"
+@import Foundation;
+
+@class TemporaryApp;
+@class TemporaryHost;
+@class TemporarySettings;
 
 @interface DataManager : NSObject
 

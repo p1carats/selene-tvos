@@ -6,16 +6,17 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import GameStreamKit;
+
 #import "HttpManager.h"
 #import "HttpRequest.h"
 #import "CryptoManager.h"
+#import "StreamConfiguration.h"
 #import "TemporaryApp.h"
 #import "ServerInfoResponse.h"
+#import "Logger.h"
 
 #include <libxml2/libxml/xmlreader.h>
-#include <string.h>
-
-#include <Limelight.h>
 
 #define SHORT_TIMEOUT_SEC 2
 #define NORMAL_TIMEOUT_SEC 5

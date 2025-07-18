@@ -6,12 +6,14 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "MDNSManager.h"
-#import "TemporaryHost.h"
+@import GameStreamKit;
 
 #include <arpa/inet.h>
 
-#include <Limelight.h>
+#import "MDNSManager.h"
+#import "Utils.h"
+#import "TemporaryHost.h"
+#import "Logger.h"
 
 @implementation MDNSManager {
     NSNetServiceBrowser* mDNSBrowser;

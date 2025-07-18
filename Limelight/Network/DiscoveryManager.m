@@ -6,16 +6,19 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import GameStreamKit;
+
 #import "DiscoveryManager.h"
 #import "CryptoManager.h"
 #import "HttpManager.h"
+#import "HttpRequest.h"
 #import "Utils.h"
 #import "DataManager.h"
 #import "DiscoveryWorker.h"
 #import "ServerInfoResponse.h"
 #import "IdManager.h"
+#import "Logger.h"
 
-#include <Limelight.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netdb.h>

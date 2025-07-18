@@ -6,10 +6,11 @@
 //  Copyright © 2020 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import "HapticContext.h"
-
 @import CoreHaptics;
 @import GameController;
+
+#import "HapticContext.h"
+#import "Logger.h"
 
 @implementation HapticContext {
     GCControllerPlayerIndex _playerIndex;

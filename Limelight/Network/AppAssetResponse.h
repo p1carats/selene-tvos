@@ -6,10 +6,11 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
+@import UIKit;
+
 #import "HttpResponse.h"
 
 @interface AppAssetResponse : NSObject <Response>
-
-
 
 @end
