@@ -1,9 +1,6 @@
 [submodule "moonlight-common/moonlight-common-c"]
 	path = moonlight-common/moonlight-common-c
 	url = https://github.com/andygrundman/moonlight-common-c.git
-[submodule "X1Kit"]
-	path = X1Kit
-	url = https://github.com/cgutman/X1Kit.git
 [submodule "third_party/imgui"]
 	path = third_party/imgui
 	url = https://github.com/ocornut/imgui.git

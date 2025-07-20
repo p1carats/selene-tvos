@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4A37FDA52DCAD28F00441192 /* PaddedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A37FDA42DCAD28F00441192 /* PaddedLabel.m */; };
 		693B3A9B218638CD00982F7B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 693B3A9A218638CD00982F7B /* Settings.bundle */; };
+		8F2FCAA22E2D368600F8282B /* X1Mouse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2FCAA12E2D368600F8282B /* X1Mouse.swift */; };
 		98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEA2791278300E43572 /* libSDL2.a */; };
 		9819CC1D254F1730008A7C8E /* RelativeTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9819CC13254F107A008A7C8E /* RelativeTouchHandler.m */; };
 		9827E7A42514366900F25707 /* HapticContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9827E7A22514366900F25707 /* HapticContext.m */; };
@@ -19,7 +20,6 @@
 		9865DC38213287FE0005B9B9 /* LoadingFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4A23B71A9D3637004D2EF2 /* LoadingFrameViewController.m */; };
 		9865DC3E21332D660005B9B9 /* MainFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89462519F646E200339C8A /* MainFrameViewController.m */; };
 		988FCD42293B091B003050E2 /* KeyboardInputField.m in Sources */ = {isa = PBXBuildFile; fileRef = 988FCD40293B091B003050E2 /* KeyboardInputField.m */; };
-		9896219A23D56E8100211983 /* X1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9896219623D15C7000211983 /* X1Kit.swift */; };
 		9897B6A62212732C00966419 /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 9897B6A0221260EF00966419 /* Controller.m */; };
 		A10BC62C2DE8E65800905783 /* BandwidthTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = A10BC62B2DE8E65800905783 /* BandwidthTracker.m */; };
 		A12025BF2DD7E370005015C8 /* ImGuiRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A12025BE2DD7E36B005015C8 /* ImGuiRenderer.mm */; };
@@ -101,6 +101,7 @@
 		4A37FDA32DCAD28F00441192 /* PaddedLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaddedLabel.h; sourceTree = "<group>"; };
 		4A37FDA42DCAD28F00441192 /* PaddedLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaddedLabel.m; sourceTree = "<group>"; };
 		693B3A9A218638CD00982F7B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		8F2FCAA12E2D368600F8282B /* X1Mouse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = X1Mouse.swift; sourceTree = "<group>"; };
 		9803CCAB254F9EAF00EE185E /* ConnectionCallbacks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectionCallbacks.h; sourceTree = "<group>"; };
 		98181BEA2791278300E43572 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL2/lib/tvOS/libSDL2.a; sourceTree = "<group>"; };
 		9819CC12254F107A008A7C8E /* RelativeTouchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RelativeTouchHandler.h; sourceTree = "<group>"; };
@@ -113,7 +114,6 @@
 		988FCD3F293B091B003050E2 /* KeyboardInputField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyboardInputField.h; sourceTree = "<group>"; };
 		988FCD40293B091B003050E2 /* KeyboardInputField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyboardInputField.m; sourceTree = "<group>"; };
 		9890CF6A203B7EE1006C4B06 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
-		9896219623D15C7000211983 /* X1Kit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = X1Kit.swift; path = X1Kit/Sources/X1Kit/X1Kit.swift; sourceTree = "<group>"; };
 		9897B6A0221260EF00966419 /* Controller.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Controller.m; sourceTree = "<group>"; };
 		9897B6A32212610800966419 /* Controller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
 		98AB2E7F1CAD46830089BB98 /* moonlight-common.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "moonlight-common.xcodeproj"; path = "moonlight-common/moonlight-common.xcodeproj"; sourceTree = "<group>"; };
@@ -264,14 +264,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9896219423D15C2900211983 /* X1Kit */ = {
-			isa = PBXGroup;
-			children = (
-				9896219623D15C7000211983 /* X1Kit.swift */,
-			);
-			name = X1Kit;
-			sourceTree = "<group>";
-		};
 		98AB2E801CAD46830089BB98 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -338,7 +330,6 @@
 			isa = PBXGroup;
 			children = (
 				A1A777E82DDBECE600E071D8 /* ImGui */,
-				9896219423D15C2900211983 /* X1Kit */,
 				98AB2E7F1CAD46830089BB98 /* moonlight-common.xcodeproj */,
 				FB290CF919B2C406004C83CF /* Moonlight */,
 				FB1A67542132419700507771 /* Moonlight TV */,
@@ -433,6 +424,7 @@
 		FB89460919F646E200339C8A /* Input */ = {
 			isa = PBXGroup;
 			children = (
+				8F2FCAA12E2D368600F8282B /* X1Mouse.swift */,
 				FB89460A19F646E200339C8A /* ControllerSupport.h */,
 				FB89460B19F646E200339C8A /* ControllerSupport.m */,
 				FB89460C19F646E200339C8A /* StreamView.h */,
@@ -750,7 +742,6 @@
 				FB1A67D52132460400507771 /* ControllerSupport.m in Sources */,
 				FB1A67D82132460400507771 /* StreamView.m in Sources */,
 				A12025BF2DD7E370005015C8 /* ImGuiRenderer.mm in Sources */,
-				9896219A23D56E8100211983 /* X1Kit.swift in Sources */,
 				FB1A67DC2132460400507771 /* KeyboardSupport.m in Sources */,
 				FB1A67CD213245F800507771 /* DataManager.m in Sources */,
 				FB1A67CF213245F800507771 /* TemporaryApp.m in Sources */,
@@ -785,6 +776,7 @@
 				FB1A67A3213245BD00507771 /* Connection.m in Sources */,
 				A10BC62C2DE8E65800905783 /* BandwidthTracker.m in Sources */,
 				FB1A67A5213245BD00507771 /* StreamConfiguration.m in Sources */,
+				8F2FCAA22E2D368600F8282B /* X1Mouse.swift in Sources */,
 				FB1A67A7213245BD00507771 /* StreamManager.m in Sources */,
 				FB1A67A9213245BD00507771 /* VideoDecoderRenderer.m in Sources */,
 				FB1A67A12132458C00507771 /* main.m in Sources */,
