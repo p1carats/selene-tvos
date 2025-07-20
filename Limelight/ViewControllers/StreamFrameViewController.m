@@ -13,7 +13,7 @@
 #import "ControllerSupport.h"
 #import "DataManager.h"
 #import "PaddedLabel.h"
-#import "ImGuiRenderer.h"
+#import "GraphRenderer.h"
 #import "RelativeTouchHandler.h"
 #import "MetalVideoRenderer.h"
 
@@ -179,25 +179,25 @@
     [self.view addSubview:_spinner];
     [self.view addSubview:_tipLabel];
 
-    if ([_settings.renderingBackend intValue] == RENDER_METAL) {
+    if ([_settings.renderingBackend intValue] == RenderingBackendMetal) {
         // Metal view for video
         self.metalViewController = [[MetalViewController alloc] initWithFrame:self.view.bounds
                                                                     framerate:[self->_settings.framerate floatValue]
                                                                     enableHdr:self->_settings.enableHdr
-                                                               metricsHandler:self.imguiView.metricsHandler];
+                                                               metricsHandler:self.graphRenderer.metricsHandler];
         self.metalViewController.view.userInteractionEnabled = NO;
         [self.view addSubview:self.metalViewController.view];
         [self.view bringSubviewToFront:self.metalViewController.view];
     }
 
-    // Make a MetalKit view for ImGui
-    self.imguiView = [[ImGuiRenderer alloc] initWithFrame:self.view.bounds
+    // Make a view for the graphs
+    self.graphRenderer = [[GraphRenderer alloc] initWithFrame:self.view.bounds
                                                 streamFps:[_settings.framerate intValue]
                                              enableGraphs:_settings.enableGraphs
                                              graphOpacity:[_settings.graphOpacity intValue]];
-    self.imguiView.mtkView.userInteractionEnabled = NO;
-    [self.view addSubview:self.imguiView.mtkView];
-    [self.view bringSubviewToFront:self.imguiView.mtkView];
+    self.graphRenderer.view.userInteractionEnabled = NO;
+    [self.view addSubview:self.graphRenderer.view];
+    [self.view bringSubviewToFront:self.graphRenderer.view];
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
@@ -333,8 +333,8 @@
         [self->_statsUpdateTimer fire];
 
         if (_settings.enableGraphs) {
-            [self.imguiView start];
-            [self.imguiView show];
+            [self.graphRenderer start];
+            [self.graphRenderer show];
         }
     }
 }
@@ -355,8 +355,8 @@
     }
 
     if (_settings.enableGraphs) {
-        [self.imguiView hide];
-        [self.imguiView stop];
+        [self.graphRenderer hide];
+        [self.graphRenderer stop];
     }
 }
 

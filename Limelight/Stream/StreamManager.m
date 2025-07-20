@@ -149,7 +149,7 @@
 }
 
 - (NSString*) getStatsOverlayText {
-    video_stats_t stats;
+    VideoStats stats;
     
     if (!_connection) {
         return nil;

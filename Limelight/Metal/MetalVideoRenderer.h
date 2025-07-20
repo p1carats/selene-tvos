@@ -3,7 +3,6 @@
 #import <simd/simd.h>
 #import "ConnectionCallbacks.h"
 #import "Frame.h"
-#import "Plot.h"
 
 @interface MetalVideoRenderer : NSObject
 

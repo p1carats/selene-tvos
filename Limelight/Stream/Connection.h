@@ -20,7 +20,7 @@
 -(void) terminate;
 -(void) main;
 -(BandwidthTracker *) getBwTracker;
--(BOOL) getVideoStats:(video_stats_t*)stats;
+-(BOOL) getVideoStats:(VideoStats*)stats;
 -(NSString*) getActiveCodecName;
 
 @end

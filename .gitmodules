@@ -1,6 +1,3 @@
 [submodule "moonlight-common/moonlight-common-c"]
 	path = GameStreamKit/Sources/moonlight-common-c
 	url = https://github.com/andygrundman/moonlight-common-c.git
-[submodule "third_party/imgui"]
-	path = third_party/imgui
-	url = https://github.com/ocornut/imgui.git

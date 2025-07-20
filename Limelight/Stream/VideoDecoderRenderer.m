@@ -17,7 +17,7 @@
 #import "Plot.h"
 #import "PlatformThreads.h"
 #import "MetalViewController.h"
-#import "ImGuiPlots.h"
+#import "PlotManager.h"
 
 // Define for extra logging related to frame pacing
 #define DISPLAYLINK_VERBOSE
@@ -133,11 +133,11 @@
     self->_frameRate = frameRate;
 
     DataManager* dataMan = [[DataManager alloc] init];
-    if ([[dataMan getSettings].renderingBackend integerValue] == RENDER_AVSB) {
-        // PACING_MODE_VSYNC:
+    if ([[dataMan getSettings].renderingBackend integerValue] == RenderingBackendAVSampleBuffer) {
+        // FramePacingModeVSync:
         // Deliver 1 frame at each vsync interval. Ignores server pts timestamps.
         // Drop frames intelligently to maintain chosen queue size.
-        _renderingBackend = RENDER_AVSB;
+        _renderingBackend = RenderingBackendAVSampleBuffer;
         _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(renderModeAVSB:)];
 
         if (@available(iOS 15.0, tvOS 15.0, *)) {
@@ -148,7 +148,7 @@
         }
         [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
     } else {
-        _renderingBackend = RENDER_METAL;
+        _renderingBackend = RenderingBackendMetal;
         // RENDER_METAL begins in StreamFrameViewController.
     }
 }
@@ -263,7 +263,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
                 // we missed a callback
                 // Log(LOG_W, @"*** slow frametime %.3f ms", frametime * 1000.0);
             }
-            [[ImGuiPlots sharedInstance] observeFloat:PLOT_FRAMETIME value:frametime * 1000.0];
+            [[PlotManager sharedInstance] observeFloat:PlotTypeFrametime value:frametime * 1000.0];
         }
         lastTargetLocal = targetLocal;
 
@@ -326,7 +326,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
 {
     [_frameQueue shutdown];
     
-    if (_renderingBackend == RENDER_AVSB) {
+    if (_renderingBackend == RenderingBackendAVSampleBuffer) {
         [_displayLink invalidate];
     }
 
@@ -600,7 +600,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
           CVPixelBufferRef pixelBuffer = nil;
 
           // AVSampleBuffer path: package into a SampleBuffer
-          if (self->_renderingBackend == RENDER_AVSB) {
+          if (self->_renderingBackend == RenderingBackendAVSampleBuffer) {
             if (self->_formatDescImageBuffer == NULL || !CMVideoFormatDescriptionMatchesImageBuffer(self->_formatDescImageBuffer, imageBuffer)) {
               OSStatus res = CMVideoFormatDescriptionCreateForImageBuffer(kCFAllocatorDefault, imageBuffer, &(self->_formatDescImageBuffer));
               if (res != noErr) {
@@ -625,7 +625,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
               Log(LOG_E, @"Error creating sample buffer for decompressed image buffer %d", (int)err);
               return;
             }
-          } else if (self->_renderingBackend == RENDER_METAL) {
+          } else if (self->_renderingBackend == RenderingBackendMetal) {
             // Metal path: retain the pixelBuffer here so it survives the dispatch
             pixelBuffer = CVPixelBufferRetain((CVPixelBufferRef)imageBuffer);
           }
@@ -633,7 +633,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
           // Dispatch onto our higher priority queue
           dispatch_async(self->_vtq, ^{
               Frame *frame = nil;
-              if (self->_renderingBackend == RENDER_AVSB) {
+              if (self->_renderingBackend == RenderingBackendAVSampleBuffer) {
                 frame = [[Frame alloc] initWithSampleBuffer:sampleBufferOut frameNumber:frameNumber frameType:frameType];
               } else {
                 frame = [[Frame alloc] initWithPixelBufffer:pixelBuffer frameNumber:frameNumber frameType:frameType pts:presentationTimestamp];
@@ -642,22 +642,22 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
               int framesDropped = [self->_frameQueue enqueue:frame withSlackSize:3];
 
               static PlotMetrics frameQueueMetrics = {};
-              [[ImGuiPlots sharedInstance] observeFloatReturnMetrics:PLOT_QUEUED_FRAMES value:[self->_frameQueue count] plotMetrics:&frameQueueMetrics];
+              [[PlotManager sharedInstance] observeFloatReturnMetrics:PlotTypeQueuedFrames value:[self->_frameQueue count] plotMetrics:(struct PlotMetrics *)&frameQueueMetrics];
               [self safeCopyMetricsTo:&self->_frameQueueMetrics from:&frameQueueMetrics];
 
-              [[ImGuiPlots sharedInstance] observeFloat:PLOT_DROPPED value:framesDropped];
+              [[PlotManager sharedInstance] observeFloat:PlotTypeDropped value:framesDropped];
 
               // It's important we capture host metrics on the incoming thread, as this frame object
               // may have been dropped by the above enqueue
               static CFTimeInterval lastHostFrame = 0.0f;
               if (lastHostFrame != 0) {
-                [[ImGuiPlots sharedInstance] observeFloat:PLOT_HOST_FRAMETIME value:(frame.pts - lastHostFrame) * 1000.0];
+                [[PlotManager sharedInstance] observeFloat:PlotTypeHostFrametime value:(frame.pts - lastHostFrame) * 1000.0];
               }
               lastHostFrame = frame.pts;
 
               // Decode time is not graphed because it is marked as hidden, but we can use the same mechanism for the value used by stats
               static PlotMetrics decodeMetrics = {};
-              [[ImGuiPlots sharedInstance] observeFloatReturnMetrics:PLOT_DECODE value:(CACurrentMediaTime() - decodeStartTime) * 1000.0 plotMetrics:&decodeMetrics];
+              [[PlotManager sharedInstance] observeFloatReturnMetrics:PlotTypeDecode value:(CACurrentMediaTime() - decodeStartTime) * 1000.0 plotMetrics:(struct PlotMetrics *)&decodeMetrics];
               [self safeCopyMetricsTo:&self->_decodeMetrics from:&decodeMetrics];
           });
       });
@@ -751,8 +751,8 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
     }
 }
 
-- (void)getAllStats:(video_stats_t *)stats {
-    if (_renderingBackend == RENDER_METAL) {
+- (void)getAllStats:(VideoStats *)stats {
+    if (_renderingBackend == RenderingBackendMetal) {
         float edrHeadroom = [[UIScreen mainScreen] currentEDRHeadroom];
         UIScreenReferenceDisplayModeStatus referenceStatus = [[UIScreen mainScreen] referenceDisplayModeStatus];
         if (edrHeadroom > 1.0) {

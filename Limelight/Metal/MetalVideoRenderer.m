@@ -5,7 +5,7 @@
 #import <Metal/Metal.h>
 #import <MetalKit/MetalKit.h>
 #import <simd/simd.h>
-#import "ImGuiPlots.h"
+#import "PlotManager.h"
 
 #include <Limelight.h>
 
@@ -444,7 +444,7 @@ static const NSUInteger MaxFramesInFlight = 3;
         [drawable addPresentedHandler:^(id<MTLDrawable> d) {
             if (strongSelf.lastPresented > 0.0f) {
                 CFTimeInterval frametime = d.presentedTime - strongSelf.lastPresented;
-                [[ImGuiPlots sharedInstance] observeFloat:PLOT_FRAMETIME value:(frametime * 1000.0)];
+                [[PlotManager sharedInstance] observeFloat:PlotTypeFrametime value:(frametime * 1000.0)];
             }
             strongSelf.lastPresented = d.presentedTime;
         }];

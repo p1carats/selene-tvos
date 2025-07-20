@@ -10,13 +10,6 @@
 		8F2FCAF62E2D3B5B00F8282B /* GameStreamKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8F2FCAF52E2D3B5B00F8282B /* GameStreamKit */; };
 		98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEA2791278300E43572 /* libSDL2.a */; };
 		9865DC36213287F30005B9B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB290D0319B2C406004C83CF /* AppDelegate.m */; };
-		A12025BF2DD7E370005015C8 /* ImGuiRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A12025BE2DD7E36B005015C8 /* ImGuiRenderer.mm */; };
-		A19562AC2DE6EDDC005FD7D8 /* imgui_impl_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = A19562AB2DE6EDDC005FD7D8 /* imgui_impl_metal.mm */; };
-		A1A777E22DDBEC5500E071D8 /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1A777DB2DDBEC5500E071D8 /* imgui_widgets.cpp */; };
-		A1A777E32DDBEC5500E071D8 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1A777D52DDBEC5500E071D8 /* imgui_demo.cpp */; };
-		A1A777E52DDBEC5500E071D8 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1A777D42DDBEC5500E071D8 /* imgui.cpp */; };
-		A1A777E62DDBEC5500E071D8 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1A777D62DDBEC5500E071D8 /* imgui_draw.cpp */; };
-		A1A777E72DDBEC5500E071D8 /* imgui_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1A777DA2DDBEC5500E071D8 /* imgui_tables.cpp */; };
 		F74BEFA42C1A80E400224667 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = F74BEFA32C1A80E400224667 /* OpenSSL */; };
 		FB1A67B1213245D500507771 /* HttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89461019F646E200339C8A /* HttpManager.m */; };
 		FB1A67B3213245D500507771 /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9AFD361A7E02DB00872C98 /* HttpRequest.m */; };
@@ -45,20 +38,8 @@
 		8F4907FA2E2D4ABA008B1D7D /* Selene.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Selene.xcdatamodel; sourceTree = "<group>"; };
 		98181BEA2791278300E43572 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL2/lib/tvOS/libSDL2.a; sourceTree = "<group>"; };
 		9890CF6A203B7EE1006C4B06 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
-		A12025BD2DD7E352005015C8 /* ImGuiRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImGuiRenderer.h; sourceTree = "<group>"; };
-		A12025BE2DD7E36B005015C8 /* ImGuiRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImGuiRenderer.mm; sourceTree = "<group>"; };
 		A13F90582DFC3C5C0010BB0F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A13F905C2DFC3C710010BB0F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/AppleTVOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		A19562AB2DE6EDDC005FD7D8 /* imgui_impl_metal.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = imgui_impl_metal.mm; sourceTree = "<group>"; };
-		A1A777D22DDBEC5500E071D8 /* imconfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = imconfig.h; path = ../third_party/imgui/imconfig.h; sourceTree = "<group>"; };
-		A1A777D32DDBEC5500E071D8 /* imgui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = imgui.h; path = ../third_party/imgui/imgui.h; sourceTree = "<group>"; };
-		A1A777D42DDBEC5500E071D8 /* imgui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui.cpp; path = ../third_party/imgui/imgui.cpp; sourceTree = "<group>"; };
-		A1A777D52DDBEC5500E071D8 /* imgui_demo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_demo.cpp; path = ../third_party/imgui/imgui_demo.cpp; sourceTree = "<group>"; };
-		A1A777D62DDBEC5500E071D8 /* imgui_draw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_draw.cpp; path = ../third_party/imgui/imgui_draw.cpp; sourceTree = "<group>"; };
-		A1A777D72DDBEC5500E071D8 /* imgui_impl_metal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = imgui_impl_metal.h; path = ../third_party/imgui/backends/imgui_impl_metal.h; sourceTree = "<group>"; };
-		A1A777D92DDBEC5500E071D8 /* imgui_internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = imgui_internal.h; path = ../third_party/imgui/imgui_internal.h; sourceTree = "<group>"; };
-		A1A777DA2DDBEC5500E071D8 /* imgui_tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_tables.cpp; path = ../third_party/imgui/imgui_tables.cpp; sourceTree = "<group>"; };
-		A1A777DB2DDBEC5500E071D8 /* imgui_widgets.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_widgets.cpp; path = ../third_party/imgui/imgui_widgets.cpp; sourceTree = "<group>"; };
 		A1EBD2F52DD94CE800F3BF4B /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		A1EBD2F62DD94CE900F3BF4B /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		A1EBD2F92DD94CFC00F3BF4B /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS18.5.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -121,7 +102,10 @@
 		8F2FCAA72E2D399500F8282B /* Exceptions for "Stats" folder in "Selene" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ImGuiPlots.mm,
+				GraphRenderer.m,
+				GraphView.m,
+				PlotDefinition.m,
+				PlotManager.m,
 			);
 			target = FB1A67522132419700507771 /* Selene */;
 		};
@@ -256,27 +240,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A1A777E82DDBECE600E071D8 /* ImGui */ = {
-			isa = PBXGroup;
-			children = (
-				A1A777D22DDBEC5500E071D8 /* imconfig.h */,
-				A1A777D32DDBEC5500E071D8 /* imgui.h */,
-				A1A777D42DDBEC5500E071D8 /* imgui.cpp */,
-				A1A777D52DDBEC5500E071D8 /* imgui_demo.cpp */,
-				A1A777D62DDBEC5500E071D8 /* imgui_draw.cpp */,
-				A1A777D72DDBEC5500E071D8 /* imgui_impl_metal.h */,
-				A19562AB2DE6EDDC005FD7D8 /* imgui_impl_metal.mm */,
-				A1A777D92DDBEC5500E071D8 /* imgui_internal.h */,
-				A1A777DA2DDBEC5500E071D8 /* imgui_tables.cpp */,
-				A1A777DB2DDBEC5500E071D8 /* imgui_widgets.cpp */,
-			);
-			path = ImGui;
-			sourceTree = "<group>";
-		};
 		FB290CE519B2C406004C83CF = {
 			isa = PBXGroup;
 			children = (
-				A1A777E82DDBECE600E071D8 /* ImGui */,
 				FB290CF919B2C406004C83CF /* Limelight */,
 				8F2FCB152E2D49BA00F8282B /* Selene */,
 				FB290CF019B2C406004C83CF /* Frameworks */,
@@ -316,15 +282,13 @@
 		FB290CF919B2C406004C83CF /* Limelight */ = {
 			isa = PBXGroup;
 			children = (
-				8F2FCAA52E2D399500F8282B /* Stats */,
-				A12025BE2DD7E36B005015C8 /* ImGuiRenderer.mm */,
-				A12025BD2DD7E352005015C8 /* ImGuiRenderer.h */,
 				D4746EEA1CBC740C006FB401 /* Selene-Bridging-Header.h */,
 				8F2FCAAE2E2D399900F8282B /* Crypto */,
 				8F4908052E2D4C12008B1D7D /* Database */,
 				8F2FCB062E2D49B600F8282B /* Input */,
 				8F2FCABC2E2D39A000F8282B /* Metal */,
 				FB89460E19F646E200339C8A /* Network */,
+				8F2FCAA52E2D399500F8282B /* Stats */,
 				8F2FCACB2E2D39A500F8282B /* Stream */,
 				8F2FCAE02E2D39A800F8282B /* Utility */,
 				8F2FCAEF2E2D39AC00F8282B /* ViewControllers */,
@@ -553,17 +517,10 @@
 				9865DC36213287F30005B9B9 /* AppDelegate.m in Sources */,
 				FB1A6819213284FB00507771 /* UIComputerView.m in Sources */,
 				FB1A681A213284FB00507771 /* UIAppView.m in Sources */,
-				A1A777E22DDBEC5500E071D8 /* imgui_widgets.cpp in Sources */,
-				A1A777E32DDBEC5500E071D8 /* imgui_demo.cpp in Sources */,
-				A1A777E52DDBEC5500E071D8 /* imgui.cpp in Sources */,
-				A1A777E62DDBEC5500E071D8 /* imgui_draw.cpp in Sources */,
-				A1A777E72DDBEC5500E071D8 /* imgui_tables.cpp in Sources */,
 				FB1A681B213284FB00507771 /* ComputerScrollView.m in Sources */,
 				FB1A681C213284FB00507771 /* AppCollectionView.m in Sources */,
 				FB1A67E32132498A00507771 /* Selene.xcdatamodeld in Sources */,
-				A12025BF2DD7E370005015C8 /* ImGuiRenderer.mm in Sources */,
 				FB1A67C3213245EA00507771 /* AppAssetManager.m in Sources */,
-				A19562AC2DE6EDDC005FD7D8 /* imgui_impl_metal.mm in Sources */,
 				FB1A67C5213245EA00507771 /* AppAssetRetriever.m in Sources */,
 				FB1A67C7213245EA00507771 /* PairManager.m in Sources */,
 				FB1A67C9213245EA00507771 /* WakeOnLanManager.m in Sources */,
@@ -604,7 +561,6 @@
 					"$(PROJECT_DIR)/GameStreamKit/Sources/moonlight-common-c/**",
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/libs/**",
-					"$(PROJECT_DIR)/third_party/imgui",
 				);
 				INFOPLIST_FILE = Selene/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Selene;
@@ -658,7 +614,6 @@
 					"$(PROJECT_DIR)/GameStreamKit/Sources/moonlight-common-c/**",
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/libs/**",
-					"$(PROJECT_DIR)/third_party/imgui",
 				);
 				INFOPLIST_FILE = Selene/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Selene;

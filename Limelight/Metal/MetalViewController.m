@@ -7,7 +7,7 @@ The implementation of the cross-platform game view controller.
 
 #import "MetalViewController.h"
 #import "FrameQueue.h"
-#import "ImGuiRenderer.h"
+#import "GraphRenderer.h"
 #import "MetalVideoRenderer.h"
 
 @implementation MetalViewController {
