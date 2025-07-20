@@ -51,7 +51,7 @@ The implementation of the cross-platform game view controller.
     id<MTLDevice> device = MTLCreateSystemDefaultDevice();
     if (!device) {
         Log(LOG_E, @"Metal isn't supported on this device.");
-        self.view = [[PlatformView alloc] initWithFrame:self.view.frame];
+        self.view = [[UIView alloc] initWithFrame:self.view.frame];
         return;
     }
     view.metalLayer.device = device;
@@ -106,35 +106,5 @@ The implementation of the cross-platform game view controller.
 
     [_metalView shutdown];
 }
-
-#if TARGET_OS_IOS
-/// Hides the Home indicator button automatically.
-- (BOOL)prefersHomeIndicatorAutoHidden {
-    return YES;
-}
-#endif
-
-#if TARGET_OS_OSX
-/// Makes the view controller the first responder to receive keyboard events.
-- (void)viewDidAppear {
-    [_metalView.window makeFirstResponder:self];
-}
-
-/// Receives the keydown events to avoid system beeps.
-///
-/// The `GameInputKeyboardMouse` class handles keyboard events.
-- (void)keyDown:(NSEvent *)event {
-    // Reference the parameter to avoid an unused parameter warning.
-    (void)(event);
-}
-
-/// Receives the keyup events to avoid system beeps.
-///
-/// The `GameInputKeyboardMouse` class handles keyboard events.
-- (void)keyUp:(NSEvent *)event {
-    // Reference the parameter to avoid an unused parameter warning.
-    (void)(event);
-}
-#endif
 
 @end

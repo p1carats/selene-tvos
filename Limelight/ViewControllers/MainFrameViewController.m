@@ -27,11 +27,7 @@
 #import "IdManager.h"
 #import "ConnectionHelper.h"
 
-#if !TARGET_OS_TV
-#import "SettingsViewController.h"
-#else
 #import <sys/utsname.h>
-#endif
 
 #import <VideoToolbox/VideoToolbox.h>
 
@@ -49,14 +45,12 @@
     UIAlertController* _pairAlert;
     LoadingFrameViewController* _loadingFrame;
     UIScrollView* hostScrollView;
-    FrontViewPosition currentPosition;
     NSArray* _sortedAppList;
     NSCache* _boxArtCache;
     bool _background;
-#if TARGET_OS_TV
     UITapGestureRecognizer* _menuRecognizer;
-#endif
 }
+
 static NSMutableSet* hostList;
 
 - (void)startPairing:(NSString *)PIN {
@@ -81,7 +75,6 @@ static NSMutableSet* hostList;
     UIAlertController* failedDialog = [UIAlertController alertControllerWithTitle:@"Pairing Failed"
                                                                           message:message
                                                                    preferredStyle:UIAlertControllerStyleAlert];
-    [Utils addHelpOptionToDialog:failedDialog];
     [failedDialog addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
     
     [_discMan startDiscovery];
@@ -114,18 +107,6 @@ static NSMutableSet* hostList;
         [self->_discMan startDiscovery];
         [self alreadyPaired];
     });
-}
-
-- (void)disableUpButton {
-#if !TARGET_OS_TV
-    [self->_upButton setTitle:nil];
-#endif
-}
-
-- (void)enableUpButton {
-#if !TARGET_OS_TV
-    [self->_upButton setTitle:@"Select New Host"];
-#endif
 }
 
 - (void)updateTitle {
@@ -183,7 +164,6 @@ static NSMutableSet* hostList;
                 UIAlertController* applistAlert = [UIAlertController alertControllerWithTitle:@"Connection Interrupted"
                                                                                       message:appListResp.statusMessage
                                                                                preferredStyle:UIAlertControllerStyleAlert];
-                [Utils addHelpOptionToDialog:applistAlert];
                 [applistAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
                 [self hideLoadingFrame: ^{
                     [self showHostSelectionView];
@@ -281,18 +261,12 @@ static NSMutableSet* hostList;
     host.appList = newHostAppList;
 
     [database updateAppsForExistingHost:host];
-    
-    // This host may be eligible for a shortcut now that the app list
-    // has been populated
-    [self updateHostShortcuts];
 }
 
 - (void)showHostSelectionView {
-#if TARGET_OS_TV
     // Remove the menu button intercept to allow the app to exit
     // when at the host selection view.
     [self.navigationController.view removeGestureRecognizer:_menuRecognizer];
-#endif
     
     [_appManager stopRetrieving];
     _showHiddenApps = NO;
@@ -300,7 +274,6 @@ static NSMutableSet* hostList;
     _sortedAppList = nil;
     
     [self updateTitle];
-    [self disableUpButton];
     
     [self.collectionView reloadData];
     [self.view addSubview:hostScrollView];
@@ -320,7 +293,6 @@ static NSMutableSet* hostList;
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Network Error"
                                                                    message:@"Failed to resolve host."
                                                             preferredStyle:UIAlertControllerStyleAlert];
-    [Utils addHelpOptionToDialog:alert];
     [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
     [[self activeViewController] presentViewController:alert animated:YES completion:nil];
 }
@@ -338,13 +310,9 @@ static NSMutableSet* hostList;
     Log(LOG_D, @"Clicked host: %@", host.name);
     _selectedHost = host;
     [self updateTitle];
-    [self enableUpButton];
-    [self disableNavigation];
     
-#if TARGET_OS_TV
     // Intercept the menu key to go back to the host page
     [self.navigationController.view addGestureRecognizer:_menuRecognizer];
-#endif
     
     // If we are online, paired, and have a cached app list, skip straight
     // to the app grid without a loading frame. This is the fast path that users
@@ -393,7 +361,6 @@ static NSMutableSet* hostList;
                     UIAlertController* applistAlert = [UIAlertController alertControllerWithTitle:@"Connection Failed"
                                                                             message:serverInfoResp.statusMessage
                                                                                    preferredStyle:UIAlertControllerStyleAlert];
-                    [Utils addHelpOptionToDialog:applistAlert];
                     [applistAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
                     
                     // Only display an alert if this was the result of a real
@@ -492,15 +459,8 @@ static NSMutableSet* hostList;
             self->_showHiddenApps = YES;
             [self hostClicked:host view:view];
         }]];
-        
-#if !TARGET_OS_TV
-        if (host.isNvidiaServerSoftware) {
-            [longClickAlert addAction:[UIAlertAction actionWithTitle:@"NVIDIA GameStream End-of-Service" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
-                [Utils launchUrl:@"https://github.com/moonlight-stream/moonlight-docs/wiki/NVIDIA-GameStream-End-Of-Service-Announcement-FAQ"];
-            }]];
-        }
-#endif
     }
+    
     [longClickAlert addAction:[UIAlertAction actionWithTitle:@"Test Network" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action) {
         [self showLoadingFrame:^{
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -530,16 +490,7 @@ static NSMutableSet* hostList;
             });
         }];
     }]];
-#if !TARGET_OS_TV
-    if (host.state != StateOnline) {
-        [longClickAlert addAction:[UIAlertAction actionWithTitle:@"NVIDIA GameStream End-of-Service" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
-            [Utils launchUrl:@"https://github.com/moonlight-stream/moonlight-docs/wiki/NVIDIA-GameStream-End-Of-Service-Announcement-FAQ"];
-        }]];
-        [longClickAlert addAction:[UIAlertAction actionWithTitle:@"Connection Help" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
-            [Utils launchUrl:@"https://github.com/moonlight-stream/moonlight-docs/wiki/Troubleshooting"];
-        }]];
-    }
-#endif
+    
     [longClickAlert addAction:[UIAlertAction actionWithTitle:@"Remove Host" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action) {
         [self->_discMan removeHostFromDiscovery:host];
         DataManager* dataMan = [[DataManager alloc] init];
@@ -551,11 +502,6 @@ static NSMutableSet* hostList;
         
     }]];
     [longClickAlert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    
-    // these two lines are required for iPad support of UIAlertSheet
-    longClickAlert.popoverPresentationController.sourceView = view;
-    
-    longClickAlert.popoverPresentationController.sourceRect = CGRectMake(view.bounds.size.width / 2.0, view.bounds.size.height / 2.0, 1.0, 1.0); // center of the view
     [[self activeViewController] presentViewController:longClickAlert animated:YES completion:nil];
 }
 
@@ -585,7 +531,6 @@ static NSMutableSet* hostList;
                         }
                         
                         UIAlertController* hostNotFoundAlert = [UIAlertController alertControllerWithTitle:@"Add Host Manually" message:error preferredStyle:UIAlertControllerStyleAlert];
-                        [Utils addHelpOptionToDialog:hostNotFoundAlert];
                         [hostNotFoundAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self hideLoadingFrame:^{
@@ -623,7 +568,7 @@ static NSMutableSet* hostList;
 
     _streamConfig.height = [streamSettings.height intValue];
     _streamConfig.width = [streamSettings.width intValue];
-#if TARGET_OS_TV
+    
     // Don't allow streaming 4K on the Apple TV HD
     struct utsname systemInfo;
     uname(&systemInfo);
@@ -632,7 +577,6 @@ static NSMutableSet* hostList;
         _streamConfig.width = 1920;
         _streamConfig.height = 1080;
     }
-#endif
 
     _streamConfig.bitRate = [streamSettings.bitrate intValue];
     _streamConfig.optimizeGameSettings = streamSettings.optimizeGames;
@@ -708,15 +652,6 @@ static NSMutableSet* hostList;
     Log(LOG_D, @"Long clicked app: %@", app.name);
     
     [_appManager stopRetrieving];
-    
-#if !TARGET_OS_TV
-    if (currentPosition != FrontViewPositionLeft) {
-        // This must not be animated because we need the position
-        // to change (and notify our callback to save settings data)
-        // before we call prepareToStreamApp.
-        [[self revealViewController] revealToggleAnimated:NO];
-    }
-#endif
 
     TemporaryApp* currentApp = [self findRunningApp:app.host];
     
@@ -832,11 +767,6 @@ static NSMutableSet* hostList;
     }
     
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-
-    // these two lines are required for iPad support of UIAlertSheet
-    alertController.popoverPresentationController.sourceView = view;
-    
-    alertController.popoverPresentationController.sourceRect = CGRectMake(view.bounds.size.width / 2.0, view.bounds.size.height / 2.0, 1.0, 1.0); // center of the view
     [[self activeViewController] presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -844,15 +774,6 @@ static NSMutableSet* hostList;
     Log(LOG_D, @"Clicked app: %@", app.name);
     
     [_appManager stopRetrieving];
-    
-#if !TARGET_OS_TV
-    if (currentPosition != FrontViewPositionLeft) {
-        // This must not be animated because we need the position
-        // to change (and notify our callback to save settings data)
-        // before we call prepareToStreamApp.
-        [[self revealViewController] revealToggleAnimated:NO];
-    }
-#endif
     
     if ([self findRunningApp:app.host]) {
         // If there's a running app, display a menu
@@ -872,22 +793,9 @@ static NSMutableSet* hostList;
     return nil;
 }
 
-#if !TARGET_OS_TV
-- (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position {
-    // If we moved back to the center position, we should save the settings
-    if (position == FrontViewPositionLeft) {
-        [(SettingsViewController*)[revealController rearViewController] saveSettings];
-    }
-    
-    currentPosition = position;
-}
-#endif
-
-#if TARGET_OS_TV
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [self appClicked:_sortedAppList[indexPath.row] view:nil];
 }
-#endif
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.destinationViewController isKindOfClass:[StreamFrameViewController class]]) {
@@ -901,7 +809,6 @@ static NSMutableSet* hostList;
 }
 
 - (void) hideLoadingFrame:(void (^)(void))completion {
-    [self enableNavigation];
     [_loadingFrame dismissLoadingFrame:completion];
 }
 
@@ -931,27 +838,7 @@ static NSMutableSet* hostList;
         return;
     }
 #endif
-
-#if !TARGET_OS_TV
-    // Set the side bar button action. When it's tapped, it'll show the sidebar.
-    [_settingsButton setTarget:self.revealViewController];
-    [_settingsButton setAction:@selector(revealToggle:)];
     
-    // Set the host name button action. When it's tapped, it'll show the host selection view.
-    [_upButton setTarget:self];
-    [_upButton setAction:@selector(showHostSelectionView)];
-    [self disableUpButton];
-    
-    // Set the gesture
-    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
-    
-    // Get callbacks associated with the viewController
-    [self.revealViewController setDelegate:self];
-    
-    // Disable bounce-back on reveal VC otherwise the settings will snap closed
-    // if the user drags all the way off the screen opposite the settings pane.
-    self.revealViewController.bounceBackOnOverdraw = NO;
-#else
     // The settings button will direct the user into the Settings app on tvOS
     [_settingsButton setTarget:self];
     [_settingsButton setAction:@selector(openTvSettings:)];
@@ -965,12 +852,8 @@ static NSMutableSet* hostList;
     _menuRecognizer.allowedPressTypes = [[NSArray alloc] initWithObjects:[NSNumber numberWithLong:UIPressTypeMenu], nil];
     
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName];
-#endif
     
     _loadingFrame = [self.storyboard instantiateViewControllerWithIdentifier:@"loadingFrame"];
-    
-    // Set the current position to the center
-    currentPosition = FrontViewPositionLeft;
     
     // Set up crypto
     [CryptoManager generateKeyPairUsingSSL];
@@ -994,14 +877,11 @@ static NSMutableSet* hostList;
     
     self.collectionView.delaysContentTouches = NO;
     self.collectionView.allowsMultipleSelection = NO;
-#if !TARGET_OS_TV
-    self.collectionView.multipleTouchEnabled = NO;
-#else
+    
     // This is the only way to get long press events on a UICollectionViewCell :(
     UILongPressGestureRecognizer* cellLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleCollectionViewLongPress:)];
     cellLongPress.delaysTouchesBegan = YES;
     [self.collectionView addGestureRecognizer:cellLongPress];
-#endif
     
     [self retrieveSavedHosts];
     _discMan = [[DiscoveryManager alloc] initWithHosts:[hostList allObjects] andCallback:self];
@@ -1015,7 +895,6 @@ static NSMutableSet* hostList;
     }
 }
 
-#if TARGET_OS_TV
 -(void)handleCollectionViewLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
 {
     // FIXME: Something is delaying touches so we only get to the Begin state
@@ -1035,7 +914,6 @@ static NSMutableSet* hostList;
 {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:nil];
 }
-#endif
 
 -(void)beginForegroundRefresh
 {
@@ -1054,44 +932,11 @@ static NSMutableSet* hostList;
     }
 }
 
--(void)handlePendingShortcutAction
-{
-    // Check if we have a pending shortcut action
-    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    if (delegate.pcUuidToLoad != nil) {
-        // Find the host it corresponds to
-        TemporaryHost* matchingHost = nil;
-        for (TemporaryHost* host in hostList) {
-            if ([host.uuid isEqualToString:delegate.pcUuidToLoad]) {
-                matchingHost = host;
-                break;
-            }
-        }
-        
-        // Clear the pending shortcut action
-        delegate.pcUuidToLoad = nil;
-        
-        // Complete the request
-        if (delegate.shortcutCompletionHandler != nil) {
-            delegate.shortcutCompletionHandler(matchingHost != nil);
-            delegate.shortcutCompletionHandler = nil;
-        }
-        
-        if (matchingHost != nil && _selectedHost != matchingHost) {
-            // Navigate to the host page
-            [self hostClicked:matchingHost view:nil];
-        }
-    }
-}
-
 -(void)handleReturnToForeground
 {
     _background = NO;
     
     [self beginForegroundRefresh];
-    
-    // Check for a pending shortcut action when returning to foreground
-    [self handlePendingShortcutAction];
 }
 
 -(void)handleEnterBackground
@@ -1105,19 +950,12 @@ static NSMutableSet* hostList;
 {
     [super viewDidAppear:animated];
     
-#if !TARGET_OS_TV
-    [[self revealViewController] setPrimaryViewController:self];
-#endif
-    
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
     // Hide 1px border line
     UIImage* fakeImage = [[UIImage alloc] init];
     [self.navigationController.navigationBar setShadowImage:fakeImage];
     [self.navigationController.navigationBar setBackgroundImage:fakeImage forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
-    
-    // Check for a pending shortcut action when appearing
-    [self handlePendingShortcutAction];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(handleReturnToForeground)
@@ -1205,30 +1043,6 @@ static NSMutableSet* hostList;
     });
 }
 
-- (void)updateHostShortcuts {
-#if !TARGET_OS_TV
-    NSMutableArray* quickActions = [[NSMutableArray alloc] init];
-    
-    @synchronized (hostList) {
-        for (TemporaryHost* host in hostList) {
-            // Pair state may be unknown if we haven't polled it yet, but the app list
-            // count will persist from paired PCs
-            if ([host.appList count] > 0) {
-                UIApplicationShortcutItem* shortcut = [[UIApplicationShortcutItem alloc]
-                                                       initWithType:@"PC"
-                                                       localizedTitle:host.name
-                                                       localizedSubtitle:nil
-                                                       icon:[UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypePlay]
-                                                       userInfo:[NSDictionary dictionaryWithObject:host.uuid forKey:@"UUID"]];
-                [quickActions addObject: shortcut];
-            }
-        }
-    }
-    
-    [UIApplication sharedApplication].shortcutItems = quickActions;
-#endif
-}
-
 - (void)updateHosts {
     Log(LOG_I, @"Updating hosts...");
     [[hostScrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -1253,9 +1067,6 @@ static NSMutableSet* hostList;
         }
     }
     
-    // Create or delete host shortcuts as needed
-    [self updateHostShortcuts];
-    
     // Update the title in case we now have a PC
     [self updateTitle];
     
@@ -1267,13 +1078,7 @@ static NSMutableSet* hostList;
 }
 
 - (float) getCompViewX:(UIComputerView*)comp addComp:(UIComputerView*)addComp prevEdge:(float)prevEdge {
-    float padding;
-    
-#if TARGET_OS_TV
-    padding = 100;
-#else
-    padding = addComp.frame.size.width / 2;
-#endif
+    float padding = 100;
     
     if (prevEdge == -1) {
         return hostScrollView.frame.origin.x + comp.frame.size.width / 2 + padding;
@@ -1375,12 +1180,6 @@ static NSMutableSet* hostList;
     cell.layer.shadowOffset = CGSizeMake(1.0f, 5.0f);
     cell.layer.shadowPath = shadowPath.CGPath;
     
-#if !TARGET_OS_TV
-    cell.layer.borderWidth = 1;
-    cell.layer.borderColor = [[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3f] CGColor];
-    cell.exclusiveTouch = YES;
-#endif
-
     return cell;
 }
 
@@ -1412,32 +1211,6 @@ static NSMutableSet* hostList;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
-}
-
-- (void) disableNavigation {
-    self.navigationController.navigationBar.topItem.rightBarButtonItem.enabled = NO;
-    self.navigationController.navigationBar.topItem.leftBarButtonItem.enabled = NO;
-}
-
-- (void) enableNavigation {
-    self.navigationController.navigationBar.topItem.rightBarButtonItem.enabled = YES;
-    self.navigationController.navigationBar.topItem.leftBarButtonItem.enabled = YES;
-}
-
-#if TARGET_OS_TV
-- (BOOL)canBecomeFocused {
-    return YES;
-}
-#endif
-
-- (void)didUpdateFocusInContext:(UIFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator {
-    
-#if !TARGET_OS_TV
-    if (context.nextFocusedView != nil) {
-        [context.nextFocusedView setAlpha:0.8];
-    }
-    [context.previouslyFocusedView setAlpha:1.0];
-#endif
 }
 
 @end

@@ -993,12 +993,8 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
 
 - (void)getAllStats:(video_stats_t *)stats {
     if (_renderingBackend == RENDER_METAL) {
-#if TARGET_OS_OSX
-        float edrHeadroom = [[NSScreen mainScreen] maximumExtendedDynamicRangeColorComponentValue];
-#else
         float edrHeadroom = [[UIScreen mainScreen] currentEDRHeadroom];
         UIScreenReferenceDisplayModeStatus referenceStatus = [[UIScreen mainScreen] referenceDisplayModeStatus];
-#endif
         if (edrHeadroom > 1.0) {
             NSString *ref;
             // Device has a reference display that may or may not be enabled

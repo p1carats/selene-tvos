@@ -3,13 +3,7 @@
 #import <QuartzCore/CAMetalLayer.h>
 #import "MetalConfig.h"
 
-#if TARGET_OS_IOS || TARGET_OS_TV
 #import <UIKit/UIKit.h>
-#define PlatformView UIView
-#else
-#import <AppKit/AppKit.h>
-#define PlatformView NSView
-#endif
 
 // The protocol to provide resize and redraw callbacks to a delegate.
 @protocol MetalViewDelegate <NSObject>
@@ -22,7 +16,7 @@
 @end
 
 // The Metal game view base class.
-@interface MetalView : PlatformView <CALayerDelegate>
+@interface MetalView : UIView <CALayerDelegate>
 
 @property (nonatomic, nonnull, readonly) CAMetalLayer *metalLayer;
 @property (nonatomic, getter=isPaused) BOOL paused;

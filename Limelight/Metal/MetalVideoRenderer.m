@@ -149,81 +149,6 @@ static const NSUInteger MaxFramesInFlight = 3;
     }
 }
 
-#if !TARGET_OS_TV
-- (void)reportMaxEDRHeadroom {
-    CGFloat maxHeadroom = 1.0f;
-#if TARGET_OS_OSX
-    maxHeadroom = [[NSScreen mainScreen] maximumPotentialExtendedDynamicRangeColorComponentValue];
-#else
-    maxHeadroom = [[UIScreen mainScreen] potentialEDRHeadroom];
-#endif
-    if (maxHeadroom > 1.0) {
-        LogOnce(LOG_I, @"Display supports EDR with a max headroom of %.1f", maxHeadroom);
-    } else {
-        LogOnce(LOG_I, @"Display does not support EDR");
-    }
-}
-
-- (void)pollCurrentEDRHeadroom {
-    CGFloat headroom = 1.0f;
-#if TARGET_OS_OSX
-    headroom = [[NSScreen mainScreen] maximumExtendedDynamicRangeColorComponentValue];
-#else
-    headroom = [[UIScreen mainScreen] currentEDRHeadroom];
-#endif
-    if (headroom != _currentEDRHeadroom) {
-        Log(LOG_I, @"EDR headroom changed to %.1f", headroom);
-        _currentEDRHeadroom = headroom;
-    }
-}
-
-- (void)setInitialEDRMetadata {
-}
-
-- (void)applyEDRFromFrame:(Frame *)frame withColorspace:(int)colorspace toLayer:(CAMetalLayer *)layer {
-    [self reportMaxEDRHeadroom];
-    [self setInitialEDRMetadata];
-
-    CFDictionaryRef ext = [frame getFormatDescExtensions];
-    CFStringRef frame_trc = CFDictionaryGetValue(ext, kCVImageBufferTransferFunctionKey);
-
-    // These can only be changed on the main thread
-    dispatch_sync(dispatch_get_main_queue(), ^{
-        layer.wantsExtendedDynamicRangeContent = YES;
-        layer.pixelFormat = MTLPixelFormatRGBA16Float;
-
-        CFStringRef name;
-        switch (colorspace) {
-            case COLORSPACE_REC_2020:
-                name = kCGColorSpaceExtendedLinearITUR_2020;
-                break;
-            case COLORSPACE_REC_601:
-                name = kCGColorSpaceExtendedLinearSRGB;
-                break;
-            case COLORSPACE_REC_709:
-            default:
-                name = kCGColorSpaceExtendedLinearSRGB;
-                break;
-        }
-
-        CGColorSpaceRef colorspace = CGColorSpaceCreateWithName(name);
-        layer.colorspace = colorspace;
-        CGColorSpaceRelease(colorspace);
-
-        CFDataRef masteringDisplayColorVolume = CVBufferCopyAttachment(frame.pixelBuffer, kCVImageBufferMasteringDisplayColorVolumeKey, nil);
-        CFDataRef contentLightLevel = CVBufferCopyAttachment(frame.pixelBuffer, kCVImageBufferContentLightLevelInfoKey, nil);
-        if (masteringDisplayColorVolume) {
-            layer.EDRMetadata = [CAEDRMetadata HDR10MetadataWithDisplayInfo:(__bridge NSData *)masteringDisplayColorVolume
-                                                                contentInfo:contentLightLevel ? (__bridge NSData *)contentLightLevel : nil
-                                                         opticalOutputScale:100.0f];
-        } else {
-            layer.EDRMetadata = [CAEDRMetadata HDR10MetadataWithMinLuminance:0.005f maxLuminance:1000.0f opticalOutputScale:100.0f];
-        }
-        LogOnce(LOG_I, @"EDRMetadata set to colorspace %@, transfer function %@, %@", layer.colorspace, frame_trc, layer.EDRMetadata);
-    });
-}
-#endif
-
 - (int)getFrameColorspaceAndRange:(Frame *)frame isFullRange:(BOOL *)isFullRange {
     CFDictionaryRef ext = [frame getFormatDescExtensions];
 
@@ -303,22 +228,13 @@ static const NSUInteger MaxFramesInFlight = 3;
                         : newPixelFormat == MTLPixelFormatBGR10A2Unorm ? @"MTLPixelFormatBGR10A2Unorm"
                                                                        : [NSString stringWithFormat:@"Unknown: %lu", (unsigned long)layer.pixelFormat]);
             }
-
-            if ([CAEDRMetadata isAvailable]) {
-                [self applyEDRFromFrame:frame withColorspace:colorspace toLayer:layer];
-            } else {
-                // These can only be changed on the main thread
-                dispatch_sync(dispatch_get_main_queue(), ^{
-#if !TARGET_OS_TV
-                    if (isHDR) {
-                        layer.wantsExtendedDynamicRangeContent = YES;
-                    }
-#endif
-                    layer.colorspace = newColorSpace;
-                    layer.pixelFormat = newPixelFormat;
-                });
-                CGColorSpaceRelease(newColorSpace);
-            }
+            
+            // These can only be changed on the main thread
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                layer.colorspace = newColorSpace;
+                layer.pixelFormat = newPixelFormat;
+            });
+            CGColorSpaceRelease(newColorSpace);
         }
 
         // Create the new colorspace parameter buffer for our fragment shader
@@ -523,6 +439,7 @@ static const NSUInteger MaxFramesInFlight = 3;
         [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];
         [renderEncoder endEncoding];
 
+#if !TARGET_OS_SIMULATOR
         __block MetalVideoRenderer *strongSelf = self;
         [drawable addPresentedHandler:^(id<MTLDrawable> d) {
             if (strongSelf.lastPresented > 0.0f) {
@@ -531,6 +448,7 @@ static const NSUInteger MaxFramesInFlight = 3;
             }
             strongSelf.lastPresented = d.presentedTime;
         }];
+#endif
 
         // signal semaphore, compute GPU time average, and clear textures
         __block dispatch_semaphore_t block_semaphore = _inFlightSemaphore;

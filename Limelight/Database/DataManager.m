@@ -57,7 +57,6 @@
                           height:(NSInteger)height
                            width:(NSInteger)width
                      audioConfig:(NSInteger)audioConfig
-                onscreenControls:(NSInteger)onscreenControls
                    optimizeGames:(BOOL)optimizeGames
                  multiController:(BOOL)multiController
                  swapABXYButtons:(BOOL)swapABXYButtons
@@ -66,7 +65,6 @@
                   frameQueueSize:(NSInteger)frameQueueSize
                        enableHdr:(BOOL)enableHdr
                   btMouseSupport:(BOOL)btMouseSupport
-               absoluteTouchMode:(BOOL)absoluteTouchMode
                     statsOverlay:(BOOL)statsOverlay
                     enableGraphs:(BOOL)enableGraphs
                     graphOpacity:(NSInteger)graphOpacity
@@ -79,7 +77,6 @@
         settingsToSave.height = [NSNumber numberWithInteger:height];
         settingsToSave.width = [NSNumber numberWithInteger:width];
         settingsToSave.audioConfig = [NSNumber numberWithInteger:audioConfig];
-        settingsToSave.onscreenControls = [NSNumber numberWithInteger:onscreenControls];
         settingsToSave.optimizeGames = optimizeGames;
         settingsToSave.multiController = multiController;
         settingsToSave.swapABXYButtons = swapABXYButtons;
@@ -88,7 +85,6 @@
         settingsToSave.frameQueueSize = [NSNumber numberWithInteger:frameQueueSize];
         settingsToSave.enableHdr = enableHdr;
         settingsToSave.btMouseSupport = btMouseSupport;
-        settingsToSave.absoluteTouchMode = absoluteTouchMode;
         settingsToSave.statsOverlay = statsOverlay;
         settingsToSave.enableGraphs = enableGraphs;
         settingsToSave.graphOpacity = [NSNumber numberWithInteger:graphOpacity];
