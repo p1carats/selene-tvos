@@ -7,6 +7,7 @@
 //
 
 #import "PairManager.h"
+#import "CertificateManager.h"
 #import "CryptoManager.h"
 #import "Utils.h"
 #import "HttpResponse.h"
@@ -114,10 +115,11 @@
     }
     
     // Pin the cert for TLS usage on this host
-    NSData* derCertBytes = [CryptoManager pemToDer:[Utils hexToBytes:plainCert]];
+    NSData* derCertBytes = [CertificateManager pemToDer:[Utils hexToBytes:plainCert]];
     [_httpManager setServerCert:derCertBytes];
     
     CryptoManager* cryptoMan = [[CryptoManager alloc] init];
+    CertificateManager* certMan = [[CertificateManager alloc] init];
     NSData* aesKey;
     
     // Gen 7 servers use SHA256 to get the key
@@ -148,7 +150,7 @@
     NSData* serverChallenge = [decServerChallengeResp subdataWithRange:NSMakeRange(hashLength, 16)];
     
     NSData* clientSecret = [Utils randomBytes:16];
-    NSData* challengeRespHashInput = [self concatData:[self concatData:serverChallenge with:[CryptoManager getSignatureFromCert:_clientCert]] with:clientSecret];
+    NSData* challengeRespHashInput = [self concatData:[self concatData:serverChallenge with:[CertificateManager getSignatureFromCert:_clientCert]] with:clientSecret];
     NSData* challengeRespHash;
     if (serverMajorVersion >= 7) {
         challengeRespHash = [cryptoMan SHA256HashData: challengeRespHashInput];
@@ -174,12 +176,12 @@
     NSData* serverSecret = [serverSecretResp subdataWithRange:NSMakeRange(0, 16)];
     NSData* serverSignature = [serverSecretResp subdataWithRange:NSMakeRange(16, serverSecretResp.length - 16)];
     
-    if (![cryptoMan verifySignature:serverSecret withSignature:serverSignature andCert:[Utils hexToBytes:plainCert]]) {
+    if (![certMan verifySignature:serverSecret withSignature:serverSignature andCert:[Utils hexToBytes:plainCert]]) {
         [self finishPairing:bgId forResponse:secretResp withFallbackError:@"Server certificate invalid"];
         return;
     }
     
-    NSData* serverChallengeRespHashInput = [self concatData:[self concatData:randomChallenge with:[CryptoManager getSignatureFromCert:[Utils hexToBytes:plainCert]]] with:serverSecret];
+    NSData* serverChallengeRespHashInput = [self concatData:[self concatData:randomChallenge with:[CertificateManager getSignatureFromCert:[Utils hexToBytes:plainCert]]] with:serverSecret];
     NSData* serverChallengeRespHash;
     if (serverMajorVersion >= 7) {
         serverChallengeRespHash = [cryptoMan SHA256HashData: serverChallengeRespHashInput];
@@ -192,7 +194,7 @@
         return;
     }
     
-    NSData* clientPairingSecret = [self concatData:clientSecret with:[cryptoMan signData:clientSecret withKey:[CryptoManager readKeyFromFile]]];
+    NSData* clientPairingSecret = [self concatData:clientSecret with:[certMan signData:clientSecret withKey:[CertificateManager readKeyFromFile]]];
     HttpResponse* clientSecretResp = [[HttpResponse alloc] init];
     [_httpManager executeRequestSynchronously:[HttpRequest requestForResponse:clientSecretResp withUrlRequest:[_httpManager newClientSecretRespRequest:[Utils bytesToHex:clientPairingSecret]]]];
     if (![self verifyResponseStatus:clientSecretResp]) {

@@ -8,7 +8,8 @@
 
 #import "HttpManager.h"
 #import "HttpRequest.h"
-#import "CryptoManager.h"
+#import "CertificateManager.h"
+#import "CertificateSecret.h"
 #import "TemporaryApp.h"
 #import "ServerInfoResponse.h"
 
@@ -325,17 +326,19 @@
 // Returns the identity
 - (SecIdentityRef)getClientCertificate {
     SecIdentityRef identityApp = nil;
-    CFDataRef p12Data = (__bridge CFDataRef)[CryptoManager readP12FromFile];
+    CFDataRef p12Data = (__bridge CFDataRef)[CertificateManager readP12FromFile];
 
-    CFStringRef password = CFSTR("selene");
+    NSString *password = [CertificateSecret certificatePassword];
+    CFStringRef passwordRef = (__bridge CFStringRef)password;
+    
     const void *keys[] = { kSecImportExportPassphrase };
-    const void *values[] = { password };
+    const void *values[] = { passwordRef };
     CFDictionaryRef options = CFDictionaryCreate(NULL, keys, values, 1, NULL, NULL);
+    
     CFArrayRef items = nil;
     OSStatus securityError = SecPKCS12Import(p12Data, options, &items);
 
     if (securityError == errSecSuccess) {
-        //Log(LOG_D, @"Success opening p12 certificate. Items: %ld", CFArrayGetCount(items));
         CFDictionaryRef identityDict = CFArrayGetValueAtIndex(items, 0);
         identityApp = (SecIdentityRef)CFRetain(CFDictionaryGetValue(identityDict, kSecImportItemIdentity));
         CFRelease(items);
@@ -344,7 +347,6 @@
     }
     
     CFRelease(options);
-    CFRelease(password);
     
     return identityApp;
 }

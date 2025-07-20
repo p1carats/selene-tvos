@@ -1,5 +1,5 @@
 //
-//  CertificateGenerator.h
+//  CertificateSecret.h
 //  Selene
 //
 //  Created by Noé Barlet on 20/07/2025.
@@ -10,9 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface IdManager : NSObject
+@interface CertificateSecret : NSObject
 
-+ (NSString*) getUniqueId;
++ (NSString *)certificatePassword;
 
 @end
 

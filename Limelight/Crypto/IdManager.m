@@ -1,13 +1,16 @@
 //
-//  IdManager.m
-//  Moonlight
+//  CertificateGenerator.h
+//  Selene
 //
-//  Created by Diego Waxemberg on 10/31/15.
-//  Copyright © 2015 Moonlight Stream. All rights reserved.
+//  Created by Noé Barlet on 20/07/2025.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
 //
+
+@import Security;
 
 #import "IdManager.h"
 #import "DataManager.h"
+#import "Logger.h"
 
 @implementation IdManager
 
@@ -25,7 +28,8 @@
 }
 
 + (NSString*) generateUniqueId {
-    UInt64 uuidLong = ((UInt64) arc4random() << 32) | arc4random();
+    UInt64 uuidLong;
+    (void)SecRandomCopyBytes(kSecRandomDefault, sizeof(uuidLong), (uint8_t*)&uuidLong);
     return [NSString stringWithFormat:@"%016llx", uuidLong];
 }
 

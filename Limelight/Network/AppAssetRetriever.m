@@ -8,7 +8,6 @@
 
 #import "AppAssetRetriever.h"
 #import "HttpManager.h"
-#import "CryptoManager.h"
 #import "AppAssetResponse.h"
 #import "HttpRequest.h"
 #import "IdManager.h"

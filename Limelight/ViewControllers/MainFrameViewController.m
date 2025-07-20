@@ -8,7 +8,7 @@
 @import ImageIO;
 
 #import "MainFrameViewController.h"
-#import "CryptoManager.h"
+#import "CertificateManager.h"
 #import "HttpManager.h"
 #import "Connection.h"
 #import "StreamManager.h"
@@ -840,9 +840,9 @@ static NSMutableSet* hostList;
     _loadingFrame = [self.storyboard instantiateViewControllerWithIdentifier:@"loadingFrame"];
     
     // Set up crypto
-    [CryptoManager generateKeyPairUsingSSL];
+    [CertificateManager generateKeyPairUsingSSL];
     _uniqueId = [IdManager getUniqueId];
-    _clientCert = [CryptoManager readCertFromFile];
+    _clientCert = [CertificateManager readCertFromFile];
 
     _appManager = [[AppAssetManager alloc] initWithCallback:self];
     _opQueue = [[NSOperationQueue alloc] init];

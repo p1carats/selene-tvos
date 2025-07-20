@@ -7,7 +7,7 @@
 //
 
 #import "DiscoveryManager.h"
-#import "CryptoManager.h"
+#import "CertificateManager.h"
 #import "HttpManager.h"
 #import "Utils.h"
 #import "DataManager.h"
@@ -48,9 +48,9 @@
     
     _opQueue = [[NSOperationQueue alloc] init];
     _mdnsMan = [[MDNSManager alloc] initWithCallback:self];
-    [CryptoManager generateKeyPairUsingSSL];
+    [CertificateManager generateKeyPairUsingSSL];
     _uniqueId = [IdManager getUniqueId];
-    _cert = [CryptoManager readCertFromFile];
+    _cert = [CertificateManager readCertFromFile];
     return self;
 }
 

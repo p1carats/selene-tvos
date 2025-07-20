@@ -1,27 +1,29 @@
 //
 //  CryptoManager.h
-//  Moonlight
+//  Selene
 //
-//  Created by Diego Waxemberg on 10/14/14.
-//  Copyright (c) 2014 Moonlight Stream. All rights reserved.
+//  Created by Noé Barlet on 20/07/2025.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
 //
+
+@import Foundation;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface CryptoManager : NSObject
 
-+ (void) generateKeyPairUsingSSL;
-+ (NSData*) readCertFromFile;
-+ (NSData*) readKeyFromFile;
-+ (NSData*) readP12FromFile;
-+ (NSData*) getSignatureFromCert:(NSData*)cert;
-+ (NSData*) pemToDer:(NSData*)pemCertBytes;
-
-- (NSData*) createAESKeyFromSaltSHA1:(NSData*)saltedPIN;
-- (NSData*) createAESKeyFromSaltSHA256:(NSData*)saltedPIN;
+// SHA operations
 - (NSData*) SHA1HashData:(NSData*)data;
 - (NSData*) SHA256HashData:(NSData*)data;
+
+// Key derivation
+- (NSData*) createAESKeyFromSaltSHA1:(NSData*)saltedPIN;
+- (NSData*) createAESKeyFromSaltSHA256:(NSData*)saltedPIN;
+
+// AES encryption/decryption
 - (NSData*) aesEncrypt:(NSData*)data withKey:(NSData*)key;
 - (NSData*) aesDecrypt:(NSData*)data withKey:(NSData*)key;
-- (bool) verifySignature:(NSData *)data withSignature:(NSData*)signature andCert:(NSData*)cert;
-- (NSData*) signData:(NSData*)data withKey:(NSData*)key;
 
 @end
+
+NS_ASSUME_NONNULL_END

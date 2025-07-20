@@ -10,9 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface IdManager : NSObject
+@interface CertificateGenerator : NSObject
 
-+ (NSString*) getUniqueId;
++ (NSDictionary*) generateCertKeyPair;
 
 @end
 

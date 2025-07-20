@@ -112,9 +112,11 @@
 		8F2FCAB22E2D399900F8282B /* Exceptions for "Crypto" folder in "Selene" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				CertificateGenerator.m,
+				CertificateManager.m,
+				CertificateSecret.m,
 				CryptoManager.m,
 				IdManager.m,
-				mkcert.c,
 			);
 			target = FB1A67522132419700507771 /* Selene */;
 		};

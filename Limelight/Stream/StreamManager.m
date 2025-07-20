@@ -7,7 +7,7 @@
 //
 
 #import "StreamManager.h"
-#import "CryptoManager.h"
+#import "CertificateManager.h"
 #import "HttpManager.h"
 #import "Plot.h"
 #import "Utils.h"
@@ -39,7 +39,7 @@
 }
 
 - (void)main {
-    [CryptoManager generateKeyPairUsingSSL];
+    [CertificateManager generateKeyPairUsingSSL];
     
     HttpManager* hMan = [[HttpManager alloc] initWithAddress:_config.host httpsPort:_config.httpsPort
                                                      serverCert:_config.serverCert];
