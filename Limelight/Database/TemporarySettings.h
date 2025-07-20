@@ -22,7 +22,6 @@
     CODEC_PREF_AUTO,
     CODEC_PREF_H264,
     CODEC_PREF_HEVC,
-    CODEC_PREF_AV1,
 } preferredCodec;
 @property (nonatomic, retain) NSNumber * frameQueueSize;
 @property (nonatomic) BOOL multiController;

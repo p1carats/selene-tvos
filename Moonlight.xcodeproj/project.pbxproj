@@ -18,9 +18,6 @@
 		9865DC37213287FE0005B9B9 /* StreamFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89462719F646E200339C8A /* StreamFrameViewController.m */; };
 		9865DC38213287FE0005B9B9 /* LoadingFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4A23B71A9D3637004D2EF2 /* LoadingFrameViewController.m */; };
 		9865DC3E21332D660005B9B9 /* MainFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89462519F646E200339C8A /* MainFrameViewController.m */; };
-		98882A0C2AF60F9E00C5A11C /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98882A0A2AF60F9000C5A11C /* libavcodec.a */; };
-		98882A0D2AF60FA000C5A11C /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98882A0B2AF60F9000C5A11C /* libavformat.a */; };
-		98882A0E2AF60FA300C5A11C /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98882A092AF60F9000C5A11C /* libavutil.a */; };
 		988FCD42293B091B003050E2 /* KeyboardInputField.m in Sources */ = {isa = PBXBuildFile; fileRef = 988FCD40293B091B003050E2 /* KeyboardInputField.m */; };
 		9896219A23D56E8100211983 /* X1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9896219623D15C7000211983 /* X1Kit.swift */; };
 		9897B6A62212732C00966419 /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 9897B6A0221260EF00966419 /* Controller.m */; };
@@ -113,9 +110,6 @@
 		9832D1341BBCD5C50036EF48 /* TemporaryApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TemporaryApp.h; path = Database/TemporaryApp.h; sourceTree = "<group>"; };
 		9832D1351BBCD5C50036EF48 /* TemporaryApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TemporaryApp.m; path = Database/TemporaryApp.m; sourceTree = "<group>"; };
 		9874E8962AE95E1D00130A3C /* Moonlight v1.10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moonlight v1.10.xcdatamodel"; sourceTree = "<group>"; };
-		98882A092AF60F9000C5A11C /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = libs/FFmpeg/lib/tvOS/libavutil.a; sourceTree = "<group>"; };
-		98882A0A2AF60F9000C5A11C /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = libs/FFmpeg/lib/tvOS/libavcodec.a; sourceTree = "<group>"; };
-		98882A0B2AF60F9000C5A11C /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = libs/FFmpeg/lib/tvOS/libavformat.a; sourceTree = "<group>"; };
 		988FCD3F293B091B003050E2 /* KeyboardInputField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyboardInputField.h; sourceTree = "<group>"; };
 		988FCD40293B091B003050E2 /* KeyboardInputField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyboardInputField.m; sourceTree = "<group>"; };
 		9890CF6A203B7EE1006C4B06 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
@@ -261,12 +255,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9865DC30213260B40005B9B9 /* libmoonlight-common-tv.a in Frameworks */,
-				98882A0D2AF60FA000C5A11C /* libavformat.a in Frameworks */,
-				98882A0E2AF60FA300C5A11C /* libavutil.a in Frameworks */,
 				F74BEFA42C1A80E400224667 /* OpenSSL in Frameworks */,
 				FB1A67E821324DE300507771 /* libopus.a in Frameworks */,
 				98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */,
-				98882A0C2AF60F9E00C5A11C /* libavcodec.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,9 +364,6 @@
 				A1EBD2FA2DD94CFC00F3BF4B /* Metal.framework */,
 				A1EBD2F62DD94CE900F3BF4B /* MetalKit.framework */,
 				A1EBD2F92DD94CFC00F3BF4B /* MetalKit.framework */,
-				98882A0A2AF60F9000C5A11C /* libavcodec.a */,
-				98882A0B2AF60F9000C5A11C /* libavformat.a */,
-				98882A092AF60F9000C5A11C /* libavutil.a */,
 				98181BEA2791278300E43572 /* libSDL2.a */,
 				9890CF6A203B7EE1006C4B06 /* libxml2.tbd */,
 				FB4679001A57048000377732 /* CoreFoundation.framework */,
@@ -859,13 +847,11 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/opus/lib/tvOS",
 					"$(PROJECT_DIR)/libs/SDL2/lib/tvOS",
-					"$(PROJECT_DIR)/libs/FFmpeg/lib/tvOS",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=appletvsimulator*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/opus/lib/tvOS-Sim",
 					"$(PROJECT_DIR)/libs/SDL2/lib/tvOS-Sim",
-					"$(PROJECT_DIR)/libs/FFmpeg/lib/tvOS-Sim",
 				);
 				MARKETING_VERSION = 9.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = org.hybridized.Moonlight;
@@ -915,13 +901,11 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/opus/lib/tvOS",
 					"$(PROJECT_DIR)/libs/SDL2/lib/tvOS",
-					"$(PROJECT_DIR)/libs/FFmpeg/lib/tvOS",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=appletvsimulator*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/opus/lib/tvOS-Sim",
 					"$(PROJECT_DIR)/libs/SDL2/lib/tvOS-Sim",
-					"$(PROJECT_DIR)/libs/FFmpeg/lib/tvOS-Sim",
 				);
 				MARKETING_VERSION = 9.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = org.hybridized.Moonlight;
