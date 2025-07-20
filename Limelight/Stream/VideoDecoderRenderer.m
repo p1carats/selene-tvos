@@ -101,11 +101,11 @@
 {
     self = [super init];
 
-    _sq = dispatch_queue_create("com.moonlight.VideoDecoderRenderer",
+    _sq = dispatch_queue_create("me.noebarlet.Selene.VideoDecoderRenderer",
                                  dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INTERACTIVE, 0));
 
     // Video decoder needs to run at the highest priority since DisplayLink waits on it
-    _vtq = dispatch_queue_create("com.moonlight.VideoDecoderRenderer.VTDecoder",
+    _vtq = dispatch_queue_create("me.noebarlet.Selene.VideoDecoderRenderer.VTDecoder",
                                 dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INTERACTIVE, 0));
 
     _view = view;

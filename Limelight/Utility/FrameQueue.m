@@ -70,7 +70,7 @@
         }
         _head = _tail = _count = 0;
 
-        _sq = dispatch_queue_create("com.moonlight.FrameQueue",
+        _sq = dispatch_queue_create("me.noebarlet.Selene.FrameQueue",
             dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INTERACTIVE, 0));
         _frameSemaphore = dispatch_semaphore_create(0);
 

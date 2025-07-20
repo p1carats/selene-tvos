@@ -69,7 +69,7 @@ struct CertKeyPair generateCertKeyPair(void) {
     
     mkcert(&x509, &pkey, NUM_BITS, SERIAL, NUM_YEARS);
     
-    char* pass = "limelight";
+    char* pass = "selene";
     p12 = PKCS12_create(pass,
                         "GameStream",
                         pkey,

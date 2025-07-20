@@ -7,7 +7,7 @@
 //
 
 #import "ControllerSupport.h"
-#import "Moonlight-Swift.h"
+#import "Selene-Swift.h"
 #import "StreamConfiguration.h"
 
 @protocol UserInteractionDelegate <NSObject>

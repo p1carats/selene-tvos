@@ -104,7 +104,7 @@ static const NSUInteger MaxFramesInFlight = 3;
 - (instancetype)initWithMetalDevice:(id<MTLDevice>)device drawablePixelFormat:(MTLPixelFormat)drawablePixelFormat framerate:(float)framerate {
     self = [super init];
     if (self) {
-        _sq = dispatch_queue_create("com.moonlight.MetalVideoRenderer",
+        _sq = dispatch_queue_create("me.noebarlet.Selene.MetalVideoRenderer",
                                     dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INTERACTIVE, 0));
         _averageGPUTime = (1.0f / framerate) / 2;
         _device = device;

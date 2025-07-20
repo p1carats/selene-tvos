@@ -327,7 +327,7 @@
     SecIdentityRef identityApp = nil;
     CFDataRef p12Data = (__bridge CFDataRef)[CryptoManager readP12FromFile];
 
-    CFStringRef password = CFSTR("limelight");
+    CFStringRef password = CFSTR("selene");
     const void *keys[] = { kSecImportExportPassphrase };
     const void *values[] = { password };
     CFDictionaryRef options = CFDictionaryCreate(NULL, keys, values, 1, NULL, NULL);
