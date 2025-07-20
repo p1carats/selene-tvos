@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		693B3A9B218638CD00982F7B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 693B3A9A218638CD00982F7B /* Settings.bundle */; };
 		8F2FCAA22E2D368600F8282B /* X1Mouse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2FCAA12E2D368600F8282B /* X1Mouse.swift */; };
+		8F2FCAF62E2D3B5B00F8282B /* GameStreamKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8F2FCAF52E2D3B5B00F8282B /* GameStreamKit */; };
 		98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEA2791278300E43572 /* libSDL2.a */; };
 		9819CC1D254F1730008A7C8E /* RelativeTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9819CC13254F107A008A7C8E /* RelativeTouchHandler.m */; };
 		9827E7A42514366900F25707 /* HapticContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9827E7A22514366900F25707 /* HapticContext.m */; };
-		9865DC30213260B40005B9B9 /* libmoonlight-common-tv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB1A68152132509400507771 /* libmoonlight-common-tv.a */; };
 		9865DC36213287F30005B9B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB290D0319B2C406004C83CF /* AppDelegate.m */; };
 		988FCD42293B091B003050E2 /* KeyboardInputField.m in Sources */ = {isa = PBXBuildFile; fileRef = 988FCD40293B091B003050E2 /* KeyboardInputField.m */; };
 		9897B6A62212732C00966419 /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 9897B6A0221260EF00966419 /* Controller.m */; };
@@ -57,23 +57,6 @@
 		FB1A681E21328A1B00507771 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB290D0819B2C406004C83CF /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		FB1A68142132509400507771 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 98AB2E7F1CAD46830089BB98 /* moonlight-common.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FB1A67EF21324EE300507771;
-			remoteInfo = "moonlight-common-tv";
-		};
-		FB1A68162132509800507771 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 98AB2E7F1CAD46830089BB98 /* moonlight-common.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FB1A67EE21324EE300507771;
-			remoteInfo = "moonlight-common-tv";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		693B3A9A218638CD00982F7B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		8F2FCAA12E2D368600F8282B /* X1Mouse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = X1Mouse.swift; sourceTree = "<group>"; };
@@ -90,7 +73,6 @@
 		9890CF6A203B7EE1006C4B06 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		9897B6A0221260EF00966419 /* Controller.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Controller.m; sourceTree = "<group>"; };
 		9897B6A32212610800966419 /* Controller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
-		98AB2E7F1CAD46830089BB98 /* moonlight-common.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "moonlight-common.xcodeproj"; path = "moonlight-common/moonlight-common.xcodeproj"; sourceTree = "<group>"; };
 		98D5856B1C0EA79600F6CC00 /* TemporaryHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TemporaryHost.h; path = Database/TemporaryHost.h; sourceTree = "<group>"; };
 		98D5856C1C0EA79600F6CC00 /* TemporaryHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TemporaryHost.m; path = Database/TemporaryHost.m; sourceTree = "<group>"; };
 		98D5856E1C0ED0E800F6CC00 /* TemporarySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TemporarySettings.h; path = Database/TemporarySettings.h; sourceTree = "<group>"; };
@@ -283,24 +265,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9865DC30213260B40005B9B9 /* libmoonlight-common-tv.a in Frameworks */,
 				F74BEFA42C1A80E400224667 /* OpenSSL in Frameworks */,
 				FB1A67E821324DE300507771 /* libopus.a in Frameworks */,
 				98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */,
+				8F2FCAF62E2D3B5B00F8282B /* GameStreamKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		98AB2E801CAD46830089BB98 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FB1A68152132509400507771 /* libmoonlight-common-tv.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		A1A777E82DDBECE600E071D8 /* ImGui */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,7 +308,6 @@
 			isa = PBXGroup;
 			children = (
 				A1A777E82DDBECE600E071D8 /* ImGui */,
-				98AB2E7F1CAD46830089BB98 /* moonlight-common.xcodeproj */,
 				FB290CF919B2C406004C83CF /* Limelight */,
 				FB1A67542132419700507771 /* Moonlight TV */,
 				FB290CF019B2C406004C83CF /* Frameworks */,
@@ -565,7 +538,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FB1A68172132509800507771 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				8F2FCABC2E2D39A000F8282B /* Metal */,
@@ -573,6 +545,7 @@
 			name = "Moonlight TV";
 			packageProductDependencies = (
 				F74BEFA32C1A80E400224667 /* OpenSSL */,
+				8F2FCAF52E2D3B5B00F8282B /* GameStreamKit */,
 			);
 			productName = "Moonlight TV";
 			productReference = FB1A67532132419700507771 /* Moonlight TV.app */;
@@ -614,32 +587,17 @@
 			mainGroup = FB290CE519B2C406004C83CF;
 			packageReferences = (
 				F74BEF9A2C1A705600224667 /* XCRemoteSwiftPackageReference "OpenSSL-Package" */,
+				8F2FCAF42E2D3B5B00F8282B /* XCLocalSwiftPackageReference "GameStreamKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FB290CEF19B2C406004C83CF /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 98AB2E801CAD46830089BB98 /* Products */;
-					ProjectRef = 98AB2E7F1CAD46830089BB98 /* moonlight-common.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				FB1A67522132419700507771 /* Moonlight TV */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		FB1A68152132509400507771 /* libmoonlight-common-tv.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libmoonlight-common-tv.a";
-			remoteRef = FB1A68142132509400507771 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		FB1A67512132419700507771 /* Resources */ = {
@@ -705,14 +663,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		FB1A68172132509800507771 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "moonlight-common-tv";
-			targetProxy = FB1A68162132509800507771 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
 		FB1A675E2132419700507771 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -743,7 +693,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Limelight/Limelight-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/moonlight-common/moonlight-common-c/src",
+					"$(PROJECT_DIR)/GameStreamKit/Sources/moonlight-common-c/**",
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/libs/**",
 					"$(PROJECT_DIR)/third_party/imgui",
@@ -796,7 +746,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Limelight/Limelight-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/moonlight-common/moonlight-common-c/src",
+					"$(PROJECT_DIR)/GameStreamKit/Sources/moonlight-common-c/**",
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/libs/**",
 					"$(PROJECT_DIR)/third_party/imgui",
@@ -978,6 +928,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		8F2FCAF42E2D3B5B00F8282B /* XCLocalSwiftPackageReference "GameStreamKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = GameStreamKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		F74BEF9A2C1A705600224667 /* XCRemoteSwiftPackageReference "OpenSSL-Package" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -990,6 +947,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8F2FCAF52E2D3B5B00F8282B /* GameStreamKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GameStreamKit;
+		};
 		F74BEFA32C1A80E400224667 /* OpenSSL */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F74BEF9A2C1A705600224667 /* XCRemoteSwiftPackageReference "OpenSSL-Package" */;
