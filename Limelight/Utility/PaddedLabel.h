@@ -6,7 +6,7 @@
 //  Copyright © 2025 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface PaddedLabel : UILabel
 

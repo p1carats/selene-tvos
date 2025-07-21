@@ -6,9 +6,10 @@
 //  Copyright © 2020 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import "RelativeTouchHandler.h"
+@import GameStreamKit;
 
-#include <Limelight.h>
+#import "RelativeTouchHandler.h"
+#import "Logger.h"
 
 static const int REFERENCE_WIDTH = 1280;
 static const int REFERENCE_HEIGHT = 720;
@@ -22,7 +23,7 @@ static const int REFERENCE_HEIGHT = 720;
     UIView* view;
 }
 
-- (id)initWithView:(StreamView*)view {
+- (instancetype)initWithView:(StreamView*)view {
     self = [self init];
     self->view = view;
     

@@ -6,14 +6,16 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "ControllerSupport.h"
-#import "Controller.h"
-
-#import "DataManager.h"
-#include "Limelight.h"
-
-@import GameController;
 @import AudioToolbox;
+@import GameController;
+@import GameStreamKit;
+
+#import "ControllerSupport.h"
+#import "HapticContext.h"
+#import "Controller.h"
+#import "DataManager.h"
+#import "StreamConfiguration.h"
+#import "Logger.h"
 
 static const double MOUSE_SPEED_DIVISOR = 1.25;
 
@@ -973,7 +975,7 @@ static const double MOUSE_SPEED_DIVISOR = 1.25;
     return _controllers.count;
 }
 
--(id) initWithConfig:(StreamConfiguration*)streamConfig delegate:(id<ControllerSupportDelegate>)delegate
+-(instancetype) initWithConfig:(StreamConfiguration*)streamConfig delegate:(id<ControllerSupportDelegate>)delegate
 {
     self = [super init];
     

@@ -10,6 +10,8 @@
 #import "Utils.h"
 #import "HttpResponse.h"
 #import "AppAssetRetriever.h"
+#import "TemporaryApp.h"
+#import "TemporaryHost.h"
 
 @implementation AppAssetManager {
     NSOperationQueue* _opQueue;
@@ -34,7 +36,7 @@ static const int MAX_REQUEST_COUNT = 4;
     return filePath;
 }
 
-- (id) initWithCallback:(id<AppAssetCallback>)callback {
+- (instancetype) initWithCallback:(id<AppAssetCallback>)callback {
     self = [super init];
     _callback = callback;
     _opQueue = [[NSOperationQueue alloc] init];

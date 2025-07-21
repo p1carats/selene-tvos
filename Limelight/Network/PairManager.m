@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import Dispatch;
+@import UIKit;
+
 #import "PairManager.h"
 #import "CertificateManager.h"
 #import "CryptoManager.h"
@@ -13,8 +16,8 @@
 #import "HttpResponse.h"
 #import "HttpRequest.h"
 #import "ServerInfoResponse.h"
-
-#include <dispatch/dispatch.h>
+#import "HttpManager.h"
+#import "Logger.h"
 
 @implementation PairManager {
     HttpManager* _httpManager;
@@ -22,7 +25,7 @@
     id<PairCallback> _callback;
 }
 
-- (id) initWithManager:(HttpManager*)httpManager clientCert:(NSData*)clientCert callback:(id<PairCallback>)callback {
+- (instancetype) initWithManager:(HttpManager*)httpManager clientCert:(NSData*)clientCert callback:(id<PairCallback>)callback {
     self = [super init];
     _httpManager = httpManager;
     _clientCert = clientCert;

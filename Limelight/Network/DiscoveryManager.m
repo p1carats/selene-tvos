@@ -6,16 +6,20 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import GameStreamKit;
+
 #import "DiscoveryManager.h"
 #import "CertificateManager.h"
 #import "HttpManager.h"
 #import "Utils.h"
 #import "DataManager.h"
 #import "DiscoveryWorker.h"
+#import "HttpRequest.h"
 #import "ServerInfoResponse.h"
 #import "IdManager.h"
+#import "TemporaryHost.h"
+#import "Logger.h"
 
-#include <Limelight.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -31,7 +35,7 @@
     BOOL shouldDiscover;
 }
 
-- (id)initWithHosts:(NSArray *)hosts andCallback:(id<DiscoveryCallback>)callback {
+- (instancetype)initWithHosts:(NSArray *)hosts andCallback:(id<DiscoveryCallback>)callback {
     self = [super init];
     
     // Using addHostToDiscovery ensures no duplicates

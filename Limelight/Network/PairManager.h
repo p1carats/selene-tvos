@@ -6,7 +6,9 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "HttpManager.h"
+@import Foundation;
+
+@class HttpManager;
 
 @protocol PairCallback <NSObject>
 
@@ -18,5 +20,5 @@
 @end
 
 @interface PairManager : NSOperation
-- (id) initWithManager:(HttpManager*)httpManager clientCert:(NSData*)clientCert callback:(id<PairCallback>)callback;
+- (instancetype) initWithManager:(HttpManager*)httpManager clientCert:(NSData*)clientCert callback:(id<PairCallback>)callback;
 @end

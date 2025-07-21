@@ -1,4 +1,5 @@
-#import <UIKit/UIKit.h>
+@import UIKit;
+
 #import "FloatBuffer.h"
 
 @implementation FloatBuffer {

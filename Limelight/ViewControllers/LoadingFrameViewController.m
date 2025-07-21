@@ -7,6 +7,7 @@
 //
 
 #import "LoadingFrameViewController.h"
+#import "Logger.h"
 
 @implementation LoadingFrameViewController {
     BOOL presented;

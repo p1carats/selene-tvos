@@ -1,13 +1,13 @@
 //
-//  ComputerScrollView.h
+//  AppCollectionView.h
 //  Moonlight
 //
 //  Created by Diego Waxemberg on 9/30/15.
 //  Copyright © 2015 Moonlight Stream. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
-@interface ComputerScrollView : UIScrollView
+@interface AppCollectionView : UICollectionView
 
 @end

@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "TemporaryApp.h"
+@import UIKit;
+
+@class TemporaryApp;
 
 @protocol AppCallback <NSObject>
 
@@ -18,7 +19,7 @@
 
 @interface UIAppView : UIButton
 
-- (id) initWithApp:(TemporaryApp*)app cache:(NSCache*)cache andCallback:(id<AppCallback>)callback;
+- (instancetype) initWithApp:(TemporaryApp*)app cache:(NSCache*)cache andCallback:(id<AppCallback>)callback;
 - (void) updateAppImage;
 
 @end

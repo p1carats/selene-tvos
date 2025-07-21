@@ -6,9 +6,15 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "ControllerSupport.h"
+@import Foundation;
+@import UIKit;
+
 #import "Selene-Swift.h"
-#import "StreamConfiguration.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+@class ControllerSupport;
+@class StreamConfiguration;
 
 @protocol UserInteractionDelegate <NSObject>
 
@@ -26,3 +32,5 @@
                   config:(StreamConfiguration*)streamConfig;
 
 @end
+
+NS_ASSUME_NONNULL_END

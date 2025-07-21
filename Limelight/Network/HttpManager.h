@@ -6,15 +6,18 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "HttpResponse.h"
-#import "HttpRequest.h"
-#import "StreamConfiguration.h"
-#import "TemporaryHost.h"
+@import Foundation;
+
+NS_ASSUME_NONNULL_BEGIN
+
+@class HttpRequest;
+@class StreamConfiguration;
+@class TemporaryHost;
 
 @interface HttpManager : NSObject <NSURLSessionDelegate>
 
-- (id) initWithHost:(TemporaryHost*) host;
-- (id) initWithAddress:(NSString*) hostAddressPortString httpsPort:(unsigned short) httpsPort serverCert:(NSData*) serverCert;
+- (instancetype) initWithHost:(TemporaryHost*) host;
+- (instancetype) initWithAddress:(NSString*) hostAddressPortString httpsPort:(unsigned short) httpsPort serverCert:(NSData*) serverCert;
 - (void) setServerCert:(NSData*) serverCert;
 - (NSURLRequest*) newPairRequest:(NSData*)salt clientCert:(NSData*)clientCert;
 - (NSURLRequest*) newUnpairRequest;
@@ -33,4 +36,5 @@
 
 @end
 
+NS_ASSUME_NONNULL_END
 

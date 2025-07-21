@@ -6,9 +6,12 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "TemporaryApp.h"
+@import Foundation;
+
 #import "HttpManager.h"
-#import "TemporaryHost.h"
+
+@class TemporaryApp;
+@class TemporaryHost;
 
 @protocol AppAssetCallback <NSObject>
 
@@ -18,7 +21,7 @@
 
 @interface AppAssetManager : NSObject
 
-- (id) initWithCallback:(id<AppAssetCallback>)callback;
+- (instancetype) initWithCallback:(id<AppAssetCallback>)callback;
 - (void) retrieveAssetsFromHost:(TemporaryHost*)host;
 - (void) stopRetrieving;
 + (NSString*) boxArtPathForApp:(TemporaryApp*)app;

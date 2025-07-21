@@ -6,6 +6,9 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
+@import UIKit;
+
 #import "AppAssetResponse.h"
 
 @implementation AppAssetResponse

@@ -6,7 +6,11 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
+
 #import "HttpResponse.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface HttpRequest : NSObject
 
@@ -20,3 +24,5 @@
 + (instancetype) requestWithUrlRequest:(NSURLRequest*)req;
 
 @end
+
+NS_ASSUME_NONNULL_END

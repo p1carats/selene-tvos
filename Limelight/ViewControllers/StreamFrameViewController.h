@@ -6,16 +6,16 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
-#import "Connection.h"
-#import "FloatBuffer.h"
-#import "GraphRenderer.h"
-#import "MetalViewController.h"
-#import "StreamConfiguration.h"
+@import GameController;
+@import UIKit;
+
+#import "ConnectionCallbacks.h"
+#import "ControllerSupport.h"
 #import "StreamView.h"
 
-#import <UIKit/UIKit.h>
-
-@import GameController;
+@class StreamConfiguration;
+@class MetalViewController;
+@class GraphRenderer;
 
 @interface StreamFrameViewController : GCEventViewController <ConnectionCallbacks, ControllerSupportDelegate, UserInteractionDelegate, UIScrollViewDelegate>
 

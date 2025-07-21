@@ -6,6 +6,10 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
+
+NS_ASSUME_NONNULL_BEGIN
+
 static NSString* TAG_STATUS_CODE = @"status_code";
 static NSString* TAG_STATUS_MESSAGE = @"status_message";
 
@@ -28,3 +32,5 @@ static NSString* TAG_STATUS_MESSAGE = @"status_message";
 - (BOOL) isStatusOk;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -12,7 +12,7 @@
 
 @implementation TemporaryHost
 
-- (id) init {
+- (instancetype) init {
     self = [super init];
     self.appList = [[NSMutableSet alloc] init];
     self.currentGame = @"0";
@@ -21,7 +21,7 @@
     return self;
 }
 
-- (id) initFromHost:(Host*)host {
+- (instancetype) initFromHost:(Host*)host {
     self = [self init];
     
     self.address = host.address;

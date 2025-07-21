@@ -6,7 +6,11 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
+
 #import "HttpResponse.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface AppListResponse : NSObject <Response>
 
@@ -15,3 +19,5 @@
 - (BOOL) isStatusOk;
 
 @end
+
+NS_ASSUME_NONNULL_END

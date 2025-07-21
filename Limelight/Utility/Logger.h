@@ -6,10 +6,13 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
+@import Dispatch;
+@import QuartzCore;
+
 #ifndef Limelight_Logger_h
 #define Limelight_Logger_h
 
-#import <dispatch/dispatch.h>
 #import <stdarg.h>
 
 #ifdef __cplusplus

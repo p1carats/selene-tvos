@@ -6,15 +6,22 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "StreamConfiguration.h"
-#import "Connection.h"
+@import Foundation;
+
+#import "ConnectionCallbacks.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+@class StreamConfiguration;
 
 @interface StreamManager : NSOperation
 
-- (id) initWithConfig:(StreamConfiguration*)config renderView:(UIView*)view connectionCallbacks:(id<ConnectionCallbacks>)callback;
+- (instancetype) initWithConfig:(StreamConfiguration*)config renderView:(UIView*)view connectionCallbacks:(id<ConnectionCallbacks>)callback;
 
 - (void) stopStream;
 
 - (NSString*) getStatsOverlayText;
 
 @end
+
+NS_ASSUME_NONNULL_END

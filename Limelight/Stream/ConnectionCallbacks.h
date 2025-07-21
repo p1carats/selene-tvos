@@ -8,6 +8,8 @@
 
 #import "Plot.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol ConnectionCallbacks <NSObject>
 
 - (void) connectionStarted;
@@ -25,3 +27,5 @@
 - (void) videoContentShown;
 
 @end
+
+NS_ASSUME_NONNULL_END

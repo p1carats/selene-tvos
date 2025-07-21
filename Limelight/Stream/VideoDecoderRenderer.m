@@ -6,18 +6,24 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-@import AVFoundation;
 @import VideoToolbox;
+@import GameStreamKit;
 
 #import "DataManager.h"
 #import "TemporarySettings.h"
 #import "VideoDecoderRenderer.h"
 #import "FrameQueue.h"
+#import "ConnectionCallbacks.h"
 #import "StreamView.h"
 #import "Plot.h"
+#import "Frame.h"
 #import "PlatformThreads.h"
 #import "MetalViewController.h"
+#import "FloatBuffer.h"
 #import "PlotManager.h"
+#import "Logger.h"
+
+@class StreamView;
 
 // Define for extra logging related to frame pacing
 #define DISPLAYLINK_VERBOSE
@@ -97,7 +103,7 @@
     }
 }
 
-- (id)initWithView:(StreamView*)view callbacks:(id<ConnectionCallbacks>)callbacks streamAspectRatio:(float)aspectRatio
+- (instancetype)initWithView:(StreamView*)view callbacks:(id<ConnectionCallbacks>)callbacks streamAspectRatio:(float)aspectRatio
 {
     self = [super init];
 

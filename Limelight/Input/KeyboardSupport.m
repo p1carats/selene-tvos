@@ -6,8 +6,9 @@
 //  Copyright © 2018 Moonlight Game Streaming Project. All rights reserved.
 //
 
+@import GameStreamKit;
+
 #import "KeyboardSupport.h"
-#include <Limelight.h>
 
 @implementation KeyboardSupport
 

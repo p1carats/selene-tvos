@@ -6,7 +6,10 @@
 //  Copyright © 2018 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
+@import UIKit;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface KeyboardSupport : NSObject
 
@@ -21,3 +24,5 @@ struct KeyEvent {
 + (struct KeyEvent) translateKeyEvent:(unichar) inputChar withModifierFlags:(UIKeyModifierFlags)modifierFlags;
 
 @end
+
+NS_ASSUME_NONNULL_END

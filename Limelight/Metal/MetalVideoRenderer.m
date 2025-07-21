@@ -1,13 +1,14 @@
-#import "MetalVideoRenderer.h"
-#import <CoreGraphics/CoreGraphics.h>
-#import <CoreVideo/CoreVideo.h>
-#import <Foundation/Foundation.h>
-#import <Metal/Metal.h>
-#import <MetalKit/MetalKit.h>
-#import <simd/simd.h>
-#import "PlotManager.h"
+@import CoreGraphics;
+@import CoreVideo;
+@import GameStreamKit;
+@import Metal;
+@import MetalKit;
+@import simd;
 
-#include <Limelight.h>
+#import "MetalVideoRenderer.h"
+#import "PlotManager.h"
+#import "Frame.h"
+#import "Logger.h"
 
 #define MAX_VIDEO_PLANES 3
 

@@ -6,11 +6,13 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
-#import "TemporaryHost.h"
+@import Foundation;
+
+@class TemporaryHost;
 
 @interface DiscoveryWorker : NSOperation
 
-- (id) initWithHost:(TemporaryHost*)host uniqueId:(NSString*)uniqueId;
+- (instancetype) initWithHost:(TemporaryHost*)host uniqueId:(NSString*)uniqueId;
 - (void) discoverHost;
 - (TemporaryHost*) getHost;
 

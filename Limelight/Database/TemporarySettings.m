@@ -10,7 +10,7 @@
 
 @implementation TemporarySettings
 
-- (id) initFromSettings:(Settings*)settings {
+- (instancetype) initFromSettings:(Settings*)settings {
     self = [self init];
     
     self.parent = settings;

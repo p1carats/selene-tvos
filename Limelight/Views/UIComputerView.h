@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "TemporaryHost.h"
+@import UIKit;
+
+@class TemporaryHost;
 
 @protocol HostCallback <NSObject>
 
@@ -19,7 +20,7 @@
 
 @interface UIComputerView : UIButton
 
-- (id) initWithComputer:(TemporaryHost*)host andCallback:(id<HostCallback>)callback;
-- (id) initForAddWithCallback:(id<HostCallback>)callback;
+- (instancetype) initWithComputer:(TemporaryHost*)host andCallback:(id<HostCallback>)callback;
+- (instancetype) initForAddWithCallback:(id<HostCallback>)callback;
 
 @end

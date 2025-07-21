@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
+
+NS_ASSUME_NONNULL_BEGIN
+
 @interface StreamConfiguration : NSObject
 
 @property NSString* host;
@@ -33,3 +37,5 @@
 @property NSData* serverCert;
 
 @end
+
+NS_ASSUME_NONNULL_END

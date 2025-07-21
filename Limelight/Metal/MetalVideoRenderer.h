@@ -1,8 +1,13 @@
-#import <QuartzCore/CAMetalLayer.h>
-#import <QuartzCore/QuartzCore.h>
-#import <simd/simd.h>
+@import Foundation;
+@import QuartzCore.CAMetalLayer;
+@import QuartzCore;
+@import simd;
+
 #import "ConnectionCallbacks.h"
-#import "Frame.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+@class Frame;
 
 @interface MetalVideoRenderer : NSObject
 
@@ -20,3 +25,5 @@
 - (void)shutdown;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -6,7 +6,9 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "TemporaryHost.h"
+@import Foundation;
+
+@class TemporaryHost;
 
 @protocol MDNSCallback <NSObject>
 
@@ -18,7 +20,7 @@
 
 @property id<MDNSCallback> callback;
 
-- (id) initWithCallback:(id<MDNSCallback>) callback;
+- (instancetype) initWithCallback:(id<MDNSCallback>) callback;
 - (void) searchForHosts;
 - (void) stopSearching;
 - (void) forgetHosts;

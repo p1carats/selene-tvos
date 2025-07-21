@@ -7,10 +7,11 @@
 //
 
 #import "TemporaryApp.h"
+#import "TemporaryHost.h"
 
 @implementation TemporaryApp
 
-- (id) initFromApp:(App*)app withTempHost:(TemporaryHost*)tempHost {
+- (instancetype) initFromApp:(App*)app withTempHost:(TemporaryHost*)tempHost {
     self = [self init];
     
     self.id = app.id;

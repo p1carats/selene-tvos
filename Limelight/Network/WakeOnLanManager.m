@@ -6,9 +6,13 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import CoreFoundation;
+
 #import "WakeOnLanManager.h"
 #import "Utils.h"
-#import <CoreFoundation/CoreFoundation.h>
+#import "TemporaryHost.h"
+#import "Logger.h"
+
 #import <net/if.h>
 #import <ifaddrs.h>
 #import <sys/socket.h>

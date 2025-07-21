@@ -6,8 +6,9 @@
 //  Copyright © 2020 Moonlight Game Streaming Project. All rights reserved.
 //
 
-@import CoreHaptics;
 @import GameController;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface HapticContext : NSObject
 
@@ -20,3 +21,5 @@
 +(HapticContext*) createContextForRightTrigger:(GCController*)gamepad;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -6,8 +6,12 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "StreamConfiguration.h"
-#import "Controller.h"
+@import Foundation;
+
+NS_ASSUME_NONNULL_BEGIN
+
+@class Controller;
+@class StreamConfiguration;
 
 @protocol ControllerSupportDelegate <NSObject>
 
@@ -17,7 +21,7 @@
 
 @interface ControllerSupport : NSObject
 
--(id) initWithConfig:(StreamConfiguration*)streamConfig delegate:(id<ControllerSupportDelegate>)delegate;
+-(instancetype) initWithConfig:(StreamConfiguration*)streamConfig delegate:(id<ControllerSupportDelegate>)delegate;
 -(void) connectionEstablished;
 
 -(void) cleanup;
@@ -45,3 +49,5 @@
 -(NSUInteger) getConnectedGamepadCount;
 
 @end
+
+NS_ASSUME_NONNULL_END

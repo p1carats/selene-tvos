@@ -6,12 +6,12 @@
 //  Copyright © 2022 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
+@import UIKit;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KeyboardInputField : UITextField
-
 
 @end
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

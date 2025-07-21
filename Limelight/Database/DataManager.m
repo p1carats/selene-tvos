@@ -7,8 +7,11 @@
 //
 
 #import "DataManager.h"
+#import "AppDelegate.h"
 #import "TemporaryApp.h"
 #import "TemporarySettings.h"
+#import "TemporaryHost.h"
+#import "Logger.h"
 
 @implementation DataManager {
     NSManagedObjectContext *_managedObjectContext;

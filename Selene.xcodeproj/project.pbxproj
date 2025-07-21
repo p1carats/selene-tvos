@@ -27,10 +27,6 @@
 		FB1A67CB213245EA00507771 /* ConnectionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1F5A06206436B20037755F /* ConnectionHelper.m */; };
 		FB1A67E32132498A00507771 /* Selene.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FB290D0519B2C406004C83CF /* Selene.xcdatamodeld */; };
 		FB1A67E821324DE300507771 /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB8946EA19F6AFB800339C8A /* libopus.a */; };
-		FB1A6819213284FB00507771 /* UIComputerView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBDE86DF19F7A837001C18A8 /* UIComputerView.m */; };
-		FB1A681A213284FB00507771 /* UIAppView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBDE86E519F82297001C18A8 /* UIAppView.m */; };
-		FB1A681B213284FB00507771 /* ComputerScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1D59961BBCCB6400F482CA /* ComputerScrollView.m */; };
-		FB1A681C213284FB00507771 /* AppCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1D59991BBCCD7E00F482CA /* AppCollectionView.m */; };
 		FB1A681E21328A1B00507771 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB290D0819B2C406004C83CF /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -48,15 +44,10 @@
 		DC1F5A05206436B10037755F /* ConnectionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionHelper.h; sourceTree = "<group>"; };
 		DC1F5A06206436B20037755F /* ConnectionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionHelper.m; sourceTree = "<group>"; };
 		FB1A67532132419700507771 /* Selene.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Selene.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FB1D59951BBCCB6400F482CA /* ComputerScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComputerScrollView.h; sourceTree = "<group>"; };
-		FB1D59961BBCCB6400F482CA /* ComputerScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComputerScrollView.m; sourceTree = "<group>"; };
-		FB1D59981BBCCD7E00F482CA /* AppCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCollectionView.h; sourceTree = "<group>"; };
-		FB1D59991BBCCD7E00F482CA /* AppCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCollectionView.m; sourceTree = "<group>"; };
 		FB290CF119B2C406004C83CF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FB290CF319B2C406004C83CF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		FB290CF519B2C406004C83CF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FB290CF719B2C406004C83CF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		FB290D0119B2C406004C83CF /* Limelight-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Limelight-Prefix.pch"; sourceTree = "<group>"; };
 		FB290D0219B2C406004C83CF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		FB290D0319B2C406004C83CF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		FB290D0819B2C406004C83CF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -92,10 +83,6 @@
 		FB9AFD3F1A7E127D00872C98 /* AppListResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppListResponse.m; sourceTree = "<group>"; };
 		FBD3494119FC9C04002D2A60 /* AppAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppAssetManager.h; sourceTree = "<group>"; };
 		FBD3494219FC9C04002D2A60 /* AppAssetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppAssetManager.m; sourceTree = "<group>"; };
-		FBDE86DE19F7A837001C18A8 /* UIComputerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIComputerView.h; sourceTree = "<group>"; };
-		FBDE86DF19F7A837001C18A8 /* UIComputerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIComputerView.m; sourceTree = "<group>"; };
-		FBDE86E419F82297001C18A8 /* UIAppView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAppView.h; sourceTree = "<group>"; };
-		FBDE86E519F82297001C18A8 /* UIAppView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAppView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -225,6 +212,11 @@
 			path = Database;
 			sourceTree = "<group>";
 		};
+		8FD33E8F2E2D90C8008D0A29 /* Views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Views;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -293,30 +285,14 @@
 				8F2FCAA52E2D399500F8282B /* Stats */,
 				8F2FCACB2E2D39A500F8282B /* Stream */,
 				8F2FCAE02E2D39A800F8282B /* Utility */,
+				8FD33E8F2E2D90C8008D0A29 /* Views */,
 				8F2FCAEF2E2D39AC00F8282B /* ViewControllers */,
-				FB290CFA19B2C406004C83CF /* Supporting Files */,
 				FB290D0219B2C406004C83CF /* AppDelegate.h */,
 				FB290D0319B2C406004C83CF /* AppDelegate.m */,
-				FBDE86DE19F7A837001C18A8 /* UIComputerView.h */,
-				FBDE86DF19F7A837001C18A8 /* UIComputerView.m */,
-				FBDE86E419F82297001C18A8 /* UIAppView.h */,
-				FBDE86E519F82297001C18A8 /* UIAppView.m */,
 				FB290D0819B2C406004C83CF /* Images.xcassets */,
 				FB290D0519B2C406004C83CF /* Selene.xcdatamodeld */,
-				FB1D59951BBCCB6400F482CA /* ComputerScrollView.h */,
-				FB1D59961BBCCB6400F482CA /* ComputerScrollView.m */,
-				FB1D59981BBCCD7E00F482CA /* AppCollectionView.h */,
-				FB1D59991BBCCD7E00F482CA /* AppCollectionView.m */,
 			);
 			path = Limelight;
-			sourceTree = "<group>";
-		};
-		FB290CFA19B2C406004C83CF /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				FB290D0119B2C406004C83CF /* Limelight-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		FB89460E19F646E200339C8A /* Network */ = {
@@ -442,6 +418,7 @@
 				8F2FCB062E2D49B600F8282B /* Input */,
 				8F2FCB152E2D49BA00F8282B /* Selene */,
 				8F4908052E2D4C12008B1D7D /* Database */,
+				8FD33E8F2E2D90C8008D0A29 /* Views */,
 			);
 			name = Selene;
 			packageProductDependencies = (
@@ -517,10 +494,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9865DC36213287F30005B9B9 /* AppDelegate.m in Sources */,
-				FB1A6819213284FB00507771 /* UIComputerView.m in Sources */,
-				FB1A681A213284FB00507771 /* UIAppView.m in Sources */,
-				FB1A681B213284FB00507771 /* ComputerScrollView.m in Sources */,
-				FB1A681C213284FB00507771 /* AppCollectionView.m in Sources */,
 				FB1A67E32132498A00507771 /* Selene.xcdatamodeld in Sources */,
 				FB1A67C3213245EA00507771 /* AppAssetManager.m in Sources */,
 				FB1A67C5213245EA00507771 /* AppAssetRetriever.m in Sources */,
@@ -557,8 +530,6 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Limelight/Limelight-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/GameStreamKit/Sources/moonlight-common-c/**",
 					"$(SDKROOT)/usr/include/libxml2/**",
@@ -610,8 +581,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Limelight/Limelight-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/GameStreamKit/Sources/moonlight-common-c/**",
 					"$(SDKROOT)/usr/include/libxml2/**",

@@ -6,7 +6,8 @@
 //  Copyright © 2018 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+
 #import "AppDelegate.h"
 
 #define SDL_MAIN_HANDLED

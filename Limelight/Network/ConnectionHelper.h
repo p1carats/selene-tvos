@@ -6,16 +6,14 @@
 //  Copyright © 2018 Felix Kratz. All rights reserved.
 //
 
-#import "AppListResponse.h"
-#import "TemporaryHost.h"
+@import Foundation;
 
-#ifndef ConnectionHelper_h
-#define ConnectionHelper_h
+#import "AppListResponse.h"
+
+@class TemporaryHost;
 
 @interface ConnectionHelper : NSObject
 
 +(AppListResponse*) getAppListForHost:(TemporaryHost*)host;
 
 @end
-
-#endif /* ConnectionHelper_h */

@@ -6,17 +6,19 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import GameStreamKit;
+
 #import "HttpManager.h"
 #import "HttpRequest.h"
 #import "CertificateManager.h"
 #import "CertificateSecret.h"
 #import "TemporaryApp.h"
+#import "StreamConfiguration.h"
+#import "TemporaryHost.h"
 #import "ServerInfoResponse.h"
+#import "Logger.h"
 
 #include <libxml2/libxml/xmlreader.h>
-#include <string.h>
-
-#include <Limelight.h>
 
 #define SHORT_TIMEOUT_SEC 2
 #define NORMAL_TIMEOUT_SEC 5
@@ -45,13 +47,13 @@
     _serverCert = serverCert;
 }
 
-- (id) initWithHost:(TemporaryHost*) host {
+- (instancetype) initWithHost:(TemporaryHost*) host {
     self = [self initWithAddress:host.activeAddress httpsPort:host.httpsPort serverCert:host.serverCert];
     _host = host;
     return self;
 }
 
-- (id) initWithAddress:(NSString*) hostAddressPortString httpsPort:(unsigned short)httpsPort serverCert:(NSData*) serverCert {
+- (instancetype) initWithAddress:(NSString*) hostAddressPortString httpsPort:(unsigned short)httpsPort serverCert:(NSData*) serverCert {
     self = [super init];
     // Use the same UID for all Moonlight clients to allow them
     // quit games started on another Moonlight client.

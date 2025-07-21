@@ -6,20 +6,22 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
 @import AVFoundation;
+@import UIKit;
 
-#import "ConnectionCallbacks.h"
-#import "FrameQueue.h"
 #import "Plot.h"
 
-#include "Limelight.h"
+@class Frame;
+
+@protocol ConnectionCallbacks;
 
 @interface VideoDecoderRenderer : NSObject
 
 @property (atomic, readonly) PlotMetrics decodeMetrics;
 @property (atomic, readonly) PlotMetrics frameQueueMetrics;
 
-- (id)initWithView:(UIView*)view callbacks:(id<ConnectionCallbacks>)callbacks streamAspectRatio:(float)aspectRatio;
+- (instancetype)initWithView:(UIView*)view callbacks:(id<ConnectionCallbacks>)callbacks streamAspectRatio:(float)aspectRatio;
 
 - (void)setupWithVideoFormat:(int)videoFormat width:(int)videoWidth height:(int)videoHeight frameRate:(int)frameRate;
 - (void)renderFrame:(Frame *)frame atTime:(CMTime)targetTime;

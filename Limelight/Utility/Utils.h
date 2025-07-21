@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
+
 @interface Utils : NSObject
 
 typedef NS_ENUM(int, PairState) {

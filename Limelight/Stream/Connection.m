@@ -6,16 +6,21 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import GameStreamKit;
+@import VideoToolbox;
+@import UIKit;
+
 #import "Connection.h"
 #import "Plot.h"
 #import "Utils.h"
-
-#import <VideoToolbox/VideoToolbox.h>
+#import "Logger.h"
+#import "BandwidthTracker.h"
+#import "StreamConfiguration.h"
+#import "VideoDecoderRenderer.h"
 
 #define SDL_MAIN_HANDLED
 #import <SDL.h>
 
-#include "Limelight.h"
 #include "opus_multistream.h"
 
 @implementation Connection {
@@ -393,7 +398,7 @@ void ClSetControllerLED(uint16_t controllerNumber, uint8_t r, uint8_t g, uint8_t
     });
 }
 
--(id) initWithConfig:(StreamConfiguration*)config renderer:(VideoDecoderRenderer*)myRenderer connectionCallbacks:(id<ConnectionCallbacks>)callbacks
+-(instancetype) initWithConfig:(StreamConfiguration*)config renderer:(VideoDecoderRenderer*)myRenderer connectionCallbacks:(id<ConnectionCallbacks>)callbacks
 {
     self = [super init];
 

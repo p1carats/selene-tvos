@@ -6,19 +6,23 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import GameStreamKit;
+
+#import "Connection.h"
+#import "VideoDecoderRenderer.h"
 #import "StreamManager.h"
+#import "BandwidthTracker.h"
 #import "CertificateManager.h"
+#import "StreamConfiguration.h"
 #import "HttpManager.h"
 #import "Plot.h"
 #import "Utils.h"
-
 #import "StreamView.h"
 #import "ServerInfoResponse.h"
 #import "HttpResponse.h"
 #import "HttpRequest.h"
 #import "IdManager.h"
-
-#include <Limelight.h>
+#import "Logger.h"
 
 @implementation StreamManager {
     StreamConfiguration* _config;
@@ -28,7 +32,7 @@
     Connection* _connection;
 }
 
-- (id) initWithConfig:(StreamConfiguration*)config renderView:(UIView*)view connectionCallbacks:(id<ConnectionCallbacks>)callbacks {
+- (instancetype) initWithConfig:(StreamConfiguration*)config renderView:(UIView*)view connectionCallbacks:(id<ConnectionCallbacks>)callbacks {
     self = [super init];
     _config = config;
     _renderView = view;

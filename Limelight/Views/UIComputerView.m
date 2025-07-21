@@ -7,6 +7,7 @@
 //
 
 #import "UIComputerView.h"
+#import "TemporaryHost.h"
 
 @implementation UIComputerView {
     TemporaryHost* _host;
@@ -75,7 +76,7 @@ static const int LABEL_DY = 40;
     _hostOverlay.layer.opacity = 1.0f;
 }
 
-- (id) initForAddWithCallback:(id<HostCallback>)callback {
+- (instancetype) initForAddWithCallback:(id<HostCallback>)callback {
     self = [self init];
     _callback = callback;
     
@@ -91,7 +92,7 @@ static const int LABEL_DY = 40;
     return self;
 }
 
-- (id) initWithComputer:(TemporaryHost*)host andCallback:(id<HostCallback>)callback {
+- (instancetype) initWithComputer:(TemporaryHost*)host andCallback:(id<HostCallback>)callback {
     self = [self init];
     _host = host;
     _callback = callback;

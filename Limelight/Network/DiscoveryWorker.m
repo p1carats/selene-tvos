@@ -11,7 +11,9 @@
 #import "HttpManager.h"
 #import "ServerInfoResponse.h"
 #import "HttpRequest.h"
+#import "TemporaryHost.h"
 #import "DataManager.h"
+#import "Logger.h"
 
 @implementation DiscoveryWorker {
     TemporaryHost* _host;
@@ -20,7 +22,7 @@
 
 static const float POLL_RATE = 2.0f; // Poll every 2 seconds
 
-- (id) initWithHost:(TemporaryHost*)host uniqueId:(NSString*)uniqueId {
+- (instancetype) initWithHost:(TemporaryHost*)host uniqueId:(NSString*)uniqueId {
     self = [super init];
     _host = host;
     _uniqueId = uniqueId;

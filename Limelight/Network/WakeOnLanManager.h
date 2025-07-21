@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
-#import "TemporaryHost.h"
+@import Foundation;
+
+@class TemporaryHost;
 
 typedef enum {
     WAKE_ERROR   = -1,

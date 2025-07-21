@@ -6,17 +6,20 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
-#import "ConnectionCallbacks.h"
-#import "VideoDecoderRenderer.h"
-#import "StreamConfiguration.h"
-#import "BandwidthTracker.h"
+@import Foundation;
+
 #import "Plot.h"
+#import "ConnectionCallbacks.h"
+
+@class BandwidthTracker;
+@class StreamConfiguration;
+@class VideoDecoderRenderer;
 
 #define CONN_TEST_SERVER "ios.conntest.moonlight-stream.org"
 
 @interface Connection : NSOperation <NSStreamDelegate>
 
--(id) initWithConfig:(StreamConfiguration*)config renderer:(VideoDecoderRenderer*)myRenderer connectionCallbacks:(id<ConnectionCallbacks>)callbacks;
+-(instancetype) initWithConfig:(StreamConfiguration*)config renderer:(VideoDecoderRenderer*)myRenderer connectionCallbacks:(id<ConnectionCallbacks>)callbacks;
 -(void) terminate;
 -(void) main;
 -(BandwidthTracker *) getBwTracker;

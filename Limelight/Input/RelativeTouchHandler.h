@@ -6,16 +6,19 @@
 //  Copyright © 2020 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import "StreamView.h"
+@import Foundation;
+@import UIKit;
 
 NS_ASSUME_NONNULL_BEGIN
+
+@class StreamView;
 
 @interface RelativeTouchHandler : UIResponder
 
 @property (nonatomic) UIGestureRecognizer* remotePressRecognizer;
 @property (nonatomic) UIGestureRecognizer* remoteLongPressRecognizer;
 
--(id)initWithView:(StreamView*)view;
+-(instancetype)initWithView:(StreamView*)view;
 
 @end
 

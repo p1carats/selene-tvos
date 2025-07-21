@@ -6,26 +6,29 @@
 //  Copyright © 2015 Moonlight Stream. All rights reserved.
 //
 
-#import "TemporaryHost.h"
+@import Foundation;
+
 #import "App+CoreDataClass.h"
-
-@interface TemporaryApp : NSObject
-
-@property (nullable, nonatomic, retain) NSString *id;
-@property (nullable, nonatomic, retain) NSString *name;
-@property (nullable, nonatomic, retain) NSString *installPath;
-@property (nonatomic)                   BOOL hdrSupported;
-@property (nonatomic)                   BOOL hidden;
-@property (nullable, nonatomic, retain) TemporaryHost *host;
 
 NS_ASSUME_NONNULL_BEGIN
 
-- (id) initFromApp:(App*)app withTempHost:(TemporaryHost*)tempHost;
+@class TemporaryHost;
+
+@interface TemporaryApp : NSObject
+
+@property (nullable, nonatomic, strong) NSString *id;
+@property (nullable, nonatomic, strong) NSString *name;
+@property (nullable, nonatomic, strong) NSString *installPath;
+@property (nonatomic) BOOL hdrSupported;
+@property (nonatomic) BOOL hidden;
+@property (nullable, nonatomic, strong) TemporaryHost *host;
+
+- (instancetype) initFromApp:(App*)app withTempHost:(TemporaryHost*)tempHost;
 
 - (NSComparisonResult)compareName:(TemporaryApp *)other;
 
 - (void) propagateChangesToParent:(App*)parent withHost:(Host*)host;
 
-NS_ASSUME_NONNULL_END
-
 @end
+
+NS_ASSUME_NONNULL_END

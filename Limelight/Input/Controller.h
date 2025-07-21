@@ -6,10 +6,12 @@
 //  Copyright © 2019 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import "HapticContext.h"
-
+@import Foundation;
 @import GameController;
-@import CoreHaptics;
+
+NS_ASSUME_NONNULL_BEGIN
+
+@class HapticContext;
 
 @interface Controller : NSObject
 
@@ -18,17 +20,17 @@ typedef struct {
     float lastY;
 } controller_touch_context_t;
 
-@property (nullable, nonatomic, retain) GCController* gamepad;
-@property (nonatomic)                   int playerIndex;
-@property (nonatomic)                   int lastButtonFlags;
-@property (nonatomic)                   int emulatingButtonFlags;
-@property (nonatomic)                   int supportedEmulationFlags;
-@property (nonatomic)                   unsigned char lastLeftTrigger;
-@property (nonatomic)                   unsigned char lastRightTrigger;
-@property (nonatomic)                   short lastLeftStickX;
-@property (nonatomic)                   short lastLeftStickY;
-@property (nonatomic)                   short lastRightStickX;
-@property (nonatomic)                   short lastRightStickY;
+@property (nullable, nonatomic, strong) GCController* gamepad;
+@property (nonatomic) int playerIndex;
+@property (nonatomic) int lastButtonFlags;
+@property (nonatomic) int emulatingButtonFlags;
+@property (nonatomic) int supportedEmulationFlags;
+@property (nonatomic) unsigned char lastLeftTrigger;
+@property (nonatomic) unsigned char lastRightTrigger;
+@property (nonatomic) short lastLeftStickX;
+@property (nonatomic) short lastLeftStickY;
+@property (nonatomic) short lastRightStickX;
+@property (nonatomic) short lastRightStickY;
 
 @property (nonatomic)                   controller_touch_context_t primaryTouch;
 @property (nonatomic)                   controller_touch_context_t secondaryTouch;
@@ -51,3 +53,5 @@ typedef struct {
 @property (nonatomic)                   Controller* _Nullable mergedWithController;
 
 @end
+
+NS_ASSUME_NONNULL_END

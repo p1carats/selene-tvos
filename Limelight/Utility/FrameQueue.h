@@ -1,10 +1,9 @@
-#import <Foundation/Foundation.h>
-#import <VideoToolbox/VideoToolbox.h>
-
-#import "Frame.h"
-#import "FloatBuffer.h"
+@import Foundation;
 
 NS_ASSUME_NONNULL_BEGIN
+
+@class Frame;
+@class FloatBuffer;
 
 @interface FrameQueue : NSObject
 

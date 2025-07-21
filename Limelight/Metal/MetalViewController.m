@@ -9,6 +9,7 @@ The implementation of the cross-platform game view controller.
 #import "FrameQueue.h"
 #import "GraphRenderer.h"
 #import "MetalVideoRenderer.h"
+#import "Logger.h"
 
 @implementation MetalViewController {
     FrameQueue *_frameQueue;

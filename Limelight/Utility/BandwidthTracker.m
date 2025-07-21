@@ -1,5 +1,7 @@
+@import QuartzCore; // for CACurrentMediaTime()
+
 #import "BandwidthTracker.h"
-#import <QuartzCore/QuartzCore.h> // for CACurrentMediaTime()
+#import <QuartzCore/QuartzCore.h>
 
 // A single time‐bucket: start time (ms) + bytes counted.
 typedef struct {

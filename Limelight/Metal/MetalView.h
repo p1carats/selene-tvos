@@ -1,11 +1,12 @@
-#import <Metal/Metal.h>
-#import <QuartzCore/CAMetalDisplayLink.h>
-#import <QuartzCore/CAMetalLayer.h>
-#import "MetalConfig.h"
+@import Foundation;
+@import Metal;
+@import QuartzCore.CAMetalDisplayLink;
+@import QuartzCore.CAMetalLayer;
+@import UIKit;
 
-#import <UIKit/UIKit.h>
+NS_ASSUME_NONNULL_BEGIN
 
-// The protocol to provide resize and redraw callbacks to a delegate.
+// The protocol to provide resize and redraw callbacks to a delegate
 @protocol MetalViewDelegate <NSObject>
 
 - (void)drawableResize:(CGSize)size;
@@ -15,7 +16,7 @@
 
 @end
 
-// The Metal game view base class.
+// The Metal game view base class
 @interface MetalView : UIView <CALayerDelegate>
 
 @property (nonatomic, nonnull, readonly) CAMetalLayer *metalLayer;
@@ -25,8 +26,8 @@
 
 - (void)initCommon;
 - (void)shutdown;
-#if AUTOMATICALLY_RESIZE
 - (void)resizeDrawable:(CGFloat)scaleFactor;
-#endif
 
 @end
+
+NS_ASSUME_NONNULL_END

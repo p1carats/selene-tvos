@@ -6,12 +6,13 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import GameStreamKit;
+
 #import "MDNSManager.h"
 #import "TemporaryHost.h"
+#import "Logger.h"
 
 #include <arpa/inet.h>
-
-#include <Limelight.h>
 
 @implementation MDNSManager {
     NSNetServiceBrowser* mDNSBrowser;
@@ -22,7 +23,7 @@
 
 static NSString* NV_SERVICE_TYPE = @"_nvstream._tcp";
 
-- (id) initWithCallback:(id<MDNSCallback>)callback {
+- (instancetype) initWithCallback:(id<MDNSCallback>)callback {
     self = [super init];
     
     self.callback = callback;

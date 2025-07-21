@@ -6,7 +6,10 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import CoreData;
+
 #import "AppDelegate.h"
+#import "Logger.h"
 
 @implementation AppDelegate
 

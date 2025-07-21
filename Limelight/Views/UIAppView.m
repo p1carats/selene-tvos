@@ -8,6 +8,8 @@
 
 #import "UIAppView.h"
 #import "AppAssetManager.h"
+#import "TemporaryApp.h"
+#import "TemporaryHost.h"
 
 static const float REFRESH_CYCLE = 1.0f;
 
@@ -22,7 +24,7 @@ static const float REFRESH_CYCLE = 1.0f;
 
 static UIImage* noImage;
 
-- (id) initWithApp:(TemporaryApp*)app cache:(NSCache*)cache andCallback:(id<AppCallback>)callback {
+- (instancetype) initWithApp:(TemporaryApp*)app cache:(NSCache*)cache andCallback:(id<AppCallback>)callback {
     self = [super init];
     _app = app;
     _callback = callback;

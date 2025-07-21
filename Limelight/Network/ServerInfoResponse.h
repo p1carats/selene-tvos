@@ -6,8 +6,9 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
+
 #import "HttpResponse.h"
-#import "TemporaryHost.h"
 
 #define TAG_HOSTNAME @"hostname"
 #define TAG_EXTERNAL_IP @"ExternalIP"
@@ -18,9 +19,11 @@
 #define TAG_PAIR_STATUS @"PairStatus"
 #define TAG_STATE @"state"
 #define TAG_CURRENT_GAME @"currentgame"
+#define TAG_EXTERNAL_PORT @"ExternalPort" // Sunshine extension
 
-// Sunshine extension
-#define TAG_EXTERNAL_PORT @"ExternalPort"
+NS_ASSUME_NONNULL_BEGIN
+
+@class TemporaryHost;
 
 @interface ServerInfoResponse : HttpResponse <Response>
 
@@ -29,3 +32,4 @@
 
 @end
 
+NS_ASSUME_NONNULL_END

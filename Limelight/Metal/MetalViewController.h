@@ -1,10 +1,11 @@
-#import <Metal/Metal.h>
-#import "FrameQueue.h"
+@import Foundation;
+@import Metal;
+@import UIKit;
+
 #import "GraphRenderer.h"
-#import "MetalVideoRenderer.h"
 #import "MetalView.h"
 
-#import <UIKit/UIKit.h>
+NS_ASSUME_NONNULL_BEGIN
 
 @interface MetalViewController : UIViewController <MetalViewDelegate>
 
@@ -16,3 +17,5 @@
                        metricsHandler:(nonnull MetricsHandler)metricsHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

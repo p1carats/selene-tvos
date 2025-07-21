@@ -9,6 +9,8 @@
 #import "AppListResponse.h"
 #import "TemporaryApp.h"
 #import "DataManager.h"
+#import "Logger.h"
+
 #import <libxml2/libxml/xmlreader.h>
 
 @implementation AppListResponse {
