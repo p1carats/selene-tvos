@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8F2FCAF62E2D3B5B00F8282B /* GameStreamKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8F2FCAF52E2D3B5B00F8282B /* GameStreamKit */; };
-		98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEA2791278300E43572 /* libSDL2.a */; };
 		9865DC36213287F30005B9B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB290D0319B2C406004C83CF /* AppDelegate.m */; };
 		F74BEFA42C1A80E400224667 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = F74BEFA32C1A80E400224667 /* OpenSSL */; };
 		FB1A67B1213245D500507771 /* HttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89461019F646E200339C8A /* HttpManager.m */; };
@@ -32,7 +31,6 @@
 
 /* Begin PBXFileReference section */
 		8F4907FA2E2D4ABA008B1D7D /* Selene.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Selene.xcdatamodel; sourceTree = "<group>"; };
-		98181BEA2791278300E43572 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL2/lib/tvOS/libSDL2.a; sourceTree = "<group>"; };
 		9890CF6A203B7EE1006C4B06 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		A13F90582DFC3C5C0010BB0F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A13F905C2DFC3C710010BB0F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/AppleTVOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -226,7 +224,6 @@
 			files = (
 				F74BEFA42C1A80E400224667 /* OpenSSL in Frameworks */,
 				FB1A67E821324DE300507771 /* libopus.a in Frameworks */,
-				98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */,
 				8F2FCAF62E2D3B5B00F8282B /* GameStreamKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -261,7 +258,6 @@
 				A1EBD2FA2DD94CFC00F3BF4B /* Metal.framework */,
 				A1EBD2F62DD94CE900F3BF4B /* MetalKit.framework */,
 				A1EBD2F92DD94CFC00F3BF4B /* MetalKit.framework */,
-				98181BEA2791278300E43572 /* libSDL2.a */,
 				9890CF6A203B7EE1006C4B06 /* libxml2.tbd */,
 				FB4679001A57048000377732 /* CoreFoundation.framework */,
 				FB89468F19F6AFB800339C8A /* libs */,
@@ -545,12 +541,10 @@
 				"LIBRARY_SEARCH_PATHS[sdk=appletvos*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/opus/lib/tvOS",
-					"$(PROJECT_DIR)/libs/SDL2/lib/tvOS",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=appletvsimulator*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/opus/lib/tvOS-Sim",
-					"$(PROJECT_DIR)/libs/SDL2/lib/tvOS-Sim",
 				);
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.noebarlet.Selene;
@@ -596,12 +590,10 @@
 				"LIBRARY_SEARCH_PATHS[sdk=appletvos*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/opus/lib/tvOS",
-					"$(PROJECT_DIR)/libs/SDL2/lib/tvOS",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=appletvsimulator*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/opus/lib/tvOS-Sim",
-					"$(PROJECT_DIR)/libs/SDL2/lib/tvOS-Sim",
 				);
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.noebarlet.Selene;
