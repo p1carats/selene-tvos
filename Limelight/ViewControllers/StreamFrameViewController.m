@@ -19,7 +19,6 @@
 #import "StreamConfiguration.h"
 #import "PaddedLabel.h"
 #import "SceneDelegate.h"
-#import "RelativeTouchHandler.h"
 #import "Logger.h"
 #import "Connection.h"
 
@@ -51,7 +50,7 @@
     UITapGestureRecognizer *_menuTapGestureRecognizer;
     UITapGestureRecognizer *_menuDoubleTapGestureRecognizer;
     UITapGestureRecognizer *_playPauseTapGestureRecognizer;
-    UITapGestureRecognizer *_remoteDoubleSelectRecognizer;
+    UITapGestureRecognizer *_playPauseDoubleTapGestureRecognizer;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -67,17 +66,17 @@
 }
 
 - (void)controllerPlayPauseButtonPressed:(id)sender {
-    Log(LOG_I, @"Play/Pause button pressed -- backing out of stream");
-    [self returnToMainFrame];
-}
-
-- (void)remoteSelectButtonDoublePressed:(id)sender {
-    Log(LOG_I, @"Select button double-tapped -- toggling stats");
+    Log(LOG_I, @"Play/Pause button pressed -- toggling stats");
     if (!self->_statsUpdateTimer) {
         [self showStats];
     } else {
         [self hideStats];
     }
+}
+
+- (void)controllerPlayPauseButtonDoublePressed:(id)sender {
+    Log(LOG_I, @"Play/Pause button double-tapped -- backing out of stream");
+    [self returnToMainFrame];
 }
 
 - (void)viewDidLoad
@@ -108,41 +107,37 @@
     _controllerSupport = [[ControllerSupport alloc] initWithConfig:self.streamConfig delegate:self];
     _inactivityTimer = nil;
     
-    if (!_menuTapGestureRecognizer || !_menuDoubleTapGestureRecognizer || !_playPauseTapGestureRecognizer || !_remoteDoubleSelectRecognizer) {
+    if (!_menuTapGestureRecognizer || !_menuDoubleTapGestureRecognizer || !_playPauseTapGestureRecognizer || !_playPauseDoubleTapGestureRecognizer) {
         _menuTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(controllerPauseButtonPressed:)];
         _menuTapGestureRecognizer.allowedPressTypes = @[@(UIPressTypeMenu)];
 
         _playPauseTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(controllerPlayPauseButtonPressed:)];
         _playPauseTapGestureRecognizer.allowedPressTypes = @[@(UIPressTypePlayPause)];
         
+        _playPauseDoubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(controllerPlayPauseButtonDoublePressed:)];
+        _playPauseDoubleTapGestureRecognizer.numberOfTapsRequired = 2;
+        _playPauseDoubleTapGestureRecognizer.allowedPressTypes = @[@(UIPressTypePlayPause)];
+        [_playPauseTapGestureRecognizer requireGestureRecognizerToFail:_playPauseDoubleTapGestureRecognizer];
+        
         _menuDoubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(controllerPauseButtonDoublePressed:)];
         _menuDoubleTapGestureRecognizer.numberOfTapsRequired = 2;
         [_menuTapGestureRecognizer requireGestureRecognizerToFail:_menuDoubleTapGestureRecognizer];
         _menuDoubleTapGestureRecognizer.allowedPressTypes = @[@(UIPressTypeMenu)];
-
-        _remoteDoubleSelectRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(remoteSelectButtonDoublePressed:)];
-        _remoteDoubleSelectRecognizer.numberOfTapsRequired = 2;
-        _remoteDoubleSelectRecognizer.allowedPressTypes = @[@(UIPressTypeSelect)];
     }
     
     [self.view addGestureRecognizer:_menuTapGestureRecognizer];
     [self.view addGestureRecognizer:_menuDoubleTapGestureRecognizer];
     [self.view addGestureRecognizer:_playPauseTapGestureRecognizer];
-    [self.view addGestureRecognizer:_remoteDoubleSelectRecognizer];
+    [self.view addGestureRecognizer:_playPauseDoubleTapGestureRecognizer];
 
     _streamView = [[StreamView alloc] initWithFrame:self.view.frame];
     [_streamView setupStreamView:_controllerSupport
              interactionDelegate:self
                           config:self.streamConfig];
-    
-    // we need to tell the other remote handler in RelativeTouchHandler to wait for our double-select
-    RelativeTouchHandler *touchHandler = (RelativeTouchHandler *)[_streamView touchHandler];
-    UIGestureRecognizer *remotePressRecognizer = [touchHandler remotePressRecognizer];
-    [remotePressRecognizer requireGestureRecognizerToFail:_remoteDoubleSelectRecognizer];
 
     _tipLabel = [[UILabel alloc] init];
     [_tipLabel setUserInteractionEnabled:NO];
-    [_tipLabel setText:@"Tip: Tap the Play/Pause button on the Apple TV Remote to disconnect from your PC. Double-click Select for stats."];
+    [_tipLabel setText:@"Tip: Tap the Play/Pause button on the Apple TV Remote for stats. Double-click to disconnect from your PC."];
     
     [_tipLabel sizeToFit];
     _tipLabel.textColor = [UIColor whiteColor];

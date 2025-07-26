@@ -15,6 +15,7 @@
 #import "KeyboardInputField.h"
 #import "StreamConfiguration.h"
 #import "Logger.h"
+#import "RemoteTouchHandler.h"
 
 static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
 
@@ -65,6 +66,9 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     if (settings.btMouseSupport) {
         [x1mouse start];
     }
+    
+    // Initialize the RemoteTouchHandler for Apple TV Remote touch input with actual stream dimensions
+    self.touchHandler = [[RemoteTouchHandler alloc] initWithView:self streamWidth:streamConfig.width streamHeight:streamConfig.height];
     
     // This is critical to ensure keyboard events are delivered to this
     // StreamView and not our parent UIView, especially on tvOS.
@@ -144,48 +148,6 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     // the region because we won't always get one exactly when the mouse leaves the region.
     return CGPointMake(MIN(MAX(x, videoOrigin.x), videoOrigin.x + videoSize.width) - videoOrigin.x,
                        MIN(MAX(y, videoOrigin.y), videoOrigin.y + videoSize.height) - videoOrigin.y);
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    if ([self handleMouseButtonEvent:BUTTON_ACTION_PRESS
-                          forTouches:touches
-                           withEvent:event]) {
-        // If it's a mouse event, we're done
-        return;
-    }
-    
-    Log(LOG_D, @"Touch down");
-    
-    // Notify of user interaction and start expiration timer
-    [self startInteractionTimer];
-}
-
-- (BOOL)handleMouseButtonEvent:(int)buttonAction forTouches:(NSSet *)touches withEvent:(UIEvent *)event {
-    return NO;
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    hasUserInteracted = YES;
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    if ([self handleMouseButtonEvent:BUTTON_ACTION_RELEASE
-                          forTouches:touches
-                           withEvent:event]) {
-        // If it's a mouse event, we're done
-        return;
-    }
-    
-    Log(LOG_D, @"Touch up");
-    
-    hasUserInteracted = YES;
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-    [_touchHandler touchesCancelled:touches withEvent:event];
-    [self handleMouseButtonEvent:BUTTON_ACTION_RELEASE
-                      forTouches:touches
-                       withEvent:event];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

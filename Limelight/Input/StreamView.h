@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class ControllerSupport;
 @class StreamConfiguration;
+@class RemoteTouchHandler;
 
 @protocol UserInteractionDelegate <NSObject>
 
@@ -25,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface StreamView : UIView <X1KitMouseDelegate, UITextFieldDelegate>
 
-@property (nonatomic) UIResponder* touchHandler;
+@property (nonatomic) RemoteTouchHandler* touchHandler;
 
 - (void) setupStreamView:(ControllerSupport*)controllerSupport
      interactionDelegate:(id<UserInteractionDelegate>)interactionDelegate
