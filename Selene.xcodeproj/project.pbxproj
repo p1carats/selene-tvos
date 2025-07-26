@@ -31,7 +31,6 @@
 
 /* Begin PBXFileReference section */
 		8F4907FA2E2D4ABA008B1D7D /* Selene.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Selene.xcdatamodel; sourceTree = "<group>"; };
-		9890CF6A203B7EE1006C4B06 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		A13F90582DFC3C5C0010BB0F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A13F905C2DFC3C710010BB0F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/AppleTVOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A1EBD2F52DD94CE800F3BF4B /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
@@ -258,7 +257,6 @@
 				A1EBD2FA2DD94CFC00F3BF4B /* Metal.framework */,
 				A1EBD2F62DD94CE900F3BF4B /* MetalKit.framework */,
 				A1EBD2F92DD94CFC00F3BF4B /* MetalKit.framework */,
-				9890CF6A203B7EE1006C4B06 /* libxml2.tbd */,
 				FB4679001A57048000377732 /* CoreFoundation.framework */,
 				FB89468F19F6AFB800339C8A /* libs */,
 				FB290CF119B2C406004C83CF /* Foundation.framework */,
@@ -528,7 +526,6 @@
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/GameStreamKit/Sources/moonlight-common-c/**",
-					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/libs/**",
 				);
 				INFOPLIST_FILE = Selene/Info.plist;
@@ -577,7 +574,6 @@
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/GameStreamKit/Sources/moonlight-common-c/**",
-					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/libs/**",
 				);
 				INFOPLIST_FILE = Selene/Info.plist;

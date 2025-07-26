@@ -17,8 +17,6 @@
 #import "ServerInfoResponse.h"
 #import "Logger.h"
 
-#include <libxml2/libxml/xmlreader.h>
-
 #define SHORT_TIMEOUT_SEC 2
 #define NORMAL_TIMEOUT_SEC 5
 #define LONG_TIMEOUT_SEC 60

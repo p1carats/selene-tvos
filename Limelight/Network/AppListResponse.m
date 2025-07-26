@@ -10,117 +10,125 @@
 #import "TemporaryApp.h"
 #import "Logger.h"
 
-#import <libxml2/libxml/xmlreader.h>
+@interface AppListResponse () <NSXMLParserDelegate>
 
-@implementation AppListResponse {
-    NSMutableSet* _appList;
-}
+@property (nonatomic, strong) NSMutableSet* appList;
+@property (nonatomic, strong) NSMutableString* currentElementValue;
+@property (nonatomic, strong) NSString* currentElementName;
+@property (nonatomic, strong) TemporaryApp* currentApp;
+@property (nonatomic, assign) BOOL inAppElement;
+
+@end
+
+@implementation AppListResponse
+
 @synthesize data, statusCode, statusMessage;
 
-static const char* TAG_APP = "App";
-static const char* TAG_APP_TITLE = "AppTitle";
-static const char* TAG_APP_ID = "ID";
-static const char* TAG_HDR_SUPPORTED = "IsHdrSupported";
-static const char* TAG_APP_INSTALL_PATH = "AppInstallPath";
+static NSString* const TAG_APP = @"App";
+static NSString* const TAG_APP_TITLE = @"AppTitle";
+static NSString* const TAG_APP_ID = @"ID";
+static NSString* const TAG_HDR_SUPPORTED = @"IsHdrSupported";
+static NSString* const TAG_APP_INSTALL_PATH = @"AppInstallPath";
 
 - (void)populateWithData:(NSData *)xml {
     self.data = xml;
-    _appList = [[NSMutableSet alloc] init];
+    self.appList = [[NSMutableSet alloc] init];
     [self parseData];
 }
 
 - (void) parseData {
-    xmlDocPtr docPtr = xmlParseMemory([self.data bytes], (int)[self.data length]);
-    if (docPtr == NULL) {
-        Log(LOG_W, @"An error occured trying to parse xml.");
+    self.currentElementValue = [[NSMutableString alloc] init];
+    self.inAppElement = NO;
+    
+    NSXMLParser* parser = [[NSXMLParser alloc] initWithData:self.data];
+    parser.delegate = self;
+    
+    if (![parser parse]) {
+        Log(LOG_W, @"An error occurred trying to parse xml: %@", parser.parserError);
         return;
     }
-    
-    xmlNodePtr node = xmlDocGetRootElement(docPtr);
-    if (node == NULL) {
-        Log(LOG_W, @"No root XML element.");
-        xmlFreeDoc(docPtr);
-        return;
-    }
-    
-    xmlChar* statusStr = xmlGetProp(node, (const xmlChar*)[TAG_STATUS_CODE UTF8String]);
-    if (statusStr != NULL) {
-        int status = (int)[[NSString stringWithUTF8String:(const char*)statusStr] longLongValue];
-        xmlFree(statusStr);
-        self.statusCode = status;
-    }
-    
-    xmlChar* statusMsgXml = xmlGetProp(node, (const xmlChar*)[TAG_STATUS_MESSAGE UTF8String]);
-    NSString* statusMsg;
-    if (statusMsgXml != NULL) {
-        statusMsg = [NSString stringWithUTF8String:(const char*)statusMsgXml];
-        xmlFree(statusMsgXml);
-    }
-    else {
-        statusMsg = @"Server Error";
-    }
-    self.statusMessage = statusMsg;
-    
-    node = node->children;
-    
-    while (node != NULL) {
-        //Log(LOG_D, @"node: %s", node->name);
-        if (!xmlStrcmp(node->name, (xmlChar*)TAG_APP)) {
-            xmlNodePtr appInfoNode = node->xmlChildrenNode;
-            NSString* appName = @"";
-            NSString* appId = nil;
-            NSString* hdrSupported = @"0";
-            NSString* appInstallPath = nil;
-            while (appInfoNode != NULL) {
-                if (!xmlStrcmp(appInfoNode->name, (xmlChar*)TAG_APP_TITLE)) {
-                    xmlChar* nodeVal = xmlNodeListGetString(docPtr, appInfoNode->xmlChildrenNode, 1);
-                    if (nodeVal != NULL) {
-                        appName = [[NSString alloc] initWithCString:(const char*)nodeVal encoding:NSUTF8StringEncoding];
-                        xmlFree(nodeVal);
-                    }
-                } else if (!xmlStrcmp(appInfoNode->name, (xmlChar*)TAG_APP_ID)) {
-                    xmlChar* nodeVal = xmlNodeListGetString(docPtr, appInfoNode->xmlChildrenNode, 1);
-                    if (nodeVal != NULL) {
-                        appId = [[NSString alloc] initWithCString:(const char*)nodeVal encoding:NSUTF8StringEncoding];
-                        xmlFree(nodeVal);
-                    }
-                } else if (!xmlStrcmp(appInfoNode->name, (xmlChar*)TAG_HDR_SUPPORTED)) {
-                    xmlChar* nodeVal = xmlNodeListGetString(docPtr, appInfoNode->xmlChildrenNode, 1);
-                    if (nodeVal != NULL) {
-                        hdrSupported = [[NSString alloc] initWithCString:(const char*)nodeVal encoding:NSUTF8StringEncoding];
-                        xmlFree(nodeVal);
-                    }
-                } else if (!xmlStrcmp(appInfoNode->name, (xmlChar*)TAG_APP_INSTALL_PATH)) {
-                    xmlChar* nodeVal = xmlNodeListGetString(docPtr, appInfoNode->xmlChildrenNode, 1);
-                    if (nodeVal != NULL) {
-                        appInstallPath = [[NSString alloc] initWithCString:(const char*)nodeVal encoding:NSUTF8StringEncoding];
-                        xmlFree(nodeVal);
-                    }
-                }
-
-                appInfoNode = appInfoNode->next;
-            }
-            if (appId != nil) {
-                TemporaryApp* app = [[TemporaryApp alloc] init];
-                app.name = appName;
-                app.id = appId;
-                app.hdrSupported = [hdrSupported intValue] != 0;
-                app.installPath = appInstallPath;
-                [_appList addObject:app];
-            }
-        }
-        node = node->next;
-    }
-    
-    xmlFreeDoc(docPtr);
 }
 
 - (NSSet*) getAppList {
-    return _appList;
+    return self.appList;
 }
 
 - (BOOL) isStatusOk {
     return self.statusCode == 200;
+}
+
+#pragma mark - NSXMLParserDelegate
+
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary<NSString *,NSString *> *)attributeDict {
+    
+    // Handle root element attributes (status code and message)
+    if (self.statusCode == 0) {
+        NSString* statusCodeStr = attributeDict[TAG_STATUS_CODE];
+        if (statusCodeStr) {
+            self.statusCode = [statusCodeStr integerValue];
+        }
+        
+        NSString* statusMsg = attributeDict[TAG_STATUS_MESSAGE];
+        if (statusMsg) {
+            self.statusMessage = statusMsg;
+        } else {
+            self.statusMessage = @"Server Error";
+        }
+    }
+    
+    // Check if we're starting an App element
+    if ([elementName isEqualToString:TAG_APP]) {
+        self.inAppElement = YES;
+        self.currentApp = [[TemporaryApp alloc] init];
+        // Initialize defaults
+        self.currentApp.name = @"";
+        self.currentApp.hdrSupported = NO;
+    }
+    
+    // Reset current element tracking
+    self.currentElementName = elementName;
+    [self.currentElementValue setString:@""];
+}
+
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+    [self.currentElementValue appendString:string];
+}
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
+    
+    if (self.inAppElement && self.currentApp) {
+        NSString* value = [self.currentElementValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if (value == nil) {
+            value = @"";
+        }
+        
+        if ([elementName isEqualToString:TAG_APP_TITLE]) {
+            self.currentApp.name = value;
+        } else if ([elementName isEqualToString:TAG_APP_ID]) {
+            self.currentApp.id = value;
+        } else if ([elementName isEqualToString:TAG_HDR_SUPPORTED]) {
+            self.currentApp.hdrSupported = [value intValue] != 0;
+        } else if ([elementName isEqualToString:TAG_APP_INSTALL_PATH]) {
+            self.currentApp.installPath = value;
+        }
+    }
+    
+    // Check if we're ending an App element
+    if ([elementName isEqualToString:TAG_APP]) {
+        self.inAppElement = NO;
+        if (self.currentApp && self.currentApp.id != nil) {
+            [self.appList addObject:self.currentApp];
+        }
+        self.currentApp = nil;
+    }
+    
+    // Clear current element tracking
+    self.currentElementName = nil;
+    [self.currentElementValue setString:@""];
+}
+
+- (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
+    Log(LOG_W, @"XML Parse error: %@", parseError);
 }
 
 @end
