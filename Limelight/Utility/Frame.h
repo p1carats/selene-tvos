@@ -1,7 +1,10 @@
 @import Foundation;
 @import VideoToolbox;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface Frame : NSObject
+
 @property (nonatomic) int frameNumber;
 @property (nonatomic) int frameType;
 @property (nonatomic) CFTimeInterval decodedAt;
@@ -23,3 +26,5 @@
 - (size_t)height;
 
 @end
+
+NS_ASSUME_NONNULL_END

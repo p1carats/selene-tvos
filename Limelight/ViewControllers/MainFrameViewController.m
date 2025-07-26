@@ -14,13 +14,9 @@
 #import "CertificateManager.h"
 #import "HttpManager.h"
 #import "Connection.h"
-#import "StreamManager.h"
-#import "Utils.h"
 #import "HttpRequest.h"
 #import "TemporaryHost.h"
-#import "UIComputerView.h"
 #import "StreamConfiguration.h"
-#import "UIAppView.h"
 #import "DataManager.h"
 #import "TemporarySettings.h"
 #import "WakeOnLanManager.h"
@@ -406,7 +402,9 @@ static NSMutableSet* hostList;
 }
 
 - (UIViewController*) activeViewController {
-    UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIWindowScene *windowScene = (UIWindowScene *)[UIApplication sharedApplication].connectedScenes.anyObject;
+    UIWindow *keyWindow = windowScene.windows.firstObject;
+    UIViewController *topController = keyWindow.rootViewController;
 
     while (topController.presentedViewController) {
         topController = topController.presentedViewController;
@@ -560,13 +558,11 @@ static NSMutableSet* hostList;
     DataManager* dataMan = [[DataManager alloc] init];
     TemporarySettings* streamSettings = [dataMan getSettings];
 
+    // Don't stream more FPS than the display can show
     _streamConfig.frameRate = [streamSettings.framerate intValue];
-    if (@available(iOS 10.3, *)) {
-        // Don't stream more FPS than the display can show
-        if (_streamConfig.frameRate > [UIScreen mainScreen].maximumFramesPerSecond) {
-            _streamConfig.frameRate = (int)[UIScreen mainScreen].maximumFramesPerSecond;
-            Log(LOG_W, @"Clamping FPS to maximum refresh rate: %d", _streamConfig.frameRate);
-        }
+    if (_streamConfig.frameRate > [UIScreen mainScreen].maximumFramesPerSecond) {
+        _streamConfig.frameRate = (int)[UIScreen mainScreen].maximumFramesPerSecond;
+        Log(LOG_W, @"Clamping FPS to maximum refresh rate: %d", _streamConfig.frameRate);
     }
 
     _streamConfig.height = [streamSettings.height intValue];
@@ -797,22 +793,6 @@ static NSMutableSet* hostList;
 
 - (void) hideLoadingFrame:(void (^)(void))completion {
     [_loadingFrame dismissLoadingFrame:completion];
-}
-
-- (void)adjustScrollViewForSafeArea:(UIScrollView*)view {
-    if (@available(iOS 11.0, *)) {
-        if (self.view.safeAreaInsets.left >= 20 || self.view.safeAreaInsets.right >= 20) {
-            view.contentInset = UIEdgeInsetsMake(0, 20, 0, 20);
-        }
-    }
-}
-
-// Adjust the subviews for the safe area on the iPhone X.
-- (void)viewSafeAreaInsetsDidChange {
-    [super viewSafeAreaInsetsDidChange];
-    
-    [self adjustScrollViewForSafeArea:self.collectionView];
-    [self adjustScrollViewForSafeArea:self->hostScrollView];
 }
 
 - (void)viewDidLoad

@@ -54,8 +54,6 @@ static const int LABEL_DY = 40;
     _hostIcon.adjustsImageWhenAncestorFocused = YES;
     _hostIcon.masksFocusEffectToContents = YES;
     
-    self.adjustsImageWhenHighlighted = NO;
-    
     _hostOverlay.masksFocusEffectToContents = YES;
     _hostOverlay.adjustsImageWhenAncestorFocused = NO;
     
@@ -85,7 +83,7 @@ static const int LABEL_DY = 40;
     [_hostLabel setText:@"Add Host Manually"];
     [_hostLabel sizeToFit];
     
-    [_hostOverlay setImage:[UIImage imageNamed:@"AddOverlayIcon"]];
+    [_hostOverlay setImage:[UIImage systemImageNamed:@"plus.circle"]];
     
     [self updateBounds];
         
@@ -147,7 +145,7 @@ static const int LABEL_DY = 40;
         [_hostSpinner stopAnimating];
 
         if (host.pairState == PairStateUnpaired) {
-            [_hostOverlay setImage:[UIImage imageNamed:@"LockedOverlayIcon"]];
+            [_hostOverlay setImage:[UIImage systemImageNamed:@"lock.fill"]];
         }
         else {
             [_hostOverlay setImage:nil];
@@ -155,7 +153,7 @@ static const int LABEL_DY = 40;
     }
     else if (host.state == StateOffline) {
         [_hostSpinner stopAnimating];
-        [_hostOverlay setImage:[UIImage imageNamed:@"ErrorOverlayIcon"]];
+        [_hostOverlay setImage:[UIImage systemImageNamed:@"exclamationmark.triangle.fill"]];
     }
     else {
         [_hostSpinner startAnimating];

@@ -8,10 +8,10 @@
 
 #import "AppAssetRetriever.h"
 #import "HttpManager.h"
+#import "AppAssetManager.h"
 #import "AppAssetResponse.h"
 #import "HttpRequest.h"
 #import "TemporaryApp.h"
-#import "IdManager.h"
 
 @implementation AppAssetRetriever
 static const double RETRY_DELAY = 2; // seconds

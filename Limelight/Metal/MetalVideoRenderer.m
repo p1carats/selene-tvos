@@ -7,6 +7,7 @@
 
 #import "MetalVideoRenderer.h"
 #import "PlotManager.h"
+#import "Plot.h"
 #import "Frame.h"
 #import "Logger.h"
 

@@ -12,7 +12,7 @@
 
 @implementation KeyboardSupport
 
-+ (BOOL)sendKeyEventForPress:(UIPress*)press down:(BOOL)down API_AVAILABLE(ios(13.4)) {
++ (BOOL)sendKeyEventForPress:(UIPress*)press down:(BOOL)down {
     if (press.key != nil) {
         return [KeyboardSupport sendKeyEvent:press.key down:down];
     }
@@ -45,7 +45,7 @@
     }
 }
 
-+ (BOOL)sendKeyEvent:(UIKey*)key down:(BOOL)down API_AVAILABLE(ios(13.4)) {
++ (BOOL)sendKeyEvent:(UIKey*)key down:(BOOL)down {
     char modifierFlags = 0;
     short keyCode = 0;
     

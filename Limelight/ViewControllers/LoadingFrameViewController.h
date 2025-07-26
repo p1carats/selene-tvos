@@ -6,7 +6,10 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
 @import UIKit;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface LoadingFrameViewController : UIViewController
 
@@ -17,4 +20,7 @@
 - (BOOL)isShown;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSpinner;
+
 @end
+
+NS_ASSUME_NONNULL_END

@@ -13,7 +13,6 @@
 #import "ControllerSupport.h"
 #import "HapticContext.h"
 #import "Controller.h"
-#import "DataManager.h"
 #import "StreamConfiguration.h"
 #import "Logger.h"
 

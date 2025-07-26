@@ -8,12 +8,15 @@
 
 @import Foundation;
 
-#import "AppListResponse.h"
+NS_ASSUME_NONNULL_BEGIN
 
 @class TemporaryHost;
+@class AppListResponse;
 
 @interface ConnectionHelper : NSObject
 
 +(AppListResponse*) getAppListForHost:(TemporaryHost*)host;
 
 @end
+
+NS_ASSUME_NONNULL_END

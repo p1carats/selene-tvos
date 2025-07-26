@@ -10,15 +10,6 @@
 @import Dispatch;
 @import QuartzCore;
 
-#ifndef Limelight_Logger_h
-#define Limelight_Logger_h
-
-#import <stdarg.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef enum {
     LOG_D,
     LOG_I,
@@ -31,12 +22,28 @@ typedef enum {
 #define PRFX_WARN @"<WARN>"
 #define PRFX_ERROR @"<ERROR>"
 
+@interface Logger : NSObject
+
+// Class methods for logging
++ (void)logWithLevel:(LogLevel)level format:(NSString *)format, ... NS_FORMAT_FUNCTION(2,3);
++ (void)logWithLevel:(LogLevel)level tag:(NSString *)tag format:(NSString *)format, ... NS_FORMAT_FUNCTION(3,4);
+
+// Convenience methods for different log levels
++ (void)debug:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
++ (void)info:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
++ (void)warn:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
++ (void)error:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
+
++ (void)debugWithTag:(NSString *)tag format:(NSString *)format, ... NS_FORMAT_FUNCTION(2,3);
++ (void)infoWithTag:(NSString *)tag format:(NSString *)format, ... NS_FORMAT_FUNCTION(2,3);
++ (void)warnWithTag:(NSString *)tag format:(NSString *)format, ... NS_FORMAT_FUNCTION(2,3);
++ (void)errorWithTag:(NSString *)tag format:(NSString *)format, ... NS_FORMAT_FUNCTION(2,3);
+
+@end
+
+// Legacy C-style function declarations for backward compatibility
 void Log(LogLevel level, NSString* fmt, ...);
 void LogTag(LogLevel level, NSString* tag, NSString* fmt, ...);
-
-#ifdef __cplusplus
-}
-#endif
 
 // LogOnce() is a one-time log message for use in hot areas of the code
 #define CONCAT(a,b)   CONCAT2(a,b)
@@ -49,8 +56,6 @@ void LogTag(LogLevel level, NSString* tag, NSString* fmt, ...);
       Log(level, fmt, ##__VA_ARGS__);                               \
     });                                                             \
   } while (0)
-
-#endif
 
 // Disable all logging in release mode for performance
 #ifdef DEBUG

@@ -10,6 +10,8 @@
 
 #import "MDNSManager.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class TemporaryHost;
 
 @protocol DiscoveryCallback <NSObject>
@@ -32,3 +34,5 @@
 - (void) discoverHost:(NSString*)hostAddress withCallback:(void (^)(TemporaryHost*, NSString*))callback;
 
 @end
+
+NS_ASSUME_NONNULL_END

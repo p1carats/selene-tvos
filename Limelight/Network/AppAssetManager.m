@@ -7,8 +7,6 @@
 //
 
 #import "AppAssetManager.h"
-#import "Utils.h"
-#import "HttpResponse.h"
 #import "AppAssetRetriever.h"
 #import "TemporaryApp.h"
 #import "TemporaryHost.h"

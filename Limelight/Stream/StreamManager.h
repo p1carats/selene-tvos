@@ -8,11 +8,11 @@
 
 @import Foundation;
 
-#import "ConnectionCallbacks.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @class StreamConfiguration;
+
+@protocol ConnectionCallbacks;
 
 @interface StreamManager : NSOperation
 

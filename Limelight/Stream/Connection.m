@@ -13,7 +13,6 @@
 @import UIKit;
 
 #import "Connection.h"
-#import "Plot.h"
 #import "Utils.h"
 #import "Logger.h"
 #import "BandwidthTracker.h"
@@ -62,8 +61,8 @@ int DrDecoderSetup(int videoFormat, int width, int height, int redrawRate, void*
     lastFrameNumber = 0;
     activeVideoFormat = videoFormat;
     Log(LOG_I, @"Active video format: 0x%x", activeVideoFormat);
-    memset(&currentVideoStats, 0, sizeof(currentVideoStats));
-    memset(&lastVideoStats, 0, sizeof(lastVideoStats));
+    currentVideoStats = (VideoStats){0};
+    lastVideoStats = (VideoStats){0};
     bwTracker = [[BandwidthTracker alloc] initWithWindowSeconds:10 bucketIntervalMs:250];
     return 0;
 }
@@ -83,7 +82,7 @@ void DrCleanup(void)
     // We return lastVideoStats because it is a complete 1 second window
     [videoStatsLock lock];
     if (lastVideoStats.endTime != 0) {
-        memcpy(stats, &lastVideoStats, sizeof(*stats));
+        *stats = lastVideoStats;
         [videoStatsLock unlock];
 
         // Pull in the separately-collected renderer stats
@@ -152,7 +151,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit)
             lastVideoStats = currentVideoStats;
             [videoStatsLock unlock];
             
-            memset(&currentVideoStats, 0, sizeof(currentVideoStats));
+            currentVideoStats = (VideoStats){0};
             currentVideoStats.startTime = now;
         }
         

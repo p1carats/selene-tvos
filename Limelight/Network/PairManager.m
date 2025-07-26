@@ -13,7 +13,6 @@
 #import "CertificateManager.h"
 #import "CryptoManager.h"
 #import "Utils.h"
-#import "HttpResponse.h"
 #import "HttpRequest.h"
 #import "ServerInfoResponse.h"
 #import "HttpManager.h"

@@ -8,6 +8,8 @@
 
 @import Foundation;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface Utils : NSObject
 
 typedef NS_ENUM(int, PairState) {
@@ -40,3 +42,5 @@ FOUNDATION_EXPORT NSString *const deviceName;
 - (NSString*) trim;
 
 @end
+
+NS_ASSUME_NONNULL_END

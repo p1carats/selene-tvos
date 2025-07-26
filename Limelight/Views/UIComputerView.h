@@ -6,14 +6,17 @@
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
 @import UIKit;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @class TemporaryHost;
 
 @protocol HostCallback <NSObject>
 
-- (void) hostClicked:(TemporaryHost*)host view:(UIView*)view;
-- (void) hostLongClicked:(TemporaryHost*)host view:(UIView*)view;
+- (void) hostClicked:(TemporaryHost*)host view:(nullable UIView*)view;
+- (void) hostLongClicked:(TemporaryHost*)host view:(nullable UIView*)view;
 - (void) addHostClicked;
 
 @end
@@ -24,3 +27,5 @@
 - (instancetype) initForAddWithCallback:(id<HostCallback>)callback;
 
 @end
+
+NS_ASSUME_NONNULL_END

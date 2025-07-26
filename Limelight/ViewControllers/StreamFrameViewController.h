@@ -6,12 +6,15 @@
 //  Copyright (c) 2015 Moonlight Stream. All rights reserved.
 //
 
+@import Foundation;
 @import GameController;
 @import UIKit;
 
 #import "ConnectionCallbacks.h"
 #import "ControllerSupport.h"
 #import "StreamView.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @class StreamConfiguration;
 @class MetalViewController;
@@ -26,3 +29,5 @@
 -(void)updatePreferredDisplayMode:(BOOL)streamActive;
 
 @end
+
+NS_ASSUME_NONNULL_END

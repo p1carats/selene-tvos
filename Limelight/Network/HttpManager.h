@@ -17,21 +17,21 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HttpManager : NSObject <NSURLSessionDelegate>
 
 - (instancetype) initWithHost:(TemporaryHost*) host;
-- (instancetype) initWithAddress:(NSString*) hostAddressPortString httpsPort:(unsigned short) httpsPort serverCert:(NSData*) serverCert;
-- (void) setServerCert:(NSData*) serverCert;
-- (NSURLRequest*) newPairRequest:(NSData*)salt clientCert:(NSData*)clientCert;
-- (NSURLRequest*) newUnpairRequest;
-- (NSURLRequest*) newChallengeRequest:(NSData*)challenge;
-- (NSURLRequest*) newChallengeRespRequest:(NSData*)challengeResp;
-- (NSURLRequest*) newClientSecretRespRequest:(NSString*)clientPairSecret;
-- (NSURLRequest*) newPairChallenge;
-- (NSURLRequest*) newAppListRequest;
-- (NSURLRequest*) newServerInfoRequest:(bool)fastFail;
-- (NSURLRequest*) newHttpServerInfoRequest:(bool)fastFail;
-- (NSURLRequest*) newHttpServerInfoRequest;
-- (NSURLRequest*) newLaunchOrResumeRequest:(NSString*)verb config:(StreamConfiguration*)config;
-- (NSURLRequest*) newQuitAppRequest;
-- (NSURLRequest*) newAppAssetRequestWithAppId:(NSString*)appId;
+- (instancetype) initWithAddress:(NSString*) hostAddressPortString httpsPort:(unsigned short) httpsPort serverCert:(nullable NSData*) serverCert;
+- (void) setServerCert:(nullable NSData*) serverCert;
+- (nullable NSURLRequest*) newPairRequest:(NSData*)salt clientCert:(NSData*)clientCert;
+- (nullable NSURLRequest*) newUnpairRequest;
+- (nullable NSURLRequest*) newChallengeRequest:(NSData*)challenge;
+- (nullable NSURLRequest*) newChallengeRespRequest:(NSData*)challengeResp;
+- (nullable NSURLRequest*) newClientSecretRespRequest:(NSString*)clientPairSecret;
+- (nullable NSURLRequest*) newPairChallenge;
+- (nullable NSURLRequest*) newAppListRequest;
+- (nullable NSURLRequest*) newServerInfoRequest:(bool)fastFail;
+- (nullable NSURLRequest*) newHttpServerInfoRequest:(bool)fastFail;
+- (nullable NSURLRequest*) newHttpServerInfoRequest;
+- (nullable NSURLRequest*) newLaunchOrResumeRequest:(NSString*)verb config:(StreamConfiguration*)config;
+- (nullable NSURLRequest*) newQuitAppRequest;
+- (nullable NSURLRequest*) newAppAssetRequestWithAppId:(NSString*)appId;
 - (void) executeRequestSynchronously:(HttpRequest*)request;
 
 @end

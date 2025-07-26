@@ -12,6 +12,8 @@
 
 #import "Plot.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Frame;
 
 @protocol ConnectionCallbacks;
@@ -43,3 +45,5 @@
                         decodeStartTime:(CFTimeInterval)decodeStartTime;
 
 @end
+
+NS_ASSUME_NONNULL_END

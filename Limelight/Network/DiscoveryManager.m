@@ -11,18 +11,12 @@
 #import "DiscoveryManager.h"
 #import "CertificateManager.h"
 #import "HttpManager.h"
-#import "Utils.h"
-#import "DataManager.h"
 #import "DiscoveryWorker.h"
 #import "HttpRequest.h"
 #import "ServerInfoResponse.h"
 #import "IdManager.h"
 #import "TemporaryHost.h"
 #import "Logger.h"
-
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <netdb.h>
 
 @implementation DiscoveryManager {
     NSMutableArray* _hostQueue;
@@ -95,8 +89,9 @@
 - (void) discoverHost:(NSString *)hostAddress withCallback:(void (^)(TemporaryHost *, NSString*))callback {
     ServerInfoResponse* serverInfoResponse = [self getServerInfoResponseForAddress:hostAddress];
     
-    if ([serverInfoResponse isStatusOk]) {
+    if (![serverInfoResponse isStatusOk]) {
         callback(nil, @"Could not connect to host.\n\nIf you're hosting using GeForce Experience, make sure you've enabled the toggle on the SHIELD tab.\n\nIf you're hosting using Apollo, ensure it is running properly. If you're using a non-default port, you will need to include that here.");
+        return;
     }
     
     TemporaryHost* host = [[TemporaryHost alloc] init];

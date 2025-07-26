@@ -12,7 +12,7 @@
 #import "TemporaryHost.h"
 #import "Logger.h"
 
-#include <arpa/inet.h>
+#import <arpa/inet.h>
 
 @implementation MDNSManager {
     NSNetServiceBrowser* mDNSBrowser;

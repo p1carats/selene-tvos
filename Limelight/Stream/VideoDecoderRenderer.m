@@ -145,13 +145,7 @@
         // Drop frames intelligently to maintain chosen queue size.
         _renderingBackend = RenderingBackendAVSampleBuffer;
         _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(renderModeAVSB:)];
-
-        if (@available(iOS 15.0, tvOS 15.0, *)) {
-            _displayLink.preferredFrameRateRange = CAFrameRateRangeMake(self->_frameRate, self->_frameRate, self->_frameRate);
-        }
-        else {
-            _displayLink.preferredFramesPerSecond = self->_frameRate;
-        }
+        _displayLink.preferredFrameRateRange = CAFrameRateRangeMake(self->_frameRate, self->_frameRate, self->_frameRate);
         [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
     } else {
         _renderingBackend = RenderingBackendMetal;
@@ -203,8 +197,8 @@
 - (void) checkDisplayLayer {
     // Check for issues with the SampleBuffer, this should be much less likely since
     // AVSB is not actually decoding the frames anymore
-    if (self->_displayLayer.status == AVQueuedSampleBufferRenderingStatusFailed) {
-        Log(LOG_E, @"Display layer rendering failed: %@", _displayLayer.error);
+    if (self->_displayLayer.sampleBufferRenderer.status == AVQueuedSampleBufferRenderingStatusFailed) {
+        Log(LOG_E, @"Display layer rendering failed: %@", _displayLayer.sampleBufferRenderer.error);
 
         // Recreate the display layer. We are already on the main thread,
         // so this is safe to do right here.
@@ -300,22 +294,20 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
         Log(LOG_I, @"Setting timebase for stream to %d / %d", pts.value, pts.timescale);
     }
 
-    [self->_displayLayer enqueueSampleBuffer:frame.sampleBuffer];
+    [self->_displayLayer.sampleBufferRenderer enqueueSampleBuffer:frame.sampleBuffer];
 
 #ifdef DISPLAYLINK_VERBOSE
     // Some OS-level metrics I'm not sure what to do with
-    if (@available(iOS 17.4, tvOS 17.4, *)) {
-        if (frame.frameNumber % 600 == 0) {
-            [self->_displayLayer.sampleBufferRenderer loadVideoPerformanceMetricsWithCompletionHandler:^(AVVideoPerformanceMetrics * videoMetrics) {
-                Log(LOG_I, @"AVVideoPerformanceMetrics: frames %d, dropped %d (%.1f%%), optimized %d (%.1f%%), accumulatedDelay %f",
-                    videoMetrics.totalNumberOfFrames, // The total number of frames that display if no frames drop.
-                    videoMetrics.numberOfDroppedFrames, // The total number of frames the system drops prior to decoding or from missing the display deadline
-                    ((double)videoMetrics.numberOfDroppedFrames / videoMetrics.totalNumberOfFrames) * 100.0,
-                    videoMetrics.numberOfFramesDisplayedUsingOptimizedCompositing, // The total number of full screen frames rendered in a special power-efficient mode that didn’t require compositing with other UI elements.
-                    ((double)videoMetrics.numberOfFramesDisplayedUsingOptimizedCompositing / videoMetrics.totalNumberOfFrames) * 100.0,
-                    videoMetrics.totalAccumulatedFrameDelay); // The accumulated amount of time between the prescribed presentation times of displayed video frames and their actual time of display.
-            }];
-        }
+    if (frame.frameNumber % 600 == 0) {
+        [self->_displayLayer.sampleBufferRenderer loadVideoPerformanceMetricsWithCompletionHandler:^(AVVideoPerformanceMetrics * videoMetrics) {
+            Log(LOG_I, @"AVVideoPerformanceMetrics: frames %d, dropped %d (%.1f%%), optimized %d (%.1f%%), accumulatedDelay %f",
+                videoMetrics.totalNumberOfFrames, // The total number of frames that display if no frames drop.
+                videoMetrics.numberOfDroppedFrames, // The total number of frames the system drops prior to decoding or from missing the display deadline
+                ((double)videoMetrics.numberOfDroppedFrames / videoMetrics.totalNumberOfFrames) * 100.0,
+                videoMetrics.numberOfFramesDisplayedUsingOptimizedCompositing, // The total number of full screen frames rendered in a special power-efficient mode that didn’t require compositing with other UI elements.
+                ((double)videoMetrics.numberOfFramesDisplayedUsingOptimizedCompositing / videoMetrics.totalNumberOfFrames) * 100.0,
+                videoMetrics.totalAccumulatedFrameDelay); // The accumulated amount of time between the prescribed presentation times of displayed video frames and their actual time of display.
+        }];
     }
 #endif
 
@@ -839,12 +831,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
 
     Log(LOG_I, @"optimizeRefreshRate: new rate %d Hz based on streamFps of %.2f fps", targetRate, streamFps);
 
-    if (@available(iOS 15.0, tvOS 15.0, *)) {
-        _displayLink.preferredFrameRateRange = CAFrameRateRangeMake(targetRate, _maxRefreshRate, targetRate);
-    }
-    else {
-        _displayLink.preferredFramesPerSecond = targetRate;
-    }
+    _displayLink.preferredFrameRateRange = CAFrameRateRangeMake(targetRate, _maxRefreshRate, targetRate);
 }
 
 @end

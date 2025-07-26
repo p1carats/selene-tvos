@@ -10,10 +10,8 @@
 
 #import "StreamView.h"
 #import "DataManager.h"
-#import "ControllerSupport.h"
 #import "TemporarySettings.h"
 #import "KeyboardSupport.h"
-#import "RelativeTouchHandler.h"
 #import "KeyboardInputField.h"
 #import "StreamConfiguration.h"
 #import "Logger.h"

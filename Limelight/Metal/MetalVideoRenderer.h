@@ -3,11 +3,11 @@
 @import QuartzCore;
 @import simd;
 
-#import "ConnectionCallbacks.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @class Frame;
+
+@protocol ConnectionCallbacks;
 
 @interface MetalVideoRenderer : NSObject
 

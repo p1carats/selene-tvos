@@ -8,6 +8,8 @@
 
 @import Foundation;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class TemporaryHost;
 
 typedef enum {
@@ -24,3 +26,5 @@ typedef WakeStatus (^WakeBlock)(struct ifaddrs *ifa);
 + (void) wakeHost:(TemporaryHost*)host;
 
 @end
+
+NS_ASSUME_NONNULL_END

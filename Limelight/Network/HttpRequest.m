@@ -7,8 +7,6 @@
 //
 
 #import "HttpRequest.h"
-#import "HttpResponse.h"
-#import "HttpManager.h"
 
 @implementation HttpRequest
 
@@ -25,7 +23,7 @@
     return request;
 }
 
-+ (HttpRequest*) requestForResponse:(id<Response>)response withUrlRequest:(NSURLRequest*)req fallbackError:(int)error fallbackRequest:(NSURLRequest*) fallbackReq {
++ (HttpRequest*) requestForResponse:(id<Response>)response withUrlRequest:(nullable NSURLRequest*)req fallbackError:(int)error fallbackRequest:(nullable NSURLRequest*) fallbackReq {
     HttpRequest* request = [[HttpRequest alloc] init];
     request.request = req;
     request.response = response;

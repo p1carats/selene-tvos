@@ -12,7 +12,6 @@
 #import "HttpRequest.h"
 #import "CertificateManager.h"
 #import "CertificateSecret.h"
-#import "TemporaryApp.h"
 #import "StreamConfiguration.h"
 #import "TemporaryHost.h"
 #import "ServerInfoResponse.h"
@@ -156,7 +155,8 @@
         // If the fallback error code was detected, issue the fallback request
         if (request.response.statusCode == request.fallbackError && request.fallbackRequest != NULL) {
             Log(LOG_D, @"Request failed with fallback error code: %d", request.fallbackError);
-            request.request = request.fallbackRequest;
+            NSURLRequest* fallbackReq = request.fallbackRequest;
+            request.request = fallbackReq;
             request.fallbackError = 0;
             request.fallbackRequest = NULL;
             [self executeRequestSynchronously:request];
@@ -171,7 +171,8 @@
             // This will fall back to HTTP on serverinfo queries to allow us to pair again
             // and get the server cert updated.
             Log(LOG_D, @"Attempting fallback request after certificate trust failure");
-            request.request = request.fallbackRequest;
+            NSURLRequest* fallbackReq = request.fallbackRequest;
+            request.request = fallbackReq;
             request.fallbackError = 0;
             request.fallbackRequest = NULL;
             [self executeRequestSynchronously:request];
@@ -317,91 +318,103 @@
 }
 
 // Returns an array containing the certificate
-- (NSArray*)getCertificate:(SecIdentityRef) identity {
+- (NSArray*) getCertificate:(SecIdentityRef)identity {
     SecCertificateRef certificate = nil;
     
-    SecIdentityCopyCertificate(identity, &certificate);
+    if (SecIdentityCopyCertificate(identity, &certificate) != errSecSuccess || certificate == nil) {
+        Log(LOG_E, @"Failed to extract certificate from identity");
+        return @[];
+    }
     
-    return [[NSArray alloc] initWithObjects:(__bridge_transfer id)certificate, nil];
+    return @[ (__bridge_transfer id)certificate ];
 }
 
 // Returns the identity
 - (SecIdentityRef)getClientCertificate {
     SecIdentityRef identityApp = nil;
-    CFDataRef p12Data = (__bridge CFDataRef)[CertificateManager readP12FromFile];
-
-    NSString *password = [CertificateSecret certificatePassword];
-    CFStringRef passwordRef = (__bridge CFStringRef)password;
     
-    const void *keys[] = { kSecImportExportPassphrase };
-    const void *values[] = { passwordRef };
-    CFDictionaryRef options = CFDictionaryCreate(NULL, keys, values, 1, NULL, NULL);
-    
-    CFArrayRef items = nil;
-    OSStatus securityError = SecPKCS12Import(p12Data, options, &items);
-
-    if (securityError == errSecSuccess) {
-        CFDictionaryRef identityDict = CFArrayGetValueAtIndex(items, 0);
-        identityApp = (SecIdentityRef)CFRetain(CFDictionaryGetValue(identityDict, kSecImportItemIdentity));
-        CFRelease(items);
-    } else {
-        Log(LOG_E, @"Error opening Certificate.");
+    // Get P12 data
+    NSData *p12Data = [CertificateManager readP12FromFile];
+    if (!p12Data) {
+        Log(LOG_E, @"Could not read .p12 file");
+        return nil;
     }
     
-    CFRelease(options);
+    // Setup password dictionary
+    NSString *password = [CertificateSecret certificatePassword];
+    NSDictionary *options = @{ (__bridge id)kSecImportExportPassphrase : password };
+
+    CFArrayRef items = NULL;
+    OSStatus securityError = SecPKCS12Import((__bridge CFDataRef)p12Data,
+                                             (__bridge CFDictionaryRef)options,
+                                             &items);
+    
+    if (securityError == errSecSuccess && CFArrayGetCount(items) > 0) {
+        CFDictionaryRef identityDict = CFArrayGetValueAtIndex(items, 0);
+        SecIdentityRef identity = (SecIdentityRef)CFDictionaryGetValue(identityDict, kSecImportItemIdentity);
+        if (identity) {
+            identityApp = (SecIdentityRef)CFRetain(identity);
+        }
+    } else {
+        Log(LOG_E, @"Error opening certificate (status %d)", (int)securityError);
+    }
+    
+    if (items != NULL) {
+        CFRelease(items);
+    }
     
     return identityApp;
 }
 
 - (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(nonnull void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * __nullable))completionHandler {
     // Allow untrusted server certificates
-    if([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
-    {
-        if (SecTrustGetCertificateCount(challenge.protectionSpace.serverTrust) != 1) {
+    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+        NSArray *certChain = (__bridge_transfer NSArray *)SecTrustCopyCertificateChain(challenge.protectionSpace.serverTrust);
+        
+        if (certChain.count != 1) {
             Log(LOG_E, @"Server certificate count mismatch");
-            completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, NULL);
+            completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
             return;
         }
         
-        SecCertificateRef actualCert = SecTrustGetCertificateAtIndex(challenge.protectionSpace.serverTrust, 0);
+        SecCertificateRef actualCert = (__bridge SecCertificateRef)(certChain[0]);
         if (actualCert == nil) {
             Log(LOG_E, @"Server certificate parsing error");
-            completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, NULL);
+            completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
             return;
         }
         
-        CFDataRef actualCertData = SecCertificateCopyData(actualCert);
+        NSData *actualCertData = (__bridge_transfer NSData *)SecCertificateCopyData(actualCert);
         if (actualCertData == nil) {
             Log(LOG_E, @"Server certificate data parsing error");
-            completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, NULL);
+            completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
             return;
         }
         
-        if (!CFEqual(actualCertData, (__bridge CFDataRef)_serverCert)) {
+        if (![_serverCert isEqualToData:actualCertData]) {
             Log(LOG_E, @"Server certificate mismatch");
-            CFRelease(actualCertData);
-            completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, NULL);
+            completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
             return;
         }
         
-        CFRelease(actualCertData);
-        
-        // Allow TLS handshake to proceed
+        // Allow TLS handshake to proceed as certificate matches
         completionHandler(NSURLSessionAuthChallengeUseCredential,
                           [NSURLCredential credentialForTrust: challenge.protectionSpace.serverTrust]);
     }
     // Respond to client certificate challenge with our certificate
-    else if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate])
-    {
+    else if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate]){
         SecIdentityRef identity = [self getClientCertificate];
-        NSArray* certArray = [self getCertificate:identity];
-        NSURLCredential* newCredential = [NSURLCredential credentialWithIdentity:identity certificates:certArray persistence:NSURLCredentialPersistencePermanent];
-        CFRelease(identity);
+        NSArray *certArray = [self getCertificate:identity];
+        NSURLCredential *newCredential = [NSURLCredential credentialWithIdentity:identity
+                                                                    certificates:certArray
+                                                                     persistence:NSURLCredentialPersistencePermanent];
+        if (identity != NULL) {
+            CFRelease(identity);
+        }
         completionHandler(NSURLSessionAuthChallengeUseCredential, newCredential);
     }
-    else
-    {
-        completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, NULL);
+    else {
+        completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
     }
 }
 

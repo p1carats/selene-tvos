@@ -13,23 +13,18 @@
 
 #import "StreamFrameViewController.h"
 #import "MetalViewController.h"
-#import "MainFrameViewController.h"
-#import "VideoDecoderRenderer.h"
 #import "StreamManager.h"
-#import "ControllerSupport.h"
 #import "TemporarySettings.h"
 #import "DataManager.h"
 #import "StreamConfiguration.h"
 #import "PaddedLabel.h"
-#import "GraphRenderer.h"
 #import "RelativeTouchHandler.h"
-#import "MetalVideoRenderer.h"
 #import "Logger.h"
 #import "Connection.h"
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+//#include <sys/socket.h>
+//#include <netinet/in.h>
+//#include <arpa/inet.h>
 
 @interface AVDisplayCriteria()
 @property(readonly) int videoDynamicRange;
@@ -107,7 +102,7 @@
     
     _spinner = [[UIActivityIndicatorView alloc] init];
     [_spinner setUserInteractionEnabled:NO];
-    [_spinner setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [_spinner setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleLarge];
     [_spinner sizeToFit];
     [_spinner startAnimating];
     _spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 - _stageLabel.frame.size.height - _spinner.frame.size.height);

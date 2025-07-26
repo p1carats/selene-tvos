@@ -8,6 +8,8 @@
 
 @import Foundation;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class TemporaryHost;
 
 @protocol MDNSCallback <NSObject>
@@ -27,5 +29,5 @@
 
 @end
 
-
+NS_ASSUME_NONNULL_END
 

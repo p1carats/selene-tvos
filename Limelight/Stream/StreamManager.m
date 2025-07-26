@@ -17,6 +17,7 @@
 #import "HttpManager.h"
 #import "Plot.h"
 #import "Utils.h"
+#import "ConnectionCallbacks.h"
 #import "StreamView.h"
 #import "ServerInfoResponse.h"
 #import "HttpResponse.h"

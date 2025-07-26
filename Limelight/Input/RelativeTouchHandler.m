@@ -9,6 +9,7 @@
 @import GameStreamKit;
 
 #import "RelativeTouchHandler.h"
+#import "StreamView.h"
 #import "Logger.h"
 
 static const int REFERENCE_WIDTH = 1280;
@@ -20,7 +21,7 @@ static const int REFERENCE_HEIGHT = 720;
     BOOL isDragging;
     NSTimer* dragTimer;
     NSUInteger peakTouchCount;
-    UIView* view;
+    StreamView* view;
 }
 
 - (instancetype)initWithView:(StreamView*)view {

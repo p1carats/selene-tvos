@@ -9,16 +9,12 @@
 @import CoreFoundation;
 
 #import "WakeOnLanManager.h"
-#import "Utils.h"
 #import "TemporaryHost.h"
 #import "Logger.h"
 
 #import <net/if.h>
 #import <ifaddrs.h>
-#import <sys/socket.h>
-#import <netinet/in.h>
 #import <arpa/inet.h>
-#import <netdb.h>
 
 @implementation WakeOnLanManager
 

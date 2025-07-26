@@ -8,6 +8,8 @@
 
 @import Foundation;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class HttpManager;
 
 @protocol PairCallback <NSObject>
@@ -20,5 +22,9 @@
 @end
 
 @interface PairManager : NSOperation
+
 - (instancetype) initWithManager:(HttpManager*)httpManager clientCert:(NSData*)clientCert callback:(id<PairCallback>)callback;
+
 @end
+
+NS_ASSUME_NONNULL_END

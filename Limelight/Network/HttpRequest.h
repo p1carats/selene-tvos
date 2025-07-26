@@ -17,11 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) id<Response> response;
 @property (nonatomic) NSURLRequest* request;
 @property (nonatomic) int fallbackError;
-@property (nonatomic) NSURLRequest* fallbackRequest;
+@property (nonatomic, nullable) NSURLRequest* fallbackRequest;
 
-+ (instancetype) requestForResponse:(id<Response>)response withUrlRequest:(NSURLRequest*)req fallbackError:(int)error fallbackRequest:(NSURLRequest*) fallbackReq;
-+ (instancetype) requestForResponse:(id<Response>)response withUrlRequest:(NSURLRequest*)req;
-+ (instancetype) requestWithUrlRequest:(NSURLRequest*)req;
++ (instancetype) requestForResponse:(id<Response>)response withUrlRequest:(nullable NSURLRequest*)req fallbackError:(int)error fallbackRequest:(nullable NSURLRequest*) fallbackReq;
++ (instancetype) requestForResponse:(id<Response>)response withUrlRequest:(nullable NSURLRequest*)req;
++ (instancetype) requestWithUrlRequest:(nullable NSURLRequest*)req;
 
 @end
 

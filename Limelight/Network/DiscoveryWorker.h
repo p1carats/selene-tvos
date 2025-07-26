@@ -8,6 +8,8 @@
 
 @import Foundation;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class TemporaryHost;
 
 @interface DiscoveryWorker : NSOperation
@@ -17,3 +19,5 @@
 - (TemporaryHost*) getHost;
 
 @end
+
+NS_ASSUME_NONNULL_END

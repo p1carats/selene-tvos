@@ -8,7 +8,7 @@
 
 @import Foundation;
 
-#import "HttpManager.h"
+NS_ASSUME_NONNULL_BEGIN
 
 @class TemporaryApp;
 @class TemporaryHost;
@@ -27,3 +27,5 @@
 + (NSString*) boxArtPathForApp:(TemporaryApp*)app;
 
 @end
+
+NS_ASSUME_NONNULL_END

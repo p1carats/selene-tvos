@@ -8,8 +8,10 @@
 
 @import Foundation;
 
-#import "Plot.h"
 #import "ConnectionCallbacks.h"
+#import "Plot.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @class BandwidthTracker;
 @class StreamConfiguration;
@@ -27,3 +29,5 @@
 -(NSString*) getActiveCodecName;
 
 @end
+
+NS_ASSUME_NONNULL_END

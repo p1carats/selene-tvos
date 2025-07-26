@@ -7,10 +7,8 @@
 //
 
 #import "ConnectionHelper.h"
-#import "ServerInfoResponse.h"
+#import "AppListResponse.h"
 #import "HttpManager.h"
-#import "PairManager.h"
-#import "DiscoveryManager.h"
 #import "HttpRequest.h"
 #import "Logger.h"
 

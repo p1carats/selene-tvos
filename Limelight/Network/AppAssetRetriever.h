@@ -8,10 +8,12 @@
 
 @import Foundation;
 
-#import "AppAssetManager.h"
+NS_ASSUME_NONNULL_BEGIN
 
 @class TemporaryApp;
 @class TemporaryHost;
+
+@protocol AppAssetCallback;
 
 @interface AppAssetRetriever : NSOperation
 
@@ -20,3 +22,5 @@
 @property (nonatomic) id<AppAssetCallback> callback;
 
 @end
+
+NS_ASSUME_NONNULL_END
