@@ -18,7 +18,7 @@
     AppDelegate *_appDelegate;
 }
 
-- (id) init {
+- (instancetype) init {
     self = [super init];
     
     // HACK: Avoid calling [UIApplication delegate] off the UI thread to keep

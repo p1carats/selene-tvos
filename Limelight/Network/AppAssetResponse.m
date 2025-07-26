@@ -12,6 +12,7 @@
 #import "AppAssetResponse.h"
 
 @implementation AppAssetResponse
+
 @synthesize data, statusCode, statusMessage;
 
 - (void)populateWithData:(NSData *)imageData {

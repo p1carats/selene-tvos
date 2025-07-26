@@ -189,7 +189,9 @@ static UIImage* noImage;
     [self setAlpha:_app.hidden ? 0.4 : 1.0];
     
     // Queue the next refresh cycle
-    [self performSelector:@selector(updateLoop) withObject:self afterDelay:REFRESH_CYCLE];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(REFRESH_CYCLE * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self updateLoop];
+    });
 }
 
 @end

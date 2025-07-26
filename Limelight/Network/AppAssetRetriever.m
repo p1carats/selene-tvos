@@ -35,7 +35,9 @@ static const int MAX_ATTEMPTS = 5;
             [NSThread sleepForTimeInterval:RETRY_DELAY];
         }
     }
-    [self performSelectorOnMainThread:@selector(sendCallbackForApp:) withObject:self.app waitUntilDone:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self sendCallbackForApp:self.app];
+    });
 }
 
 - (void) sendCallbackForApp:(TemporaryApp*)app {

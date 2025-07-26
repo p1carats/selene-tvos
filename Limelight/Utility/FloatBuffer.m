@@ -13,12 +13,6 @@
     dispatch_queue_t _sq;         // serial queue for thread safety
 }
 
-@synthesize capacity = _capacity;
-@synthesize count = _count;
-@synthesize minValue = _minValue;
-@synthesize maxValue = _maxValue;
-@synthesize averageValue = _averageValue; // custom getter below
-
 - (instancetype)init {
     return [self initWithCapacity:256];
 }

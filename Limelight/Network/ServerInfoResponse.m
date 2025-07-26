@@ -10,6 +10,7 @@
 #import "TemporaryHost.h"
 
 @implementation ServerInfoResponse
+
 @synthesize data, statusCode, statusMessage;
 
 - (void) populateWithData:(NSData *)xml {

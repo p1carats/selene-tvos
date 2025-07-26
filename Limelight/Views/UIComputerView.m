@@ -23,7 +23,7 @@ static const float REFRESH_CYCLE = 2.0f;
 static const int ITEM_PADDING = 50;
 static const int LABEL_DY = 40;
 
-- (id) init {
+- (instancetype) init {
     self = [super init];
     
     self.frame = CGRectMake(0, 0, 400, 400);
@@ -68,6 +68,7 @@ static const int LABEL_DY = 40;
     _hostSpinner.layer.opacity = 0.5f;
     _hostOverlay.layer.opacity = 0.5f;
 }
+
 - (void) hostButtonDeselected:(id)sender {
     _hostIcon.layer.opacity = 1.0f;
     _hostSpinner.layer.opacity = 1.0f;
@@ -171,7 +172,9 @@ static const int LABEL_DY = 40;
     [self updateContentsForHost:_host];
     
     // Queue the next refresh cycle
-    [self performSelector:@selector(updateLoop) withObject:self afterDelay:REFRESH_CYCLE];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(REFRESH_CYCLE * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self updateLoop];
+    });
 }
 
 - (void) hostLongClicked:(UILongPressGestureRecognizer*)gesture {

@@ -18,18 +18,17 @@
 #import "DataManager.h"
 #import "StreamConfiguration.h"
 #import "PaddedLabel.h"
+#import "SceneDelegate.h"
 #import "RelativeTouchHandler.h"
 #import "Logger.h"
 #import "Connection.h"
 
-//#include <sys/socket.h>
-//#include <netinet/in.h>
-//#include <arpa/inet.h>
-
 @interface AVDisplayCriteria()
+
 @property(readonly) int videoDynamicRange;
 @property(readonly, nonatomic) float refreshRate;
-- (id)initWithRefreshRate:(float)arg1 videoDynamicRange:(int)arg2;
+- (instancetype)initWithRefreshRate:(float)arg1 videoDynamicRange:(int)arg2;
+
 @end
 
 @implementation StreamFrameViewController {
@@ -45,7 +44,6 @@
     StreamView *_streamView;
     UIScrollView *_scrollView;
     BOOL _userIsInteracting;
-    CGSize _keyboardSize;
     PlotMetrics _decodeMetrics;
     PlotMetrics _frameDropMetrics;
     PlotMetrics _frameQueueMetrics;
@@ -158,18 +156,18 @@
     [opQueue addOperation:_streamMan];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationWillResignActive:)
-                                                 name:UIApplicationWillResignActiveNotification
+                                             selector:@selector(sceneWillResignActive:)
+                                                 name:UISceneWillDeactivateNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(applicationDidBecomeActive:)
-                                                 name: UIApplicationDidBecomeActiveNotification
+                                             selector: @selector(sceneDidBecomeActive:)
+                                                 name: UISceneDidActivateNotification
                                                object: nil];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(applicationDidEnterBackground:)
-                                                 name: UIApplicationDidEnterBackgroundNotification
+                                             selector: @selector(sceneDidEnterBackground:)
+                                                 name: UISceneDidEnterBackgroundNotification
                                                object: nil];
     
     // Add StreamView directly in relative mode
@@ -276,8 +274,8 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
-// This will fire if the user opens control center or gets a low battery message
-- (void)applicationWillResignActive:(NSNotification *)notification {
+// This will fire if scene becomes inactive (maybe control center on tvOS but not sure this is relevant?)
+- (void)sceneWillResignActive:(NSNotification *)notification {
     if (_inactivityTimer != nil) {
         [_inactivityTimer invalidate];
     }
@@ -291,7 +289,7 @@
     _inactivityTimer = nil;
 }
 
-- (void)applicationDidBecomeActive:(NSNotification *)notification {
+- (void)sceneDidBecomeActive:(NSNotification *)notification {
     // Stop the background timer, since we're foregrounded again
     if (_inactivityTimer != nil) {
         Log(LOG_I, @"Stopping inactivity timer after becoming active again");
@@ -300,8 +298,8 @@
     }
 }
 
-// This fires when the home button is pressed
-- (void)applicationDidEnterBackground:(UIApplication *)application {
+// This fires when the scene enters the background (likely home screen)
+- (void)sceneDidEnterBackground:(NSNotification *)notification {
     Log(LOG_I, @"Terminating stream immediately for backgrounding");
 
     if (_inactivityTimer != nil) {
@@ -570,8 +568,7 @@
 
 - (void)applicationDidFinishSwitchingModes:(NSNotification *)notification {
     // Check the current refresh rate of the TV for a fractional NTSC rate such as 59.94
-    UIScreen *screen = [UIScreen mainScreen];
-
+    // UIScreen *screen = [UIScreen mainScreen];
     // XXX: I can see screen.currentMode.refreshRate in the debugger, but don't know how to access it :(
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -580,36 +577,27 @@
 }
 
 - (void) updatePreferredDisplayMode:(BOOL)streamActive {
-    if (@available(tvOS 11.2, *)) {
-        UIWindow* window = [[[UIApplication sharedApplication] delegate] window];
-        AVDisplayManager* displayManager = [window avDisplayManager];
-
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(applicationDidFinishSwitchingModes:)
-                                                     name: AVDisplayManagerModeSwitchEndNotification
-                                                   object: nil];
-
-        // This logic comes from Kodi and MrMC
-        if (streamActive) {
-            int dynamicRange;
-            
-            if (LiGetCurrentHostDisplayHdrMode()) {
-                dynamicRange = 2; // HDR10
-            }
-            else {
-                dynamicRange = 0; // SDR
-            }
-
-            float refreshRate = [_settings.framerate floatValue];
-            Log(LOG_I, @"Changing TV refresh rate to %f Hz %@", refreshRate, dynamicRange == 2 ? @"HDR" : @"SDR");
-            AVDisplayCriteria* displayCriteria = [[AVDisplayCriteria alloc] initWithRefreshRate:refreshRate
-                                                                              videoDynamicRange:dynamicRange];
-            displayManager.preferredDisplayCriteria = displayCriteria;
-        }
-        else {
-            // Switch back to the default display mode
-            displayManager.preferredDisplayCriteria = nil;
-        }
+    SceneDelegate *sceneDelegate = [SceneDelegate sharedSceneDelegate];
+    AVDisplayManager* displayManager = [sceneDelegate.window avDisplayManager];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidFinishSwitchingModes:)
+                                                 name:AVDisplayManagerModeSwitchEndNotification
+                                               object:nil];
+    
+    // This logic comes from Kodi and MrMC
+    if (streamActive) {
+        int dynamicRange = LiGetCurrentHostDisplayHdrMode() ? 2 : 0; // 2 for HDR10, 0 for SDR
+        
+        float refreshRate = [_settings.framerate floatValue];
+        Log(LOG_I, @"Changing TV refresh rate to %f Hz %@", refreshRate, dynamicRange == 2 ? @"HDR" : @"SDR");
+        AVDisplayCriteria* displayCriteria = [[AVDisplayCriteria alloc] initWithRefreshRate:refreshRate
+                                                                          videoDynamicRange:dynamicRange];
+        displayManager.preferredDisplayCriteria = displayCriteria;
+    }
+    else {
+        // Switch back to the default display mode
+        displayManager.preferredDisplayCriteria = nil;
     }
 }
 
@@ -638,10 +626,7 @@
 }
 
 - (void)userInteractionBegan {
-    // Disable hiding home bar when user is interacting.
-    // iOS will force it to be shown anyway, but it will
-    // also discard our edges deferring system gestures unless
-    // we willingly give up home bar hiding preference.
+    // Disable user interaction handling when user is interacting
     _userIsInteracting = YES;
 }
 

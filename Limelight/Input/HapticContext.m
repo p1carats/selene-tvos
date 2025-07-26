@@ -84,7 +84,7 @@
     }
 }
 
--(id) initWithGamepad:(GCController*)gamepad locality:(GCHapticsLocality)locality {
+-(instancetype) initWithGamepad:(GCController*)gamepad locality:(GCHapticsLocality)locality {
     if (gamepad.haptics == nil) {
         Log(LOG_W, @"Controller %d does not support haptics", gamepad.playerIndex);
         return nil;

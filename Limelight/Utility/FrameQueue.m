@@ -31,23 +31,9 @@
     static FrameQueue *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedInstance = [[super allocWithZone:NULL] _initSingleton];
+        sharedInstance = [[self alloc] _initSingleton];
     });
     return sharedInstance;
-}
-
-// Prevent others from using alloc/init directly
-+ (instancetype)allocWithZone:(struct _NSZone *)zone {
-    return [self sharedInstance];
-}
-
-// If someone tries to copy it, just return the same instance
-- (id)copyWithZone:(NSZone *)zone {
-    return self;
-}
-
-- (id)mutableCopyWithZone:(NSZone *)zone {
-    return self;
 }
 
 - (instancetype)_initSingleton {
@@ -181,7 +167,7 @@
 // enqueue that is a bit more flexixble, using the same 500ms queue size history method as moonlight-qt.
 - (int)enqueue:(Frame *)frame withSlackSize:(int)slack {
     os_unfair_lock_lock(&_lock);
-    CFTimeInterval now = CACurrentMediaTime();
+    // CFTimeInterval now = CACurrentMediaTime(); // unused ?
 
     // new data point for queue health
     [_queueSizeHistory addValue:(float)_count];

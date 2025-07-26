@@ -7,6 +7,7 @@
 //
 
 #import "LoadingFrameViewController.h"
+#import "SceneDelegate.h"
 #import "Logger.h"
 
 @implementation LoadingFrameViewController {
@@ -20,9 +21,8 @@
 }
 
 - (UIViewController*) activeViewController {
-    UIWindowScene *windowScene = (UIWindowScene *)[UIApplication sharedApplication].connectedScenes.anyObject;
-    UIWindow *keyWindow = windowScene.windows.firstObject;
-    UIViewController *topController = keyWindow.rootViewController;
+    SceneDelegate *sceneDelegate = [SceneDelegate sharedSceneDelegate];
+    UIViewController *topController = sceneDelegate.window.rootViewController;
     
     while (topController.presentedViewController) {
         topController = topController.presentedViewController;

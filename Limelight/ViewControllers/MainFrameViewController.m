@@ -11,6 +11,7 @@
 @import VideoToolbox;
 
 #import "MainFrameViewController.h"
+#import "SceneDelegate.h"
 #import "CertificateManager.h"
 #import "HttpManager.h"
 #import "Connection.h"
@@ -402,9 +403,8 @@ static NSMutableSet* hostList;
 }
 
 - (UIViewController*) activeViewController {
-    UIWindowScene *windowScene = (UIWindowScene *)[UIApplication sharedApplication].connectedScenes.anyObject;
-    UIWindow *keyWindow = windowScene.windows.firstObject;
-    UIViewController *topController = keyWindow.rootViewController;
+    SceneDelegate *sceneDelegate = [SceneDelegate sharedSceneDelegate];
+    UIViewController *topController = sceneDelegate.window.rootViewController;
 
     while (topController.presentedViewController) {
         topController = topController.presentedViewController;
@@ -439,7 +439,7 @@ static NSMutableSet* hostList;
             break;
     }
     
-    UIAlertController* longClickAlert = [UIAlertController alertControllerWithTitle:host.name message:message preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController* longClickAlert = [UIAlertController alertControllerWithTitle:host.name message:message preferredStyle:UIAlertControllerStyleAlert];
     if (host.state != StateOnline) {
         [longClickAlert addAction:[UIAlertAction actionWithTitle:@"Wake PC" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
             UIAlertController* wolAlert = [UIAlertController alertControllerWithTitle:@"Wake-On-LAN" message:@"" preferredStyle:UIAlertControllerStyleAlert];
@@ -655,7 +655,7 @@ static NSMutableSet* hostList;
     UIAlertController* alertController = [UIAlertController
                                           alertControllerWithTitle: app.name
                                           message:message
-                                          preferredStyle:UIAlertControllerStyleActionSheet];
+                                          preferredStyle:UIAlertControllerStyleAlert];
     
     [alertController addAction:[UIAlertAction
                                 actionWithTitle:currentApp == nil ? @"Launch App" : ([app.id isEqualToString:currentApp.id] ? @"Resume App" : @"Resume Running App") style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
@@ -798,15 +798,8 @@ static NSMutableSet* hostList;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-#if DEBUG
-    // Don't run the rest of the app when running unit tests
-    if (NSClassFromString(@"XCTest")) {
-        return;
-    }
-#endif
     
-    // The settings button will direct the user into the Settings app on tvOS
+    // The settings button will direct the user into the Settings app
     [_settingsButton setTarget:self];
     [_settingsButton setAction:@selector(openTvSettings:)];
     
@@ -847,7 +840,6 @@ static NSMutableSet* hostList;
     
     // This is the only way to get long press events on a UICollectionViewCell :(
     UILongPressGestureRecognizer* cellLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleCollectionViewLongPress:)];
-    cellLongPress.delaysTouchesBegan = YES;
     [self.collectionView addGestureRecognizer:cellLongPress];
     
     [self retrieveSavedHosts];
@@ -926,12 +918,12 @@ static NSMutableSet* hostList;
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(handleReturnToForeground)
-                                                 name: UIApplicationDidBecomeActiveNotification
+                                                 name: UISceneDidActivateNotification
                                                object: nil];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(handleEnterBackground)
-                                                 name: UIApplicationWillResignActiveNotification
+                                                 name: UISceneWillDeactivateNotification
                                                object: nil];
 }
 
@@ -1012,7 +1004,9 @@ static NSMutableSet* hostList;
 
 - (void)updateHosts {
     Log(LOG_I, @"Updating hosts...");
-    [[hostScrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    for (UIView *view in hostScrollView.subviews) {
+        [view removeFromSuperview];
+    }
     UIComputerView* addComp = [[UIComputerView alloc] initForAddWithCallback:self];
     UIComputerView* compView;
     float prevEdge = -1;

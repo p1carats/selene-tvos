@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8F2FCAF62E2D3B5B00F8282B /* GameStreamKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8F2FCAF52E2D3B5B00F8282B /* GameStreamKit */; };
-		9865DC36213287F30005B9B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB290D0319B2C406004C83CF /* AppDelegate.m */; };
 		F74BEFA42C1A80E400224667 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = F74BEFA32C1A80E400224667 /* OpenSSL */; };
 		FB1A67B1213245D500507771 /* HttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89461019F646E200339C8A /* HttpManager.m */; };
 		FB1A67B3213245D500507771 /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9AFD361A7E02DB00872C98 /* HttpRequest.m */; };
@@ -26,33 +25,18 @@
 		FB1A67CB213245EA00507771 /* ConnectionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1F5A06206436B20037755F /* ConnectionHelper.m */; };
 		FB1A67E32132498A00507771 /* Selene.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FB290D0519B2C406004C83CF /* Selene.xcdatamodeld */; };
 		FB1A67E821324DE300507771 /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB8946EA19F6AFB800339C8A /* libopus.a */; };
-		FB1A681E21328A1B00507771 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB290D0819B2C406004C83CF /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8F4907FA2E2D4ABA008B1D7D /* Selene.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Selene.xcdatamodel; sourceTree = "<group>"; };
-		A13F90582DFC3C5C0010BB0F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		A13F905C2DFC3C710010BB0F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/AppleTVOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		A1EBD2F52DD94CE800F3BF4B /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
-		A1EBD2F62DD94CE900F3BF4B /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
-		A1EBD2F92DD94CFC00F3BF4B /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS18.5.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = DEVELOPER_DIR; };
-		A1EBD2FA2DD94CFC00F3BF4B /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS18.5.sdk/System/Library/Frameworks/Metal.framework; sourceTree = DEVELOPER_DIR; };
 		D4746EEA1CBC740C006FB401 /* Selene-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Selene-Bridging-Header.h"; sourceTree = "<group>"; };
 		DC1F5A05206436B10037755F /* ConnectionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionHelper.h; sourceTree = "<group>"; };
 		DC1F5A06206436B20037755F /* ConnectionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionHelper.m; sourceTree = "<group>"; };
 		FB1A67532132419700507771 /* Selene.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Selene.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FB290CF119B2C406004C83CF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		FB290CF319B2C406004C83CF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		FB290CF519B2C406004C83CF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		FB290CF719B2C406004C83CF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		FB290D0219B2C406004C83CF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		FB290D0319B2C406004C83CF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		FB290D0819B2C406004C83CF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FB4678F81A55FFAD00377732 /* DiscoveryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoveryManager.h; sourceTree = "<group>"; };
 		FB4678F91A55FFAD00377732 /* DiscoveryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoveryManager.m; sourceTree = "<group>"; };
 		FB4678FD1A565DAC00377732 /* WakeOnLanManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WakeOnLanManager.h; sourceTree = "<group>"; };
 		FB4678FE1A565DAC00377732 /* WakeOnLanManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WakeOnLanManager.m; sourceTree = "<group>"; };
-		FB4679001A57048000377732 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		FB6549541A57907E001C8F39 /* DiscoveryWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoveryWorker.h; sourceTree = "<group>"; };
 		FB6549551A57907E001C8F39 /* DiscoveryWorker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoveryWorker.m; sourceTree = "<group>"; };
 		FB89460F19F646E200339C8A /* HttpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpManager.h; sourceTree = "<group>"; };
@@ -204,6 +188,11 @@
 			path = Selene;
 			sourceTree = "<group>";
 		};
+		8F37BEA22E3533EB002284AA /* App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = App;
+			sourceTree = "<group>";
+		};
 		8F4908052E2D4C12008B1D7D /* Database */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Database;
@@ -251,18 +240,7 @@
 		FB290CF019B2C406004C83CF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A13F90582DFC3C5C0010BB0F /* XCTest.framework */,
-				A13F905C2DFC3C710010BB0F /* XCTest.framework */,
-				A1EBD2F52DD94CE800F3BF4B /* Metal.framework */,
-				A1EBD2FA2DD94CFC00F3BF4B /* Metal.framework */,
-				A1EBD2F62DD94CE900F3BF4B /* MetalKit.framework */,
-				A1EBD2F92DD94CFC00F3BF4B /* MetalKit.framework */,
-				FB4679001A57048000377732 /* CoreFoundation.framework */,
 				FB89468F19F6AFB800339C8A /* libs */,
-				FB290CF119B2C406004C83CF /* Foundation.framework */,
-				FB290CF319B2C406004C83CF /* CoreGraphics.framework */,
-				FB290CF519B2C406004C83CF /* UIKit.framework */,
-				FB290CF719B2C406004C83CF /* CoreData.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -270,7 +248,7 @@
 		FB290CF919B2C406004C83CF /* Limelight */ = {
 			isa = PBXGroup;
 			children = (
-				D4746EEA1CBC740C006FB401 /* Selene-Bridging-Header.h */,
+				8F37BEA22E3533EB002284AA /* App */,
 				8F2FCAAE2E2D399900F8282B /* Crypto */,
 				8F4908052E2D4C12008B1D7D /* Database */,
 				8F2FCB062E2D49B600F8282B /* Input */,
@@ -281,9 +259,7 @@
 				8F2FCAE02E2D39A800F8282B /* Utility */,
 				8FD33E8F2E2D90C8008D0A29 /* Views */,
 				8F2FCAEF2E2D39AC00F8282B /* ViewControllers */,
-				FB290D0219B2C406004C83CF /* AppDelegate.h */,
-				FB290D0319B2C406004C83CF /* AppDelegate.m */,
-				FB290D0819B2C406004C83CF /* Images.xcassets */,
+				D4746EEA1CBC740C006FB401 /* Selene-Bridging-Header.h */,
 				FB290D0519B2C406004C83CF /* Selene.xcdatamodeld */,
 			);
 			path = Limelight;
@@ -411,6 +387,7 @@
 				8F2FCABC2E2D39A000F8282B /* Metal */,
 				8F2FCB062E2D49B600F8282B /* Input */,
 				8F2FCB152E2D49BA00F8282B /* Selene */,
+				8F37BEA22E3533EB002284AA /* App */,
 				8F4908052E2D4C12008B1D7D /* Database */,
 				8FD33E8F2E2D90C8008D0A29 /* Views */,
 			);
@@ -476,7 +453,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB1A681E21328A1B00507771 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,7 +463,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9865DC36213287F30005B9B9 /* AppDelegate.m in Sources */,
 				FB1A67E32132498A00507771 /* Selene.xcdatamodeld in Sources */,
 				FB1A67C3213245EA00507771 /* AppAssetManager.m in Sources */,
 				FB1A67C5213245EA00507771 /* AppAssetRetriever.m in Sources */,
