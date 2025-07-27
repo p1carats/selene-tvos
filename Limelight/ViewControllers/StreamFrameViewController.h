@@ -12,6 +12,8 @@
 
 #import "ConnectionCallbacks.h"
 #import "ControllerSupport.h"
+#import "MouseSupport.h"
+#import "KeyboardSupport.h"
 #import "StreamView.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -20,11 +22,13 @@ NS_ASSUME_NONNULL_BEGIN
 @class MetalViewController;
 @class GraphRenderer;
 
-@interface StreamFrameViewController : GCEventViewController <ConnectionCallbacks, ControllerSupportDelegate, UserInteractionDelegate, UIScrollViewDelegate>
+@interface StreamFrameViewController : GCEventViewController <ConnectionCallbacks, ControllerSupportDelegate, MouseSupportDelegate, KeyboardSupportDelegate, UserInteractionDelegate, UIScrollViewDelegate>
 
 @property (nonatomic) StreamConfiguration* streamConfig;
 @property (nonatomic, strong) MetalViewController *metalViewController;
 @property (nonatomic, strong) GraphRenderer *graphRenderer;
+@property (nonatomic, strong) MouseSupport *mouseSupport;
+@property (nonatomic, strong) KeyboardSupport *keyboardSupport;
 
 -(void)updatePreferredDisplayMode:(BOOL)streamActive;
 

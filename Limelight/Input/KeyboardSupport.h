@@ -1,27 +1,36 @@
 //
 //  KeyboardSupport.h
-//  Moonlight
+//  Selene
 //
-//  Created by Diego Waxemberg on 8/25/18.
-//  Copyright © 2018 Moonlight Game Streaming Project. All rights reserved.
+//  Created by Noé Barlet on 27/07/2025.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
 //
 
 @import Foundation;
-@import UIKit;
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Delegate protocol for keyboard presence notifications
+@protocol KeyboardSupportDelegate <NSObject>
+
+- (void)keyboardPresenceChanged;
+
+@end
+
 @interface KeyboardSupport : NSObject
 
-struct KeyEvent {
-    u_short keycode;
-    u_short modifierKeycode;
-    u_char modifier;
-};
+@property (nonatomic, weak) id<KeyboardSupportDelegate> delegate;
 
-+ (BOOL)sendKeyEventForPress:(UIPress*)press down:(BOOL)down;
-+ (BOOL)sendKeyEvent:(UIKey*)key down:(BOOL)down;
-+ (struct KeyEvent) translateKeyEvent:(unichar) inputChar withModifierFlags:(UIKeyModifierFlags)modifierFlags;
+// Initialization
+- (instancetype)init;
+
+// Control methods
+- (void)startKeyboardSupport;
+- (void)stopKeyboardSupport;
+- (void)cleanup;
+
+// Status checking
++ (BOOL)hasConnectedKeyboard;
 
 @end
 

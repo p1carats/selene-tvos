@@ -453,7 +453,7 @@ void ClLogMessage(const char* format, ...)
 
 void ClRumble(unsigned short controllerNumber, unsigned short lowFreqMotor, unsigned short highFreqMotor)
 {
-    [_callbacks rumble:controllerNumber lowFreqMotor:lowFreqMotor highFreqMotor:highFreqMotor];
+    [_callbacks rumbleController:controllerNumber lowFreqMotor:lowFreqMotor highFreqMotor:highFreqMotor];
 }
 
 void ClConnectionStatusUpdate(int status)
@@ -469,7 +469,7 @@ void ClSetHdrMode(bool enabled)
 
 void ClRumbleTriggers(uint16_t controllerNumber, uint16_t leftTriggerMotor, uint16_t rightTriggerMotor)
 {
-    [_callbacks rumbleTriggers:controllerNumber leftTrigger:leftTriggerMotor rightTrigger:rightTriggerMotor];
+    [_callbacks rumbleTriggersForController:controllerNumber leftTrigger:leftTriggerMotor rightTrigger:rightTriggerMotor];
 }
 
 void ClSetMotionEventState(uint16_t controllerNumber, uint8_t motionType, uint16_t reportRateHz)
@@ -479,7 +479,7 @@ void ClSetMotionEventState(uint16_t controllerNumber, uint8_t motionType, uint16
 
 void ClSetControllerLED(uint16_t controllerNumber, uint8_t r, uint8_t g, uint8_t b)
 {
-    [_callbacks setControllerLed:controllerNumber r:r g:g b:b];
+    [_callbacks setControllerLED:controllerNumber r:r g:g b:b];
 }
 
 -(void) terminate

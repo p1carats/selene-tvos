@@ -105,6 +105,10 @@
     _spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 - _stageLabel.frame.size.height - _spinner.frame.size.height);
     
     _controllerSupport = [[ControllerSupport alloc] initWithConfig:self.streamConfig delegate:self];
+    self.mouseSupport = [[MouseSupport alloc] init];
+    self.mouseSupport.delegate = self;
+    self.keyboardSupport = [[KeyboardSupport alloc] init];
+    self.keyboardSupport.delegate = self;
     _inactivityTimer = nil;
     
     if (!_menuTapGestureRecognizer || !_menuDoubleTapGestureRecognizer || !_playPauseTapGestureRecognizer || !_playPauseDoubleTapGestureRecognizer) {
@@ -134,6 +138,12 @@
     [_streamView setupStreamView:_controllerSupport
              interactionDelegate:self
                           config:self.streamConfig];
+    
+    // Start mouse support after stream view is set up
+    [self.mouseSupport startMouseSupport];
+    
+    // Start keyboard support
+    [self.keyboardSupport startKeyboardSupport];
 
     _tipLabel = [[UILabel alloc] init];
     [_tipLabel setUserInteractionEnabled:NO];
@@ -201,6 +211,8 @@
     // Only cleanup when we're being destroyed
     if (parent == nil) {
         [_controllerSupport cleanup];
+        [self.mouseSupport stopMouseSupport];
+        [self.keyboardSupport stopKeyboardSupport];
         [UIApplication sharedApplication].idleTimerDisabled = NO;
         [_streamMan stopStream];
         if (_inactivityTimer != nil) {
@@ -511,16 +523,16 @@
     });
 }
 
-- (void)rumble:(unsigned short)controllerNumber lowFreqMotor:(unsigned short)lowFreqMotor highFreqMotor:(unsigned short)highFreqMotor {
+- (void)rumbleController:(unsigned short)controllerNumber lowFreqMotor:(unsigned short)lowFreqMotor highFreqMotor:(unsigned short)highFreqMotor {
     Log(LOG_I, @"Rumble on gamepad %d: %04x %04x", controllerNumber, lowFreqMotor, highFreqMotor);
     
-    [_controllerSupport rumble:controllerNumber lowFreqMotor:lowFreqMotor highFreqMotor:highFreqMotor];
+    [_controllerSupport rumbleController:controllerNumber lowFreqMotor:lowFreqMotor highFreqMotor:highFreqMotor];
 }
 
-- (void) rumbleTriggers:(uint16_t)controllerNumber leftTrigger:(uint16_t)leftTrigger rightTrigger:(uint16_t)rightTrigger {
+- (void) rumbleTriggersForController:(uint16_t)controllerNumber leftTrigger:(uint16_t)leftTrigger rightTrigger:(uint16_t)rightTrigger {
     Log(LOG_I, @"Trigger rumble on gamepad %d: %04x %04x", controllerNumber, leftTrigger, rightTrigger);
     
-    [_controllerSupport rumbleTriggers:controllerNumber leftTrigger:leftTrigger rightTrigger:rightTrigger];
+    [_controllerSupport rumbleTriggersForController:controllerNumber leftTrigger:leftTrigger rightTrigger:rightTrigger];
 }
 
 - (void) setMotionEventState:(uint16_t)controllerNumber motionType:(uint8_t)motionType reportRateHz:(uint16_t)reportRateHz {
@@ -529,10 +541,10 @@
     [_controllerSupport setMotionEventState:controllerNumber motionType:motionType reportRateHz:reportRateHz];
 }
 
-- (void) setControllerLed:(uint16_t)controllerNumber r:(uint8_t)r g:(uint8_t)g b:(uint8_t)b {
+- (void) setControllerLED:(uint16_t)controllerNumber r:(uint8_t)r g:(uint8_t)g b:(uint8_t)b {
     Log(LOG_I, @"Set controller LED on gamepad %d: l%02x%02x%02x", controllerNumber, r, g, b);
     
-    [_controllerSupport setControllerLed:controllerNumber r:r g:g b:b];
+    [_controllerSupport setControllerLED:controllerNumber r:r g:g b:b];
 }
 
 - (void)connectionStatusUpdate:(int)status {
@@ -618,6 +630,21 @@
     Log(LOG_I, @"Gamepad combo requested stream exit");
     
     [self returnToMainFrame];
+}
+
+- (void)gamepadPresenceChanged {
+    Log(LOG_I, @"Gamepad presence changed");
+    // Handle gamepad connection/disconnection if needed
+}
+
+- (void)mousePresenceChanged {
+    Log(LOG_I, @"Mouse presence changed");
+    // Handle mouse connection/disconnection if needed
+}
+
+- (void)keyboardPresenceChanged {
+    Log(LOG_I, @"Keyboard presence changed");
+    // Handle keyboard connection/disconnection if needed
 }
 
 - (void)userInteractionBegan {

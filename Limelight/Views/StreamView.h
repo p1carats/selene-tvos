@@ -9,8 +9,6 @@
 @import Foundation;
 @import UIKit;
 
-#import "Selene-Swift.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @class ControllerSupport;
@@ -24,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface StreamView : UIView <X1KitMouseDelegate, UITextFieldDelegate>
+@interface StreamView : UIView
 
 @property (nonatomic) RemoteTouchHandler* touchHandler;
 

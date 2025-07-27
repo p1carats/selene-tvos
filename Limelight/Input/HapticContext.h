@@ -1,24 +1,36 @@
 //
 //  HapticContext.h
-//  Moonlight
+//  Selene
 //
-//  Created by Cameron Gutman on 9/17/20.
-//  Copyright © 2020 Moonlight Game Streaming Project. All rights reserved.
+//  Created by Noé Barlet on 27/07/2025.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
 //
 
+@import Foundation;
+@import CoreHaptics;
 @import GameController;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HapticContext : NSObject
 
--(void)setMotorAmplitude:(unsigned short)amplitude;
--(void)cleanup;
+// Core functionality
+- (void)setMotorAmplitude:(uint16_t)amplitude;
+- (void)cleanup;
 
-+(HapticContext*) createContextForHighFreqMotor:(GCController*)gamepad;
-+(HapticContext*) createContextForLowFreqMotor:(GCController*)gamepad;
-+(HapticContext*) createContextForLeftTrigger:(GCController*)gamepad;
-+(HapticContext*) createContextForRightTrigger:(GCController*)gamepad;
+// Factory methods for different haptic types
++ (nullable HapticContext *)createContextForHighFreqMotor:(GCController *)gamepad;
++ (nullable HapticContext *)createContextForLowFreqMotor:(GCController *)gamepad;
++ (nullable HapticContext *)createContextForLeftTrigger:(GCController *)gamepad;
++ (nullable HapticContext *)createContextForRightTrigger:(GCController *)gamepad;
+
+// Convenience methods
++ (nullable HapticContext *)createContextForGamepad:(GCController *)gamepad
+                                           locality:(GCHapticsLocality)locality;
+
+// Batch operations
+- (void)setMotorAmplitudeSmooth:(uint16_t)amplitude duration:(NSTimeInterval)duration;
+- (void)stopWithFadeOut:(NSTimeInterval)fadeOutTime;
 
 @end
 

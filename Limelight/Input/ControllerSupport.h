@@ -1,9 +1,9 @@
 //
 //  ControllerSupport.h
-//  Moonlight
+//  Selene
 //
-//  Created by Cameron Gutman on 10/20/14.
-//  Copyright (c) 2014 Moonlight Stream. All rights reserved.
+//  Created by Noé Barlet on 27/07/2025.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
 //
 
 @import Foundation;
@@ -15,38 +15,51 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol ControllerSupportDelegate <NSObject>
 
-- (void) streamExitRequested;
+- (void)gamepadPresenceChanged;
+- (void)streamExitRequested;
 
 @end
 
 @interface ControllerSupport : NSObject
 
--(instancetype) initWithConfig:(StreamConfiguration*)streamConfig delegate:(id<ControllerSupportDelegate>)delegate;
--(void) connectionEstablished;
+// Initialization
+- (instancetype)initWithConfig:(StreamConfiguration *)streamConfig 
+                      delegate:(id<ControllerSupportDelegate>)delegate;
 
--(void) cleanup;
+// Connection management
+- (void)connectionEstablished;
+- (void)cleanup;
 
--(void) updateLeftStick:(Controller*)controller x:(short)x y:(short)y;
--(void) updateRightStick:(Controller*)controller x:(short)x y:(short)y;
+// Input processing
+- (void)updateController:(Controller *)controller
+               leftStick:(CGPoint)leftStick 
+              rightStick:(CGPoint)rightStick 
+                triggers:(CGPoint)triggers 
+                 buttons:(uint32_t)buttons;
 
--(void) updateLeftTrigger:(Controller*)controller left:(unsigned char)left;
--(void) updateRightTrigger:(Controller*)controller right:(unsigned char)right;
--(void) updateTriggers:(Controller*)controller left:(unsigned char)left right:(unsigned char)right;
+// Haptic feedback
+- (void)rumbleController:(uint16_t)controllerNumber
+            lowFreqMotor:(uint16_t)lowFreqMotor 
+           highFreqMotor:(uint16_t)highFreqMotor;
 
--(void) updateButtonFlags:(Controller*)controller flags:(int)flags;
--(void) setButtonFlag:(Controller*)controller flags:(int)flags;
--(void) clearButtonFlag:(Controller*)controller flags:(int)flags;
+- (void)rumbleTriggersForController:(uint16_t)controllerNumber 
+                        leftTrigger:(uint16_t)leftTrigger 
+                       rightTrigger:(uint16_t)rightTrigger;
 
--(void) updateFinished:(Controller*)controller;
+// Advanced features
+- (void)setMotionEventState:(uint16_t)controllerNumber
+                 motionType:(uint8_t)motionType 
+               reportRateHz:(uint16_t)reportRateHz;
 
--(void) rumble:(unsigned short)controllerNumber lowFreqMotor:(unsigned short)lowFreqMotor highFreqMotor:(unsigned short)highFreqMotor;
--(void) rumbleTriggers:(uint16_t)controllerNumber leftTrigger:(uint16_t)leftTrigger rightTrigger:(uint16_t)rightTrigger;
--(void) setMotionEventState:(uint16_t)controllerNumber motionType:(uint8_t)motionType reportRateHz:(uint16_t)reportRateHz;
--(void) setControllerLed:(uint16_t)controllerNumber r:(uint8_t)r g:(uint8_t)g b:(uint8_t)b;
+- (void)setControllerLED:(uint16_t)controllerNumber 
+                       r:(uint8_t)r 
+                       g:(uint8_t)g 
+                       b:(uint8_t)b;
 
-+(int) getConnectedGamepadMask:(StreamConfiguration*)streamConfig;
-
--(NSUInteger) getConnectedGamepadCount;
+// Status queries
+- (NSUInteger)connectedGamepadCount;
++ (int)connectedGamepadMask:(StreamConfiguration *)streamConfig;
++ (int)connectedGamepadCount;
 
 @end
 

@@ -1,56 +1,66 @@
 //
 //  Controller.h
-//  Moonlight
+//  Selene
 //
-//  Created by Cameron Gutman on 2/11/19.
-//  Copyright © 2019 Moonlight Game Streaming Project. All rights reserved.
+//  Created by Noé Barlet on 27/07/2025.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
 //
 
 @import Foundation;
 @import GameController;
+@import CoreHaptics;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class HapticContext;
 
-@interface Controller : NSObject
-
 typedef struct {
     float lastX;
     float lastY;
-} controller_touch_context_t;
+} ControllerTouchContext;
 
-@property (nullable, nonatomic, strong) GCController* gamepad;
-@property (nonatomic) int playerIndex;
-@property (nonatomic) int lastButtonFlags;
-@property (nonatomic) int emulatingButtonFlags;
-@property (nonatomic) int supportedEmulationFlags;
-@property (nonatomic) unsigned char lastLeftTrigger;
-@property (nonatomic) unsigned char lastRightTrigger;
-@property (nonatomic) short lastLeftStickX;
-@property (nonatomic) short lastLeftStickY;
-@property (nonatomic) short lastRightStickX;
-@property (nonatomic) short lastRightStickY;
+@interface Controller : NSObject
 
-@property (nonatomic)                   controller_touch_context_t primaryTouch;
-@property (nonatomic)                   controller_touch_context_t secondaryTouch;
+// Core properties
+@property (nonatomic, strong, nullable) GCController *gamepad;
+@property (nonatomic, assign) NSInteger playerIndex;
 
-@property (nonatomic)                   HapticContext* _Nullable lowFreqMotor;
-@property (nonatomic)                   HapticContext* _Nullable highFreqMotor;
-@property (nonatomic)                   HapticContext* _Nullable leftTriggerMotor;
-@property (nonatomic)                   HapticContext* _Nullable rightTriggerMotor;
+// Input state
+@property (nonatomic, assign) uint32_t lastButtonFlags;
+@property (nonatomic, assign) uint8_t lastLeftTrigger;
+@property (nonatomic, assign) uint8_t lastRightTrigger;
+@property (nonatomic, assign) int16_t lastLeftStickX;
+@property (nonatomic, assign) int16_t lastLeftStickY;
+@property (nonatomic, assign) int16_t lastRightStickX;
+@property (nonatomic, assign) int16_t lastRightStickY;
 
-@property (nonatomic)                   NSTimer* _Nullable accelTimer;
-@property (nonatomic)                   GCAcceleration lastAccelSample;
-@property (nonatomic)                   NSTimer* _Nullable gyroTimer;
-@property (nonatomic)                   GCRotationRate lastGyroSample;
+// Touch state
+@property (nonatomic, assign) ControllerTouchContext primaryTouch;
+@property (nonatomic, assign) ControllerTouchContext secondaryTouch;
 
-@property (nonatomic)                   NSTimer* _Nullable batteryTimer;
-@property (nonatomic)                   GCDeviceBatteryState lastBatteryState;
-@property (nonatomic)                   float lastBatteryLevel;
+// Haptic feedback
+@property (nonatomic, strong, nullable) HapticContext *lowFreqMotor;
+@property (nonatomic, strong, nullable) HapticContext *highFreqMotor;
+@property (nonatomic, strong, nullable) HapticContext *leftTriggerMotor;
+@property (nonatomic, strong, nullable) HapticContext *rightTriggerMotor;
 
-@property (nonatomic)                   BOOL reportedArrival;
-@property (nonatomic)                   Controller* _Nullable mergedWithController;
+// Motion sensors
+@property (nonatomic, strong, nullable) NSTimer *accelTimer;
+@property (nonatomic, assign) GCAcceleration lastAccelSample;
+@property (nonatomic, strong, nullable) NSTimer *gyroTimer;
+@property (nonatomic, assign) GCRotationRate lastGyroSample;
+
+// Battery monitoring
+@property (nonatomic, strong, nullable) NSTimer *batteryTimer;
+@property (nonatomic, assign) GCDeviceBatteryState lastBatteryState;
+@property (nonatomic, assign) float lastBatteryLevel;
+
+// Status tracking
+@property (nonatomic, assign) BOOL reportedArrival;
+
+// Convenience methods
+- (void)resetInputState;
+- (void)cleanup;
 
 @end
 

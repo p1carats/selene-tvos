@@ -580,11 +580,7 @@ static NSMutableSet* hostList;
     _streamConfig.bitRate = [streamSettings.bitrate intValue];
     _streamConfig.optimizeGameSettings = streamSettings.optimizeGames;
     _streamConfig.playAudioOnPC = streamSettings.playAudioOnPC;
-    _streamConfig.swapABXYButtons = streamSettings.swapABXYButtons;
-
-    // multiController must be set before calling getConnectedGamepadMask
-    _streamConfig.multiController = streamSettings.multiController;
-    _streamConfig.gamepadMask = [ControllerSupport getConnectedGamepadMask:_streamConfig];
+    _streamConfig.gamepadMask = [ControllerSupport connectedGamepadMask:_streamConfig];
 
     // Probe for supported channel configurations
     int physicalOutputChannels = (int)[AVAudioSession sharedInstance].maximumOutputNumberOfChannels;

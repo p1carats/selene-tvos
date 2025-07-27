@@ -1,452 +1,245 @@
 //
 //  KeyboardSupport.m
-//  Moonlight
+//  Selene
 //
-//  Created by Diego Waxemberg on 8/25/18.
-//  Copyright © 2018 Moonlight Game Streaming Project. All rights reserved.
+//  Created by Noé Barlet on 27/07/2025.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
 //
 
+@import GameController;
 @import GameStreamKit;
 
 #import "KeyboardSupport.h"
+#import "Logger.h"
+
+@interface KeyboardSupport ()
+
+@property (nonatomic, strong) id gcKeyboardConnectObserver;
+@property (nonatomic, strong) id gcKeyboardDisconnectObserver;
+
+@end
 
 @implementation KeyboardSupport
 
-+ (BOOL)sendKeyEventForPress:(UIPress*)press down:(BOOL)down {
-    if (press.key != nil) {
-        return [KeyboardSupport sendKeyEvent:press.key down:down];
-    }
-    else {
-        short keyCode;
+#pragma mark - Lifecycle
 
-        switch (press.type) {
-            case UIPressTypeUpArrow:
-                keyCode = 0x26;
-                break;
-            case UIPressTypeDownArrow:
-                keyCode = 0x28;
-                break;
-            case UIPressTypeLeftArrow:
-                keyCode = 0x25;
-                break;
-            case UIPressTypeRightArrow:
-                keyCode = 0x27;
-                break;
-            default:
-                // Unhandled press type
-                return NO;
-        }
-        
-        LiSendKeyboardEvent(0x8000 | keyCode,
-                            down ? KEY_ACTION_DOWN : KEY_ACTION_UP,
-                            0);
-        
-        return YES;
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        Log(LOG_I, @"KeyboardSupport initialized");
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [self cleanup];
+}
+
+#pragma mark - Public Methods
+
+- (void)startKeyboardSupport {
+    Log(LOG_I, @"Starting modern GameController keyboard support");
+    
+    [self setupBluetoothKeyboardSupport];
+    
+    if (GCKeyboard.coalescedKeyboard) {
+        [self registerKeyboardCallbacks:GCKeyboard.coalescedKeyboard];
     }
 }
 
-+ (BOOL)sendKeyEvent:(UIKey*)key down:(BOOL)down {
-    char modifierFlags = 0;
-    short keyCode = 0;
+- (void)stopKeyboardSupport {
+    Log(LOG_I, @"Stopping keyboard support");
+    [self cleanup];
+}
+
+- (void)cleanup {
+    [self cleanupBluetoothKeyboardSupport];
+    if (GCKeyboard.coalescedKeyboard) {
+        [self unregisterKeyboardCallbacks:GCKeyboard.coalescedKeyboard];
+    }
+}
+
++ (BOOL)hasConnectedKeyboard {
+    // Check for paired Bluetooth keyboards
+    return GCKeyboard.coalescedKeyboard != nil;
+}
+
+#pragma mark - Keyboard Support
+
+- (void)setupBluetoothKeyboardSupport {
+    // Setup connection observers
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     
-    if (key.modifierFlags & UIKeyModifierShift) {
-        modifierFlags |= MODIFIER_SHIFT;
+    __weak typeof(self) weakSelf = self;
+    
+    _gcKeyboardConnectObserver = [center addObserverForName:GCKeyboardDidConnectNotification
+                                                     object:nil
+                                                      queue:mainQueue
+                                                 usingBlock:^(NSNotification *note) {
+        [weakSelf handleBluetoothKeyboardConnected:note.object];
+    }];
+    
+    _gcKeyboardDisconnectObserver = [center addObserverForName:GCKeyboardDidDisconnectNotification
+                                                        object:nil
+                                                         queue:mainQueue
+                                                    usingBlock:^(NSNotification *note) {
+        [weakSelf handleBluetoothKeyboardDisconnected:note.object];
+    }];
+    
+    Log(LOG_I, @"Bluetooth Keyboard support setup complete - Keyboard present: %@", 
+        GCKeyboard.coalescedKeyboard ? @"YES" : @"NO");
+}
+
+- (void)cleanupBluetoothKeyboardSupport {
+    // Remove observers
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    if (_gcKeyboardConnectObserver) {
+        [center removeObserver:_gcKeyboardConnectObserver];
+        _gcKeyboardConnectObserver = nil;
     }
-    if (key.modifierFlags & UIKeyModifierAlternate) {
-        modifierFlags |= MODIFIER_ALT;
+    if (_gcKeyboardDisconnectObserver) {
+        [center removeObserver:_gcKeyboardDisconnectObserver];
+        _gcKeyboardDisconnectObserver = nil;
     }
-    if (key.modifierFlags & UIKeyModifierControl) {
-        modifierFlags |= MODIFIER_CTRL;
-    }
-    if (key.modifierFlags & UIKeyModifierCommand) {
-        modifierFlags |= MODIFIER_META;
+}
+
+- (void)handleBluetoothKeyboardConnected:(GCKeyboard *)keyboard {
+    Log(LOG_I, @"Bluetooth Keyboard connected");
+    
+    [self registerKeyboardCallbacks:keyboard];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate keyboardPresenceChanged];
+    });
+}
+
+- (void)handleBluetoothKeyboardDisconnected:(GCKeyboard *)keyboard {
+    Log(LOG_I, @"Bluetooth Keyboard disconnected");
+    
+    [self unregisterKeyboardCallbacks:keyboard];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate keyboardPresenceChanged];
+    });
+}
+
+#pragma mark - Input Handling
+
+- (void)registerKeyboardCallbacks:(GCKeyboard *)keyboard {
+    __weak typeof(self) weakSelf = self;
+    
+    keyboard.keyboardInput.keyChangedHandler = ^(GCKeyboardInput *keyboardInput, GCControllerButtonInput *key, GCKeyCode keyCode, BOOL pressed) {
+        typeof(self) strongSelf = weakSelf;
+        if (!strongSelf) return;
+        
+        // Simple modifier detection - check common modifier keys
+        NSUInteger modifierFlags = 0;
+        if (keyboardInput.buttons[@"Key_LeftShift"].isPressed || keyboardInput.buttons[@"Key_RightShift"].isPressed) {
+            modifierFlags |= (1 << 1); // Shift
+        }
+        if (keyboardInput.buttons[@"Key_LeftControl"].isPressed || keyboardInput.buttons[@"Key_RightControl"].isPressed) {
+            modifierFlags |= (1 << 2); // Control
+        }
+        if (keyboardInput.buttons[@"Key_LeftAlt"].isPressed || keyboardInput.buttons[@"Key_RightAlt"].isPressed) {
+            modifierFlags |= (1 << 3); // Alt
+        }
+        if (keyboardInput.buttons[@"Key_LeftGUI"].isPressed || keyboardInput.buttons[@"Key_RightGUI"].isPressed) {
+            modifierFlags |= (1 << 4); // Cmd/GUI
+        }
+        
+        [strongSelf handleKeyEvent:keyCode pressed:pressed modifierFlags:modifierFlags];
+    };
+    
+    Log(LOG_I, @"Modern GCKeyboard callbacks registered");
+}
+
+- (void)unregisterKeyboardCallbacks:(GCKeyboard *)keyboard {
+    keyboard.keyboardInput.keyChangedHandler = nil;
+    
+    Log(LOG_I, @"GCKeyboard callbacks unregistered");
+}
+
+- (void)handleKeyEvent:(GCKeyCode)keyCode pressed:(BOOL)pressed modifierFlags:(NSUInteger)modifierFlags {
+    // Convert modern GCKeyCode to Win32 VK code
+    short win32KeyCode = [self win32KeyCodeFromGCKeyCode:keyCode];
+    if (win32KeyCode == 0) {
+        Log(LOG_W, @"Unhandled GCKeyCode: %ld", (long)keyCode);
+        return;
     }
     
-    // This converts UIKeyboardHIDUsage values to Win32 VK_* values
+    // Convert modifier flags to legacy modifier flags
+    char legacyModifierFlags = 0;
+    // CapsLock (bit 0) is handled differently, don't include in modifier flags
+    if (modifierFlags & (1 << 1)) { // Shift
+        legacyModifierFlags |= MODIFIER_SHIFT;
+    }
+    if (modifierFlags & (1 << 2)) { // Control
+        legacyModifierFlags |= MODIFIER_CTRL;
+    }
+    if (modifierFlags & (1 << 3)) { // Alt/Option
+        legacyModifierFlags |= MODIFIER_ALT;
+    }
+    if (modifierFlags & (1 << 4)) { // Cmd/GUI
+        legacyModifierFlags |= MODIFIER_META;
+    }
+    
+    // Send keyboard event
+    LiSendKeyboardEvent(0x8000 | win32KeyCode,
+                        pressed ? KEY_ACTION_DOWN : KEY_ACTION_UP,
+                        legacyModifierFlags);
+}
+
+#pragma mark - GCKeyCode to Win32 VK Mapping
+
+- (short)win32KeyCodeFromGCKeyCode:(GCKeyCode)keyCode {
+    // Modern GCKeyCode to Win32 VK_* mapping
     // https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
-    if (key.keyCode >= UIKeyboardHIDUsageKeyboardA &&
-        key.keyCode <= UIKeyboardHIDUsageKeyboardZ) {
-        keyCode = (key.keyCode - UIKeyboardHIDUsageKeyboardA) + 0x41;
-    }
-    else if (key.keyCode == UIKeyboardHIDUsageKeyboard0) {
-        // This key is at the beginning of the VK_ range but the end
-        // of the UIKeyboardHIDUsageKeyboard range.
-        keyCode = 0x30;
-    }
-    else if (key.keyCode >= UIKeyboardHIDUsageKeyboard1 &&
-             key.keyCode <= UIKeyboardHIDUsageKeyboard9) {
-        keyCode = (key.keyCode - UIKeyboardHIDUsageKeyboard1) + 0x31;
-    }
-    else if (key.keyCode == UIKeyboardHIDUsageKeypad0) {
-        // This key is at the beginning of the VK_ range but the end
-        // of the UIKeyboardHIDUsageKeypad range.
-        keyCode = 0x60;
-    }
-    else if (key.keyCode >= UIKeyboardHIDUsageKeypad1 &&
-             key.keyCode <= UIKeyboardHIDUsageKeypad9) {
-        keyCode = (key.keyCode - UIKeyboardHIDUsageKeypad1) + 0x61;
-    }
-    else if (key.keyCode >= UIKeyboardHIDUsageKeyboardF1 &&
-             key.keyCode <= UIKeyboardHIDUsageKeyboardF12) {
-        keyCode = (key.keyCode - UIKeyboardHIDUsageKeyboardF1) + 0x70;
-    }
-    else if (key.keyCode >= UIKeyboardHIDUsageKeyboardF13 &&
-             key.keyCode <= UIKeyboardHIDUsageKeyboardF24) {
-        keyCode = (key.keyCode - UIKeyboardHIDUsageKeyboardF13) + 0x7C;
-    }
-    else {
-        switch (key.keyCode) {
-            case UIKeyboardHIDUsageKeyboardReturnOrEnter:
-                keyCode = 0x0D;
-                break;
-            case UIKeyboardHIDUsageKeyboardEscape:
-                keyCode = 0x1B;
-                break;
-            case UIKeyboardHIDUsageKeyboardDeleteOrBackspace:
-                keyCode = 0x08;
-                break;
-            case UIKeyboardHIDUsageKeyboardTab:
-                keyCode = 0x09;
-                break;
-            case UIKeyboardHIDUsageKeyboardSpacebar:
-                keyCode = 0x20;
-                break;
-            case UIKeyboardHIDUsageKeyboardHyphen:
-                keyCode = 0xBD;
-                break;
-            case UIKeyboardHIDUsageKeyboardEqualSign:
-                keyCode = 0xBB;
-                break;
-            case UIKeyboardHIDUsageKeyboardOpenBracket:
-                keyCode = 0xDB;
-                break;
-            case UIKeyboardHIDUsageKeyboardCloseBracket:
-                keyCode = 0xDD;
-                break;
-            case UIKeyboardHIDUsageKeyboardBackslash:
-                keyCode = 0xDC;
-                break;
-            case UIKeyboardHIDUsageKeyboardSemicolon:
-                keyCode = 0xBA;
-                break;
-            case UIKeyboardHIDUsageKeyboardQuote:
-                keyCode = 0xDE;
-                break;
-            case UIKeyboardHIDUsageKeyboardGraveAccentAndTilde:
-                keyCode = 0xC0;
-                break;
-            case UIKeyboardHIDUsageKeyboardComma:
-                keyCode = 0xBC;
-                break;
-            case UIKeyboardHIDUsageKeyboardPeriod:
-                keyCode = 0xBE;
-                break;
-            case UIKeyboardHIDUsageKeyboardSlash:
-                keyCode = 0xBF;
-                break;
-            case UIKeyboardHIDUsageKeyboardCapsLock:
-                keyCode = 0x14;
-                break;
-            case UIKeyboardHIDUsageKeyboardPrintScreen:
-                keyCode = 0x2A;
-                break;
-            case UIKeyboardHIDUsageKeyboardScrollLock:
-                keyCode = 0x91;
-                break;
-            case UIKeyboardHIDUsageKeyboardPause:
-                keyCode = 0x13;
-                break;
-            case UIKeyboardHIDUsageKeyboardInsert:
-                keyCode = 0x2D;
-                break;
-            case UIKeyboardHIDUsageKeyboardHome:
-                keyCode = 0x24;
-                break;
-            case UIKeyboardHIDUsageKeyboardPageUp:
-                keyCode = 0x21;
-                break;
-            case UIKeyboardHIDUsageKeyboardDeleteForward:
-                keyCode = 0x2E;
-                break;
-            case UIKeyboardHIDUsageKeyboardEnd:
-                keyCode = 0x23;
-                break;
-            case UIKeyboardHIDUsageKeyboardPageDown:
-                keyCode = 0x22;
-                break;
-            case UIKeyboardHIDUsageKeyboardRightArrow:
-                keyCode = 0x27;
-                break;
-            case UIKeyboardHIDUsageKeyboardLeftArrow:
-                keyCode = 0x25;
-                break;
-            case UIKeyboardHIDUsageKeyboardDownArrow:
-                keyCode = 0x28;
-                break;
-            case UIKeyboardHIDUsageKeyboardUpArrow:
-                keyCode = 0x26;
-                break;
-            case UIKeyboardHIDUsageKeypadNumLock:
-                keyCode = 0x90;
-                break;
-            case UIKeyboardHIDUsageKeypadSlash:
-                keyCode = 0x6F;
-                break;
-            case UIKeyboardHIDUsageKeypadAsterisk:
-                keyCode = 0x6A;
-                break;
-            case UIKeyboardHIDUsageKeypadHyphen:
-                keyCode = 0x6D;
-                break;
-            case UIKeyboardHIDUsageKeypadPlus:
-                keyCode = 0x6B;
-                break;
-            case UIKeyboardHIDUsageKeypadEnter:
-                keyCode = 0x0D;
-                break;
-            case UIKeyboardHIDUsageKeypadPeriod:
-                keyCode = 0x6E;
-                break;
-            case UIKeyboardHIDUsageKeyboardNonUSBackslash:
-                keyCode = 0xE2;
-                break;
-            case UIKeyboardHIDUsageKeypadComma:
-                keyCode = 0x6C;
-                break;
-            case UIKeyboardHIDUsageKeyboardCancel:
-                keyCode = 0x03;
-                break;
-            case UIKeyboardHIDUsageKeyboardClear:
-                keyCode = 0x0C;
-                break;
-            case UIKeyboardHIDUsageKeyboardCrSelOrProps:
-                keyCode = 0xF7;
-                break;
-            case UIKeyboardHIDUsageKeyboardExSel:
-                keyCode = 0xF8;
-                break;
-            case UIKeyboardHIDUsageKeyboardLeftGUI:
-                keyCode = 0x5B;
-                break;
-            case UIKeyboardHIDUsageKeyboardLeftControl:
-                keyCode = 0xA2;
-                break;
-            case UIKeyboardHIDUsageKeyboardLeftShift:
-                keyCode = 0xA0;
-                break;
-            case UIKeyboardHIDUsageKeyboardLeftAlt:
-                keyCode = 0xA4;
-                break;
-            case UIKeyboardHIDUsageKeyboardRightGUI:
-                keyCode = 0x5C;
-                break;
-            case UIKeyboardHIDUsageKeyboardRightControl:
-                keyCode = 0xA3;
-                break;
-            case UIKeyboardHIDUsageKeyboardRightShift:
-                keyCode = 0xA1;
-                break;
-            case UIKeyboardHIDUsageKeyboardRightAlt:
-                keyCode = 0xA5;
-                break;
-            case 669: // This value corresponds to the "Globe" or "Language" key on most Apple branded iPad keyboards.
-                keyCode = 0x1B; // This value corresponds to "Escape", which is missing from most Apple branded iPad keyboards.
-                break;
-            default:
-                NSLog(@"Unhandled HID usage: %lu", (unsigned long)key.keyCode);
-                assert(0);
-                return false;
-        }
-    }
     
-    LiSendKeyboardEvent(0x8000 | keyCode,
-                        down ? KEY_ACTION_DOWN : KEY_ACTION_UP,
-                        modifierFlags);
-    return true;
-}
-
-+ (struct KeyEvent)translateKeyEvent:(unichar)inputChar withModifierFlags:(UIKeyModifierFlags)modifierFlags {
-    struct KeyEvent event;
-    event.keycode = 0;
-    event.modifier = 0;
-    event.modifierKeycode = 0;
+    // TODO: only supports letters and numbers for now, expand GCKeyCode support later
     
-    switch (modifierFlags) {
-        case UIKeyModifierAlphaShift:
-        case UIKeyModifierShift:
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case UIKeyModifierControl:
-            [KeyboardSupport addControlModifier:&event];
-            break;
-        case UIKeyModifierCommand:
-            [KeyboardSupport addMetaModifier:&event];
-            break;
-        case UIKeyModifierAlternate:
-            [KeyboardSupport addAltModifier:&event];
-            break;
-        case UIKeyModifierNumericPad:
-            break;
-    }
-    if (inputChar >= 0x30 && inputChar <= 0x39) {
-        // Numbers 0-9
-        event.keycode = inputChar;
-    } else if (inputChar >= 0x41 && inputChar <= 0x5A) {
-        // Capital letters
-        event.keycode = inputChar;
-        [KeyboardSupport addShiftModifier:&event];
-    } else if (inputChar >= 0x61 && inputChar <= 0x7A) {
-        // Lower case letters
-        event.keycode = inputChar - (0x61 - 0x41);
-    } switch (inputChar) {
-        case ' ': // Spacebar
-            event.keycode = 0x20;
-            break;
-        case '-': // Hyphen '-'
-            event.keycode = 0xBD;
-            break;
-        case '/': // Forward slash '/'
-            event.keycode = 0xBF;
-            break;
-        case ':': // Colon ':'
-            event.keycode = 0xBA;
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case ';': // Semi-colon ';'
-            event.keycode = 0xBA;
-            break;
-        case '(': // Open parenthesis '('
-            event.keycode = 0x39; // '9'
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case ')': // Close parenthesis ')'
-            event.keycode = 0x30; // '0'
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '$': // Dollar sign '$'
-            event.keycode = 0x34; // '4'
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '&': // Ampresand '&'
-            event.keycode = 0x37; // '7'
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '@': // At-sign '@'
-            event.keycode = 0x32; // '2'
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '"':
-            event.keycode = 0xDE;
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '\'':
-            event.keycode = 0xDE;
-            break;
-        case '!':
-            event.keycode = 0x31; // '1'
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '?':
-            event.keycode = 0xBF; // '/'
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case ',':
-            event.keycode = 0xBC;
-            break;
-        case '<':
-            event.keycode = 0xBC;
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '.':
-            event.keycode = 0xBE;
-            break;
-        case '>':
-            event.keycode = 0xBE;
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '[':
-            event.keycode = 0xDB;
-            break;
-        case ']':
-            event.keycode = 0xDD;
-            break;
-        case '{':
-            event.keycode = 0xDB;
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '}':
-            event.keycode = 0xDD;
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '#':
-            event.keycode = 0x33; // '3'
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '%':
-            event.keycode = 0x35; // '5'
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '^':
-            event.keycode = 0x36; // '6'
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '*':
-            event.keycode = 0x38; // '8'
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '+':
-            event.keycode = 0xBB;
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '=':
-            event.keycode = 0xBB;
-            break;
-        case '_':
-            event.keycode = 0xBD;
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '\\':
-            event.keycode = 0xDC;
-            break;
-        case '|':
-            event.keycode = 0xDC;
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '~':
-            event.keycode = 0xC0;
-            [KeyboardSupport addShiftModifier:&event];
-            break;
-        case '`':
-            event.keycode = 0xC0;
-            break;
-        case '\t':
-            event.keycode = 0x09;
-            break;
-        default:
-            break;
-    }
- 
-    return event;
-}
-
-+ (void) addShiftModifier:(struct KeyEvent*)event {
-    event->modifier = MODIFIER_SHIFT;
-    event->modifierKeycode = 0x10;
-}
-
-+ (void) addControlModifier:(struct KeyEvent*)event {
-    event->modifier = MODIFIER_CTRL;
-    event->modifierKeycode = 0x11;
-}
-
-+ (void) addMetaModifier:(struct KeyEvent*)event {
-    event->modifier = MODIFIER_META;
-    event->modifierKeycode = 0x5B;
-}
-
-+ (void) addAltModifier:(struct KeyEvent*)event {
-    event->modifier = MODIFIER_ALT;
-    event->modifierKeycode = 0x12;
+    // Letters A-Z
+    if (keyCode == GCKeyCodeKeyA) return 0x41;
+    if (keyCode == GCKeyCodeKeyB) return 0x42;
+    if (keyCode == GCKeyCodeKeyC) return 0x43;
+    if (keyCode == GCKeyCodeKeyD) return 0x44;
+    if (keyCode == GCKeyCodeKeyE) return 0x45;
+    if (keyCode == GCKeyCodeKeyF) return 0x46;
+    if (keyCode == GCKeyCodeKeyG) return 0x47;
+    if (keyCode == GCKeyCodeKeyH) return 0x48;
+    if (keyCode == GCKeyCodeKeyI) return 0x49;
+    if (keyCode == GCKeyCodeKeyJ) return 0x4A;
+    if (keyCode == GCKeyCodeKeyK) return 0x4B;
+    if (keyCode == GCKeyCodeKeyL) return 0x4C;
+    if (keyCode == GCKeyCodeKeyM) return 0x4D;
+    if (keyCode == GCKeyCodeKeyN) return 0x4E;
+    if (keyCode == GCKeyCodeKeyO) return 0x4F;
+    if (keyCode == GCKeyCodeKeyP) return 0x50;
+    if (keyCode == GCKeyCodeKeyQ) return 0x51;
+    if (keyCode == GCKeyCodeKeyR) return 0x52;
+    if (keyCode == GCKeyCodeKeyS) return 0x53;
+    if (keyCode == GCKeyCodeKeyT) return 0x54;
+    if (keyCode == GCKeyCodeKeyU) return 0x55;
+    if (keyCode == GCKeyCodeKeyV) return 0x56;
+    if (keyCode == GCKeyCodeKeyW) return 0x57;
+    if (keyCode == GCKeyCodeKeyX) return 0x58;
+    if (keyCode == GCKeyCodeKeyY) return 0x59;
+    if (keyCode == GCKeyCodeKeyZ) return 0x5A;
+    
+    // Numbers 0-9
+    if (keyCode == GCKeyCodeOne) return 0x31;
+    if (keyCode == GCKeyCodeTwo) return 0x32;
+    if (keyCode == GCKeyCodeThree) return 0x33;
+    if (keyCode == GCKeyCodeFour) return 0x34;
+    if (keyCode == GCKeyCodeFive) return 0x35;
+    if (keyCode == GCKeyCodeSix) return 0x36;
+    if (keyCode == GCKeyCodeSeven) return 0x37;
+    if (keyCode == GCKeyCodeEight) return 0x38;
+    if (keyCode == GCKeyCodeNine) return 0x39;
+    if (keyCode == GCKeyCodeZero) return 0x30;
+    
+    // Unknown key
+    return 0;
 }
 
 @end

@@ -280,8 +280,7 @@
                            (config.supportedVideoFormats & VIDEO_FORMAT_MASK_10BIT) ? @"&hdrMode=1&clientHdrCapVersion=0&clientHdrCapSupportedFlagsInUint32=0&clientHdrCapMetaDataId=NV_STATIC_METADATA_TYPE_1&clientHdrCapDisplayData=0x0x0x0x0x0x0x0x0x0x0": @"",
                            config.playAudioOnPC ? 1 : 0,
                            SURROUNDAUDIOINFO_FROM_AUDIO_CONFIGURATION(config.audioConfiguration),
-                           config.gamepadMask, config.gamepadMask,
-                           !config.multiController ? 1 : 0,
+                           config.gamepadMask, config.gamepadMask, 1,
                            LiGetLaunchUrlQueryParameters()];
     Log(LOG_I, @"Requesting: %@", urlString);
     // This blocks while the app is launching

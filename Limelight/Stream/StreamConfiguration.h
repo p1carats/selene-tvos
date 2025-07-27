@@ -30,10 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property int gamepadMask;
 @property BOOL optimizeGameSettings;
 @property BOOL playAudioOnPC;
-@property BOOL swapABXYButtons;
 @property int audioConfiguration;
 @property int supportedVideoFormats;
-@property BOOL multiController;
 @property NSData* serverCert;
 
 @end
