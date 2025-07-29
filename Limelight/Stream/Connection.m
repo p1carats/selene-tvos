@@ -17,9 +17,8 @@
 #import "Logger.h"
 #import "BandwidthTracker.h"
 #import "StreamConfiguration.h"
+#import "AudioDecoderRenderer.h"
 #import "VideoDecoderRenderer.h"
-
-#include "opus_multistream.h"
 
 @implementation Connection {
     SERVER_INFORMATION _serverInfo;
@@ -34,7 +33,6 @@
 }
 
 static NSLock* initLock;
-static OpusMSDecoder* opusDecoder;
 static id<ConnectionCallbacks> _callbacks;
 static int lastFrameNumber;
 static int activeVideoFormat;
@@ -42,18 +40,18 @@ static VideoStats currentVideoStats;
 static VideoStats lastVideoStats;
 static NSLock* videoStatsLock;
 
-static AVAudioEngine* audioEngine;
-static AVAudioPlayerNode* playerNode;
-static AVAudioFormat* audioFormat;
-static NSMutableArray* audioBufferQueue;
-static os_unfair_lock audioBufferLock = OS_UNFAIR_LOCK_INIT;
-static OPUS_MULTISTREAM_CONFIGURATION audioConfig;
-static void* audioBuffer;
-static int audioFrameSize;
-
+static AudioDecoderRenderer* audioRenderer;
 static VideoDecoderRenderer* renderer;
 
 static BandwidthTracker *bwTracker;
+
+// Initialize static variables once
++ (void)initialize {
+    if (self == [Connection class]) {
+        initLock = [[NSLock alloc] init];
+        videoStatsLock = [[NSLock alloc] init];
+    }
+}
 
 int DrDecoderSetup(int videoFormat, int width, int height, int redrawRate, void* context, int drFlags)
 {
@@ -127,6 +125,11 @@ void DrCleanup(void)
 
 int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit)
 {
+    // Early validation
+    if (decodeUnit == NULL || decodeUnit->fullLength <= 0) {
+        return DR_NEED_IDR;
+    }
+    
     int offset = 0;
     int ret;
     CFTimeInterval decodeStartTime = CACurrentMediaTime();
@@ -216,206 +219,20 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit)
 
 int ArInit(int audioConfiguration, POPUS_MULTISTREAM_CONFIGURATION opusConfig, void* context, int flags)
 {
-    int err;
-    NSError* error = nil;
-    
-    // Initialize audio session
-    AVAudioSession* session = [AVAudioSession sharedInstance];
-    if (![session setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
-        Log(LOG_E, @"Failed to set audio session category: %@", error.localizedDescription);
-        return -1;
-    }
-        
-    if (![session setActive:YES error:&error]) {
-        Log(LOG_E, @"Failed to activate audio session: %@", error.localizedDescription);
-        return -1;
-    }
-    
-    // Create audio engine and player node
-    audioEngine = [[AVAudioEngine alloc] init];
-    playerNode = [[AVAudioPlayerNode alloc] init];
-    
-    // Support full multi-channel audio (stereo, 5.1, 7.1)
-    double sampleRate = opusConfig->sampleRate;
-    AVAudioChannelCount channelCount = (AVAudioChannelCount)opusConfig->channelCount;
-    
-    Log(LOG_I, @"Initializing audio with %d channels at %g Hz", channelCount, sampleRate);
-    
-    // Create proper channel layout
-    AVAudioChannelLayout* channelLayout;
-    if (channelCount == 2) {
-        // Stereo
-        channelLayout = [AVAudioChannelLayout layoutWithLayoutTag:kAudioChannelLayoutTag_Stereo];
-    } else if (channelCount == 6) {
-        // 5.1 surround / LPCM 7.1
-        channelLayout = [AVAudioChannelLayout layoutWithLayoutTag:kAudioChannelLayoutTag_MPEG_5_1_A];
-    } else if (channelCount == 8) {
-        // 7.1 surround / LPCM 7.1
-        channelLayout = [AVAudioChannelLayout layoutWithLayoutTag:kAudioChannelLayoutTag_MPEG_7_1_A];
-    } else {
-        Log(LOG_E, @"Unknown channel layout");
-        ArCleanup();
-        return -1;
-    }
-    
-    audioFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:sampleRate
-                                                            channelLayout:channelLayout];
-    
-    if (audioFormat == nil) {
-        Log(LOG_E, @"Failed to create audio format");
-        ArCleanup();
-        return -1;
-    }
-    
-    // Attach and connect nodes with the multi-channel format
-    [audioEngine attachNode:playerNode];
-    [audioEngine connect:playerNode to:audioEngine.mainMixerNode format:audioFormat];
-    
-    // Start audio engine
-    if (![audioEngine startAndReturnError:&error]) {
-        Log(LOG_E, @"Failed to start audio engine: %@", error.localizedDescription);
-        ArCleanup();
-        return -1;
-    }
-    
-    audioConfig = *opusConfig;
-    audioFrameSize = opusConfig->samplesPerFrame * sizeof(float) * opusConfig->channelCount;
-    audioBuffer = malloc(audioFrameSize);
-    if (audioBuffer == NULL) {
-        Log(LOG_E, @"Failed to allocate audio frame buffer");
-        ArCleanup();
-        return -1;
-    }
-    
-    // Initialize buffer queue
-    audioBufferQueue = [[NSMutableArray alloc] init];
-    
-    opusDecoder = opus_multistream_decoder_create(opusConfig->sampleRate,
-                                                  opusConfig->channelCount,
-                                                  opusConfig->streams,
-                                                  opusConfig->coupledStreams,
-                                                  opusConfig->mapping,
-                                                  &err);
-    if (opusDecoder == NULL) {
-        Log(LOG_E, @"Failed to create Opus decoder");
-        ArCleanup();
-        return -1;
-    }
-    
-    [playerNode play];
-    
-    return 0;
+    return [audioRenderer setupWithAudioConfiguration:audioConfiguration
+                                          opusConfig:opusConfig
+                                             context:context
+                                               flags:flags];
 }
 
 void ArCleanup(void)
 {
-    if (opusDecoder != NULL) {
-        opus_multistream_decoder_destroy(opusDecoder);
-        opusDecoder = NULL;
-    }
-    
-    if (playerNode != nil) {
-        [playerNode stop];
-        playerNode = nil;
-    }
-    
-    if (audioEngine != nil) {
-        [audioEngine stop];
-        audioEngine = nil;
-    }
-    
-    if (audioBufferQueue != nil) {
-        os_unfair_lock_lock(&audioBufferLock);
-        [audioBufferQueue removeAllObjects];
-        os_unfair_lock_unlock(&audioBufferLock);
-        audioBufferQueue = nil;
-    }
-    
-    if (audioBuffer != NULL) {
-        free(audioBuffer);
-        audioBuffer = NULL;
-    }
-    
-    audioFormat = nil;
+    [audioRenderer cleanup];
 }
 
 void ArDecodeAndPlaySample(char* sampleData, int sampleLength)
 {
-    int decodeLen;
-    
-    // Don't queue if there's already more than 30 ms of audio data waiting in queue
-    if (LiGetPendingAudioDuration() > 30) {
-        return;
-    }
-
-    decodeLen = opus_multistream_decode_float(opusDecoder,
-                                              (unsigned char*)sampleData,
-                                              sampleLength,
-                                              (float*)audioBuffer,
-                                              audioConfig.samplesPerFrame,
-                                              0);
-    if (decodeLen > 0) {
-        // Provide backpressure on the queue to ensure too many frames don't build up
-        os_unfair_lock_lock(&audioBufferLock);
-        NSUInteger queueSize = audioBufferQueue.count;
-        os_unfair_lock_unlock(&audioBufferLock);
-                
-        while (queueSize > 10) {
-            [NSThread sleepForTimeInterval:0.001f];
-            os_unfair_lock_lock(&audioBufferLock);
-            queueSize = audioBufferQueue.count;
-            os_unfair_lock_unlock(&audioBufferLock);
-        }
-        
-        // Create AVAudioPCMBuffer with the multi-channel format
-        AVAudioPCMBuffer* pcmBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat:audioFormat
-                                                                    frameCapacity:decodeLen];
-        
-        if (pcmBuffer != nil) {
-            pcmBuffer.frameLength = decodeLen;
-            
-            float* sourceData = (float*)audioBuffer;
-            float* const* destChannels = pcmBuffer.floatChannelData;
-            
-            // Direct channel mapping for all configurations (stereo, 5.1, 7.1)
-            // Opus decoder outputs interleaved multi-channel data
-            // AVAudioPCMBuffer expects non-interleaved (planar) channel data
-            for (int ch = 0; ch < audioFormat.channelCount; ch++) {
-                for (int i = 0; i < decodeLen; i++) {
-                    destChannels[ch][i] = sourceData[i * audioConfig.channelCount + ch];
-                }
-            }
-            
-            // Queue buffer
-            os_unfair_lock_lock(&audioBufferLock);
-            [audioBufferQueue addObject:pcmBuffer];
-            os_unfair_lock_unlock(&audioBufferLock);
-            
-            // Schedule buffer for playback
-            scheduleNextBuffer();
-        } else {
-            Log(LOG_E, @"Failed to create audio buffer");
-        }
-    }
-}
-
-void scheduleNextBuffer(void) {
-    AVAudioPCMBuffer* buffer = nil;
-    
-    os_unfair_lock_lock(&audioBufferLock);
-    if (audioBufferQueue.count > 0) {
-        buffer = audioBufferQueue.firstObject;
-        [audioBufferQueue removeObjectAtIndex:0];
-    }
-    os_unfair_lock_unlock(&audioBufferLock);
-    
-    if (buffer != nil) {
-        [playerNode scheduleBuffer:buffer completionHandler:^{
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                scheduleNextBuffer();
-            });
-        }];
-    }
+    [audioRenderer decodeAndPlaySample:sampleData length:sampleLength];
 }
 
 void ClStageStarting(int stage)
@@ -490,6 +307,9 @@ void ClSetControllerLED(uint16_t controllerNumber, uint8_t r, uint8_t g, uint8_t
     // progress.
     LiInterruptConnection();
     
+    // Clean up audio renderer
+    [audioRenderer cleanup];
+    
     // We dispatch this async to get out because this can be invoked
     // on a thread inside common and we don't want to deadlock. It also avoids
     // blocking on the caller's thread waiting to acquire initLock.
@@ -503,17 +323,7 @@ void ClSetControllerLED(uint16_t controllerNumber, uint8_t r, uint8_t g, uint8_t
 -(instancetype) initWithConfig:(StreamConfiguration*)config renderer:(VideoDecoderRenderer*)myRenderer connectionCallbacks:(id<ConnectionCallbacks>)callbacks
 {
     self = [super init];
-
-    // Use a lock to ensure that only one thread is initializing
-    // or deinitializing a connection at a time.
-    if (initLock == nil) {
-        initLock = [[NSLock alloc] init];
-    }
-    
-    if (videoStatsLock == nil) {
-        videoStatsLock = [[NSLock alloc] init];
-    }
-    
+        
     NSString *rawAddress = [Utils addressPortStringToAddress:config.host];
     strncpy(_hostString,
             [rawAddress cStringUsingEncoding:NSUTF8StringEncoding],
@@ -544,6 +354,7 @@ void ClSetControllerLED(uint16_t controllerNumber, uint8_t r, uint8_t g, uint8_t
     _serverInfo.serverCodecModeSupport = config.serverCodecModeSupport;
 
     renderer = myRenderer;
+    audioRenderer = [[AudioDecoderRenderer alloc] init];
     _callbacks = callbacks;
 
     // Check for low power mode which limits framerate to 60
