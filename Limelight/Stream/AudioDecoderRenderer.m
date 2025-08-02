@@ -24,12 +24,14 @@
     OPUS_MULTISTREAM_CONFIGURATION _audioConfig;
     NSMutableData* _audioBuffer;
     int _audioFrameSize;
+    BOOL _isCleaningUp;
 }
 
 - (instancetype)init {
     self = [super init];
     if (self) {
         _audioBufferLock = OS_UNFAIR_LOCK_INIT;
+        _isCleaningUp = NO;
     }
     return self;
 }
@@ -133,10 +135,10 @@
 }
 
 - (void)cleanup {
-    if (_opusDecoder != NULL) {
-        opus_multistream_decoder_destroy(_opusDecoder);
-        _opusDecoder = NULL;
-    }
+    // Set cleanup flag first to prevent race conditions
+    os_unfair_lock_lock(&_audioBufferLock);
+    _isCleaningUp = YES;
+    os_unfair_lock_unlock(&_audioBufferLock);
     
     if (_playerNode != nil) {
         [_playerNode stop];
@@ -148,11 +150,16 @@
         _audioEngine = nil;
     }
     
+    if (_opusDecoder != NULL) {
+        opus_multistream_decoder_destroy(_opusDecoder);
+        _opusDecoder = NULL;
+    }
+    
     if (_audioBufferQueue != nil) {
         os_unfair_lock_lock(&_audioBufferLock);
         [_audioBufferQueue removeAllObjects];
-        os_unfair_lock_unlock(&_audioBufferLock);
         _audioBufferQueue = nil;
+        os_unfair_lock_unlock(&_audioBufferLock);
     }
     
     if (_audioBuffer != nil) {
@@ -160,10 +167,26 @@
     }
     
     _audioFormat = nil;
+    
+    // Deactivate audio session
+    NSError* error = nil;
+    AVAudioSession* session = [AVAudioSession sharedInstance];
+    if (![session setActive:NO error:&error]) {
+        Log(LOG_W, @"Failed to deactivate audio session: %@", error.localizedDescription);
+    }
 }
 
 - (void)decodeAndPlaySample:(char*)sampleData length:(int)sampleLength {
     int decodeLen;
+    
+    // Check if we're cleaning up
+    os_unfair_lock_lock(&_audioBufferLock);
+    BOOL cleaningUp = _isCleaningUp;
+    os_unfair_lock_unlock(&_audioBufferLock);
+    
+    if (cleaningUp) {
+        return;
+    }
     
     // Don't queue if there's already more than 30 ms of audio data waiting in queue
     if (LiGetPendingAudioDuration() > 30) {
@@ -226,13 +249,18 @@
     AVAudioPCMBuffer* buffer = nil;
     
     os_unfair_lock_lock(&_audioBufferLock);
+    if (_isCleaningUp || _audioBufferQueue == nil) {
+        os_unfair_lock_unlock(&_audioBufferLock);
+        return;
+    }
+    
     if (_audioBufferQueue.count > 0) {
         buffer = _audioBufferQueue.firstObject;
         [_audioBufferQueue removeObjectAtIndex:0];
     }
     os_unfair_lock_unlock(&_audioBufferLock);
     
-    if (buffer != nil) {
+    if (buffer != nil && _playerNode != nil) {
         [_playerNode scheduleBuffer:buffer completionHandler:^{
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self scheduleNextBuffer];

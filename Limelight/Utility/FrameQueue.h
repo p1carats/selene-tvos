@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) FloatBuffer *frameDropMetrics;
 @property (nonatomic) int highWaterMark;
 @property (nonatomic, readonly) int maxCapacity;
-@property (atomic) BOOL isStopping;
+@property (atomic) BOOL paused;
 
 + (instancetype)sharedInstance;
 
@@ -26,7 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (CFTimeInterval)estimatedFramerate;
 - (int)currentSoftCap;
 - (void)waitForEnqueue;
-- (void)shutdown;
+- (void)start;
+- (void)stop;
 
 @end
 

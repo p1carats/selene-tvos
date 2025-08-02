@@ -224,14 +224,4 @@
     }
 }
 
-- (void)observeFloatReturnMetrics:(int)plotId value:(CFTimeInterval)value plotMetrics:(struct PlotMetrics *)plotMetrics {
-    if (plotId >= 0 && plotId < self.plots.count) {
-        [self.plots[plotId].buffer addValue:(float)value];
-        if (plotMetrics != nil) {
-            [self.plots[plotId].buffer copyMetrics:(PlotMetrics *)plotMetrics];
-        }
-    }
-}
-
-
 @end

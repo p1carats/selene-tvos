@@ -33,6 +33,7 @@ The implementation of the cross-platform game view controller.
 
 - (void)loadView {
     self.view = [[MetalView alloc] initWithFrame:_bounds];
+    Log(LOG_I, @"[MetalViewController] created MetalView %@", (MetalView *)self.view);
 }
 
 - (void)viewDidLoad {
@@ -47,7 +48,7 @@ The implementation of the cross-platform game view controller.
     _metalView.delegate = self;
     _metalView.framerate = _framerate;
 
-    // Select the device to render with.
+    // Select the device to render with
     id<MTLDevice> device = MTLCreateSystemDefaultDevice();
     if (!device) {
         Log(LOG_E, @"Metal isn't supported on this device.");
@@ -56,7 +57,7 @@ The implementation of the cross-platform game view controller.
     }
     view.metalLayer.device = device;
 
-    // Initialize the renderer.
+    // Initialize the renderer
     MetalVideoRenderer *renderer = [[MetalVideoRenderer alloc] initWithMetalDevice:device
                                                                drawablePixelFormat:MTLPixelFormatBGR10A2Unorm
                                                                          framerate:self->_framerate];
@@ -64,12 +65,12 @@ The implementation of the cross-platform game view controller.
         Log(LOG_E, @"The renderer couldn't be initialized.");
         return;
     }
+    self->_renderer = renderer;
+    Log(LOG_I, @"[MetalViewController] viewDidLoad, created renderer: %@", renderer);
 
-    // Initialize the renderer-dependent view properties.
+    // Initialize the renderer-dependent view properties
     view.metalLayer.pixelFormat = renderer.colorPixelFormat;
     view.metalLayer.maximumDrawableCount = 3;
-
-    self->_renderer = renderer;
 }
 
 - (void)waitToRenderTo:(nonnull CAMetalLayer *)layer {
@@ -97,14 +98,15 @@ The implementation of the cross-platform game view controller.
 
 - (void)shutdown {
     [_renderer shutdown];
+    _renderer = nil;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
 
-    Log(LOG_I, @"XXX MetalViewController viewDidDisappear");
+    Log(LOG_I, @"[MetalViewController] viewDidDisappear");
 
-    [_metalView shutdown];
+    [self shutdown];
 }
 
 @end

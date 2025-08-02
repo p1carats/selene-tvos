@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)drawableResize:(CGSize)drawableSize;
 - (void)shutdown;
 
++ (NSString *_Nullable)currentColorSpace;
+
 @end
 
 NS_ASSUME_NONNULL_END

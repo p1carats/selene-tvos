@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class PlotDefinition;
 
-struct PlotMetrics;
-
 typedef void (^MetricsHandler)(int plotId, CFTimeInterval value);
 
 @interface GraphRenderer : UIViewController
@@ -35,7 +33,6 @@ typedef void (^MetricsHandler)(int plotId, CFTimeInterval value);
 - (void)hide;
 
 - (void)observeFloat:(int)plotId value:(CFTimeInterval)value;
-- (void)observeFloatReturnMetrics:(int)plotId value:(CFTimeInterval)value plotMetrics:(nullable struct PlotMetrics *)plotMetrics;
 
 @end
 

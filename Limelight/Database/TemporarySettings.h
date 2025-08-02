@@ -28,16 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
     CODEC_PREF_HEVC,
 } preferredCodec;
 @property (nonatomic, strong) NSNumber * frameQueueSize;
-@property (nonatomic) BOOL multiController;
-@property (nonatomic) BOOL swapABXYButtons;
 @property (nonatomic) BOOL playAudioOnPC;
 @property (nonatomic) BOOL optimizeGames;
 @property (nonatomic) BOOL enableHdr;
-@property (nonatomic) BOOL btMouseSupport;
+@property (nonatomic) BOOL enableYUV444;
 @property (nonatomic) BOOL statsOverlay;
 @property (nonatomic) BOOL enableGraphs;
 @property (nonatomic, strong) NSNumber * graphOpacity;
-@property (nonatomic, strong) NSNumber * renderingBackend;
 
 - (instancetype) initFromSettings:(Settings*)settings;
 

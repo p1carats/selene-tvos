@@ -10,13 +10,15 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
-			<string>Basic Configuration</string>
+			<string>Stream Configuration</string>
+			<key>FooterText</key>
+			<string>Make sure to enable Match Content Rate for best results.</string>
 		</dict>
 		<dict>
 			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
-			<string>Stream Resolution</string>
+			<string>Resolution</string>
 			<key>Key</key>
 			<string>streamResolution</string>
 			<key>DefaultValue</key>
@@ -35,44 +37,6 @@
 				<string>1440p</string>
 				<string>4K</string>
 			</array>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Request HDR Video</string>
-			<key>Key</key>
-			<string>enableHdr</string>
-			<key>DefaultValue</key>
-			<false/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSMultiValueSpecifier</string>
-			<key>Title</key>
-			<string>Audio Configuration</string>
-			<key>Key</key>
-			<string>audioConfig</string>
-			<key>DefaultValue</key>
-			<string>2</string>
-			<key>Titles</key>
-			<array>
-				<string>Stereo</string>
-				<string>LPCM 5.1</string>
-				<string>LPCM 7.1</string>
-			</array>
-			<key>Values</key>
-			<array>
-				<string>2</string>
-				<string>6</string>
-				<string>8</string>
-			</array>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
-			<string>Enable Match Content Rate for best results</string>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -102,47 +66,41 @@
 			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
-			<string>Bitrate</string>
+			<string>Audio Configuration</string>
 			<key>Key</key>
-			<string>bitrate</string>
+			<string>audioConfig</string>
 			<key>DefaultValue</key>
-			<string>20000</string>
+			<string>2</string>
 			<key>Titles</key>
 			<array>
-				<string>0.5 Mbps</string>
-				<string>1 Mbps</string>
-				<string>2 Mbps</string>
-				<string>5 Mbps</string>
-				<string>10 Mbps</string>
-				<string>20 Mbps</string>
-				<string>25 Mbps</string>
-				<string>50 Mbps</string>
-				<string>70 Mbps</string>
-				<string>80 Mbps</string>
-				<string>100 Mbps</string>
-				<string>150 Mbps</string>
+				<string>Stereo</string>
+				<string>LPCM 5.1</string>
+				<string>LPCM 7.1</string>
 			</array>
 			<key>Values</key>
 			<array>
-				<string>500</string>
-				<string>1000</string>
-				<string>2000</string>
-				<string>5000</string>
-				<string>10000</string>
-				<string>20000</string>
-				<string>25000</string>
-				<string>50000</string>
-				<string>70000</string>
-				<string>80000</string>
-				<string>100000</string>
-				<string>150000</string>
+				<string>2</string>
+				<string>6</string>
+				<string>8</string>
 			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Request HDR Video</string>
+			<key>Key</key>
+			<string>enableHdr</string>
+			<key>DefaultValue</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>Host Options</string>
+			<key>FooterText</key>
+			<string>Important! If you&apos;re looking for input settings, head to Settings to setup a buddy controller (two physical controllers paired as one virtual) or remap buttons (through custom profiles).</string>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -168,43 +126,51 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
-			<string>Input Options</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Automatic Game Controller Detection</string>
-			<key>Key</key>
-			<string>multipleControllers</string>
-			<key>DefaultValue</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Swap A/B and X/Y Buttons</string>
-			<key>Key</key>
-			<string>swapABXYButtons</string>
-			<key>DefaultValue</key>
-			<false/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Citrix X1 Mouse Support</string>
-			<key>Key</key>
-			<string>btMouseSupport</string>
-			<key>DefaultValue</key>
-			<false/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
 			<string>Video Options</string>
+			<key>FooterText</key>
+			<string>Enabling 4:4:4 chroma requires doubling your habitual bitrate!</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Bitrate</string>
+			<key>Key</key>
+			<string>bitrate</string>
+			<key>DefaultValue</key>
+			<string>20000</string>
+			<key>Titles</key>
+			<array>
+				<string>0.5 Mbps</string>
+				<string>1 Mbps</string>
+				<string>2 Mbps</string>
+				<string>5 Mbps</string>
+				<string>10 Mbps</string>
+				<string>20 Mbps</string>
+				<string>25 Mbps</string>
+				<string>50 Mbps</string>
+				<string>70 Mbps</string>
+				<string>80 Mbps</string>
+				<string>100 Mbps</string>
+				<string>150 Mbps</string>
+				<string>200 Mbps</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>500</string>
+				<string>1000</string>
+				<string>2000</string>
+				<string>5000</string>
+				<string>10000</string>
+				<string>20000</string>
+				<string>25000</string>
+				<string>50000</string>
+				<string>70000</string>
+				<string>80000</string>
+				<string>100000</string>
+				<string>150000</string>
+				<string>200000</string>
+			</array>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -226,6 +192,26 @@
 				<string>Auto</string>
 				<string>H.264</string>
 				<string>HEVC</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Chroma</string>
+			<key>Key</key>
+			<string>enableYUV444</string>
+			<key>DefaultValue</key>
+			<false/>
+			<key>Values</key>
+			<array>
+				<false/>
+				<true/>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>4:2:0</string>
+				<string>4:4:4</string>
 			</array>
 		</dict>
 		<dict>
@@ -256,29 +242,11 @@
 		</dict>
 		<dict>
 			<key>Type</key>
-			<string>PSMultiValueSpecifier</string>
-			<key>Title</key>
-			<string>Rendering Backend</string>
-			<key>Key</key>
-			<string>renderingBackend</string>
-			<key>DefaultValue</key>
-			<string>0</string>
-			<key>Values</key>
-			<array>
-				<integer>0</integer>
-				<integer>1</integer>
-			</array>
-			<key>Titles</key>
-			<array>
-				<string>Metal</string>
-				<string>AVSampleBuffer</string>
-			</array>
-		</dict>
-		<dict>
-			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
-			<string>Double-click select button for stats</string>
+			<string>Troubleshoot</string>
+			<key>FooterText</key>
+			<string>Double-click play/pause button to toggle stats during stream.</string>
 		</dict>
 		<dict>
 			<key>Type</key>

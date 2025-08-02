@@ -26,7 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithView:(UIView*)view callbacks:(id<ConnectionCallbacks>)callbacks streamAspectRatio:(float)aspectRatio;
 
 - (void)setupWithVideoFormat:(int)videoFormat width:(int)videoWidth height:(int)videoHeight frameRate:(int)frameRate;
-- (void)renderFrame:(Frame *)frame atTime:(CMTime)targetTime;
 - (void)cleanup;
 - (void)setHdrMode:(BOOL)enabled;
 - (void)safeCopyMetricsTo:(PlotMetrics *)dst from:(PlotMetrics *)src;

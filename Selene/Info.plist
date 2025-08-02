@@ -40,8 +40,6 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Bluetooth access allows Selene to connect to Citrix X1 mice.</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_nvstream._tcp</string>
@@ -50,25 +48,25 @@
 	<string>Selene uses the local network to connect to your gaming PC for streaming.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-    <key>UIApplicationSceneManifest</key>
-        <dict>
-            <key>UIApplicationSupportsMultipleScenes</key>
-            <false/>
-            <key>UISceneConfigurations</key>
-            <dict>
-                <key>UIWindowSceneSessionRoleApplication</key>
-                <array>
-                    <dict>
-                        <key>UISceneConfigurationName</key>
-                        <string>Default Configuration</string>
-                        <key>UISceneDelegateClassName</key>
-                        <string>SceneDelegate</string>
-                        <key>UISceneStoryboardFile</key>
-                        <string>Main</string>
-                    </dict>
-                </array>
-            </dict>
-        </dict>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>SceneDelegate</string>
+					<key>UISceneStoryboardFile</key>
+					<string>Main</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>arm64</string>

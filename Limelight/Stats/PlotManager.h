@@ -19,6 +19,8 @@ struct PlotMetrics;
 @property (nonatomic, strong, readonly) NSArray<PlotDefinition *> *plots;
 
 + (instancetype _Nonnull)sharedInstance;
+
+- (void)clearData;
 - (void)observeFloat:(int)plotId value:(CFTimeInterval)value;
 - (void)observeFloatReturnMetrics:(int)plotId value:(CFTimeInterval)value plotMetrics:(nullable struct PlotMetrics *)plotMetrics;
 

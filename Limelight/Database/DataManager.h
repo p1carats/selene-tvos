@@ -22,17 +22,14 @@ NS_ASSUME_NONNULL_BEGIN
                            width:(NSInteger)width
                 audioConfig:(NSInteger)audioConfig
                    optimizeGames:(BOOL)optimizeGames
-                 multiController:(BOOL)multiController
-                 swapABXYButtons:(BOOL)swapABXYButtons
                        audioOnPC:(BOOL)audioOnPC
                   preferredCodec:(uint32_t)preferredCodec
                   frameQueueSize:(NSInteger)frameQueueSize
                        enableHdr:(BOOL)enableHdr
-                  btMouseSupport:(BOOL)btMouseSupport
+                    enableYUV444:(BOOL)enableYUV444
                     statsOverlay:(BOOL)statsOverlay
                     enableGraphs:(BOOL)enableGraphs
-                    graphOpacity:(NSInteger)graphOpacity
-                renderingBackend:(NSInteger)renderingBackend;
+                    graphOpacity:(NSInteger)graphOpacity;
 
 - (NSArray*) getHosts;
 - (void) updateHost:(TemporaryHost*)host;

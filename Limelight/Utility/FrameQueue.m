@@ -47,7 +47,7 @@
         _ptsCorrection     = CMTimeMake(0, 90000);
         _queueSizeHistory  = [[FloatBuffer alloc] initWithCapacity:64];
         _lock              = OS_UNFAIR_LOCK_INIT;
-        _isStopping        = NO;
+        _paused            = YES; // caller will call start()
 
 	    // ring buffer
 	    _capacity = _maxCapacity;
@@ -213,7 +213,7 @@
 
 // Allows the render loop to wait if the queue is empty
 - (void)waitForEnqueue {
-    while (!self.isStopping && [self isEmpty]) {
+    while (!self.paused && [self isEmpty]) {
         dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)); // 100ms
         dispatch_semaphore_wait(_frameSemaphore, timeout);
     }
@@ -243,7 +243,7 @@
     CFTimeInterval deadline = start + timeout;
     int round = 0;
 
-    if (self.isStopping) {
+    if (self.paused) {
         return nil;
     }
 
@@ -311,11 +311,17 @@
     return cap;
 }
 
-- (void)shutdown {
+- (void)stop {
     // new frames will no longer be coming in, make sure consumer side is not left waiting
-    self.isStopping = YES;
-    Log(LOG_I, @"XXX FrameQueue shutting down");
+    self.paused = YES;
+    Log(LOG_I, @"FrameQueue stopped");
     dispatch_semaphore_signal(_frameSemaphore);
+}
+
+- (void)start {
+    // (re)start for a new renderer
+    self.paused = NO;
+    Log(LOG_I, @"FrameQueue started");
 }
 
 // For use with NSLog("%@", franeQueue);

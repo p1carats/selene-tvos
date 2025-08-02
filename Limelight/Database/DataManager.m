@@ -61,17 +61,14 @@
                            width:(NSInteger)width
                      audioConfig:(NSInteger)audioConfig
                    optimizeGames:(BOOL)optimizeGames
-                 multiController:(BOOL)multiController
-                 swapABXYButtons:(BOOL)swapABXYButtons
                        audioOnPC:(BOOL)audioOnPC
                   preferredCodec:(uint32_t)preferredCodec
                   frameQueueSize:(NSInteger)frameQueueSize
                        enableHdr:(BOOL)enableHdr
-                  btMouseSupport:(BOOL)btMouseSupport
+                    enableYUV444:(BOOL)enableYUV444
                     statsOverlay:(BOOL)statsOverlay
                     enableGraphs:(BOOL)enableGraphs
                     graphOpacity:(NSInteger)graphOpacity
-                renderingBackend:(NSInteger)renderingBackend
 {
     [_managedObjectContext performBlockAndWait:^{
         Settings* settingsToSave = [self retrieveSettings];
@@ -81,17 +78,13 @@
         settingsToSave.width = [NSNumber numberWithInteger:width];
         settingsToSave.audioConfig = [NSNumber numberWithInteger:audioConfig];
         settingsToSave.optimizeGames = optimizeGames;
-        settingsToSave.multiController = multiController;
-        settingsToSave.swapABXYButtons = swapABXYButtons;
         settingsToSave.playAudioOnPC = audioOnPC;
         settingsToSave.preferredCodec = preferredCodec;
         settingsToSave.frameQueueSize = [NSNumber numberWithInteger:frameQueueSize];
         settingsToSave.enableHdr = enableHdr;
-        settingsToSave.btMouseSupport = btMouseSupport;
         settingsToSave.statsOverlay = statsOverlay;
         settingsToSave.enableGraphs = enableGraphs;
         settingsToSave.graphOpacity = [NSNumber numberWithInteger:graphOpacity];
-        settingsToSave.renderingBackend = [NSNumber numberWithInteger:renderingBackend];
         [self saveData];
     }];
 }

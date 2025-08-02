@@ -181,17 +181,16 @@
     [self.view addSubview:_stageLabel];
     [self.view addSubview:_spinner];
     [self.view addSubview:_tipLabel];
-
-    if ([_settings.renderingBackend intValue] == RenderingBackendMetal) {
-        // Metal view for video
-        self.metalViewController = [[MetalViewController alloc] initWithFrame:self.view.bounds
-                                                                    framerate:[self->_settings.framerate floatValue]
-                                                                    enableHdr:self->_settings.enableHdr
-                                                               metricsHandler:self.graphRenderer.metricsHandler];
-        self.metalViewController.view.userInteractionEnabled = NO;
-        [self.view addSubview:self.metalViewController.view];
-        [self.view bringSubviewToFront:self.metalViewController.view];
-    }
+    
+    // Metal view for video
+    Log(LOG_I, @"StreamFrameViewController creating MetalViewController");
+    self.metalViewController = [[MetalViewController alloc] initWithFrame:self.view.bounds
+                                                                framerate:[self->_settings.framerate floatValue]
+                                                                enableHdr:self->_settings.enableHdr
+                                                           metricsHandler:self.graphRenderer.metricsHandler];
+    self.metalViewController.view.userInteractionEnabled = NO;
+    [self.view addSubview:self.metalViewController.view];
+    [self.view bringSubviewToFront:self.metalViewController.view];
 
     // Make a view for the graphs
     self.graphRenderer = [[GraphRenderer alloc] initWithFrame:self.view.bounds

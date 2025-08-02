@@ -77,6 +77,8 @@ struct Vertex {
 
 static const NSUInteger MaxFramesInFlight = 3;
 
+CFStringRef __currentColorSpace;
+
 @implementation MetalVideoRenderer {
     dispatch_queue_t _sq;
     id<MTLDevice> _device;
@@ -88,8 +90,7 @@ static const NSUInteger MaxFramesInFlight = 3;
     MTLRenderPassDescriptor *_renderPassDescriptor;
     CVMetalTextureCacheRef _textureCache;
     CVMetalTextureRef _cvMetalTextures[MAX_VIDEO_PLANES];
-
-    CGFloat _currentEDRHeadroom;
+    
     int _lastColorSpace;
     BOOL _lastFullRange;
     size_t _lastFrameWidth;
@@ -113,7 +114,6 @@ static const NSUInteger MaxFramesInFlight = 3;
         _colorPixelFormat = MTLPixelFormatBGR10A2Unorm;
         _framerate = framerate;
         _commandQueue = [_device newCommandQueue];
-        _currentEDRHeadroom = 1.0f;
         _lastColorSpace = -1;
         _lastFullRange = NO;
         _lastPresented = 0.0f;
@@ -135,6 +135,11 @@ static const NSUInteger MaxFramesInFlight = 3;
 }
 
 - (void)dealloc {
+    Log(LOG_I, @"MetalVideoRenderer dealloc");
+
+    if (_commandQueue) {
+        _commandQueue = nil;
+    }
     if (_CscParamsBuffer) {
         _CscParamsBuffer = nil;
     }
@@ -148,6 +153,12 @@ static const NSUInteger MaxFramesInFlight = 3;
     }
     if (_renderPassDescriptor) {
         _renderPassDescriptor = nil;
+    }
+    if (_textureCache) {
+        _textureCache = nil;
+    }
+    if (__currentColorSpace) {
+        CFRelease(__currentColorSpace);
     }
 }
 
@@ -230,12 +241,17 @@ static const NSUInteger MaxFramesInFlight = 3;
                         : newPixelFormat == MTLPixelFormatBGR10A2Unorm ? @"MTLPixelFormatBGR10A2Unorm"
                                                                        : [NSString stringWithFormat:@"Unknown: %lu", (unsigned long)layer.pixelFormat]);
             }
-            
+
             // These can only be changed on the main thread
             dispatch_sync(dispatch_get_main_queue(), ^{
                 layer.colorspace = newColorSpace;
                 layer.pixelFormat = newPixelFormat;
             });
+            
+            if (__currentColorSpace) {
+                CFRelease(__currentColorSpace);
+            }
+            __currentColorSpace = CGColorSpaceCopyName(newColorSpace);
             CGColorSpaceRelease(newColorSpace);
         }
 
@@ -319,7 +335,7 @@ static const NSUInteger MaxFramesInFlight = 3;
 - (void)renderFrame:(Frame *)frame toLayer:(CAMetalLayer *)layer {
     @autoreleasepool {
         if (self.isStopping) {
-            Log(LOG_I, @"XXX Metal renderThread is stopping. returning from renderFrame");
+            Log(LOG_I, @"[MetalVideoRenderer] isStopping");
             return;
         }
 
@@ -431,11 +447,6 @@ static const NSUInteger MaxFramesInFlight = 3;
             [renderEncoder setFragmentTexture:CVMetalTextureGetTexture(_cvMetalTextures[i]) atIndex:i];
         }
 
-//        if (layer.pixelFormat == MTLPixelFormatRGBA16Float) {
-//            [self pollCurrentEDRHeadroom];
-//            [renderEncoder setFragmentBytes:&_currentEDRHeadroom length:sizeof(CGFloat) atIndex:0];
-//        }
-
         [renderEncoder setVertexBuffer:_VideoVertexBuffer offset:0 atIndex:0];
         [renderEncoder setFragmentBuffer:_CscParamsBuffer offset:0 atIndex:0];
         [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];
@@ -480,8 +491,6 @@ static const NSUInteger MaxFramesInFlight = 3;
 #endif
 
         [commandBuffer commit];
-
-        // Wait for the command buffer to complete and free our CVMetalTextureCache references
         [commandBuffer waitUntilCompleted];
     }
 }
@@ -496,12 +505,14 @@ static const NSUInteger MaxFramesInFlight = 3;
 }
 
 - (void)shutdown {
-    Log(LOG_I, @"XXX MetalVideoRenderer shutodwn");
-    self.isStopping = YES;
+    if (!self.isStopping) {
+        self.isStopping = YES;
+        Log(LOG_I, @"[MetalVideoRenderer] shutdown");
 
-    // Ensure no rendering is in flight
-    for (NSUInteger i = 0; i < MaxFramesInFlight; i++) {
-        dispatch_semaphore_signal(_inFlightSemaphore);
+        // Ensure no rendering is in flight
+        for (NSUInteger i = 0; i < MaxFramesInFlight; i++) {
+            dispatch_semaphore_signal(_inFlightSemaphore);
+        }
     }
 }
 
@@ -511,6 +522,13 @@ static const NSUInteger MaxFramesInFlight = 3;
 }
 
 - (void)resize:(CGSize)size {
+}
+
++ (NSString *)currentColorSpace {
+    if (__currentColorSpace) {
+        return (__bridge NSString *)__currentColorSpace;
+    }
+    return nil;
 }
 
 @end

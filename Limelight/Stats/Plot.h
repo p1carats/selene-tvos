@@ -45,11 +45,6 @@ typedef struct {
     float samplerate;
 } PlotMetrics;
 
-typedef NS_ENUM(NSInteger, RenderingBackend) {
-    RenderingBackendMetal = 0,
-    RenderingBackendAVSampleBuffer
-};
-
 typedef struct {
     CFTimeInterval startTime;
     CFTimeInterval endTime;
