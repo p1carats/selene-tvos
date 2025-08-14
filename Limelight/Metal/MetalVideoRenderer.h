@@ -1,7 +1,5 @@
 @import Foundation;
-@import QuartzCore.CAMetalLayer;
 @import QuartzCore;
-@import simd;
 
 NS_ASSUME_NONNULL_BEGIN
 

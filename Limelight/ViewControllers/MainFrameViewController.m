@@ -20,18 +20,26 @@
 #import "StreamConfiguration.h"
 #import "DataManager.h"
 #import "TemporarySettings.h"
+#import "PairManager.h"
 #import "WakeOnLanManager.h"
 #import "AppListResponse.h"
+#import "UIComputerView.h"
+#import "UIAppView.h"
+#import "DiscoveryManager.h"
 #import "ServerInfoResponse.h"
 #import "StreamFrameViewController.h"
 #import "LoadingFrameViewController.h"
 #import "ComputerScrollView.h"
 #import "TemporaryApp.h"
 #import "IdManager.h"
+#import "AppAssetManager.h"
 #import "ConnectionHelper.h"
 #import "Logger.h"
 
 #import <sys/utsname.h>
+
+@interface MainFrameViewController () <DiscoveryCallback, PairCallback, HostCallback, AppCallback, AppAssetCallback>
+@end
 
 @implementation MainFrameViewController {
     NSOperationQueue* _opQueue;
@@ -580,7 +588,7 @@ static NSMutableSet* hostList;
     _streamConfig.bitRate = [streamSettings.bitrate intValue];
     _streamConfig.optimizeGameSettings = streamSettings.optimizeGames;
     _streamConfig.playAudioOnPC = streamSettings.playAudioOnPC;
-    _streamConfig.gamepadMask = [ControllerSupport connectedGamepadMask:_streamConfig];
+    _streamConfig.gamepadMask = [ControllerSupport connectedGamepadMask];
 
     // Probe for supported channel configurations
     int physicalOutputChannels = (int)[AVAudioSession sharedInstance].maximumOutputNumberOfChannels;

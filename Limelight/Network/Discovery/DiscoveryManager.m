@@ -18,6 +18,8 @@
 #import "TemporaryHost.h"
 #import "Logger.h"
 
+#import <arpa/inet.h>
+
 @implementation DiscoveryManager {
     NSMutableArray* _hostQueue;
     NSMutableSet* _pausedHosts;

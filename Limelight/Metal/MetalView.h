@@ -1,8 +1,6 @@
 @import Foundation;
-@import Metal;
-@import QuartzCore.CAMetalDisplayLink;
-@import QuartzCore.CAMetalLayer;
 @import UIKit;
+@import Metal;
 
 NS_ASSUME_NONNULL_BEGIN
 

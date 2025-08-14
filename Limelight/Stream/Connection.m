@@ -13,6 +13,7 @@
 @import UIKit;
 
 #import "Connection.h"
+#import "ConnectionCallbacks.h"
 #import "Utils.h"
 #import "Logger.h"
 #import "BandwidthTracker.h"

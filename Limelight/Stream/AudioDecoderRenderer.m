@@ -8,11 +8,10 @@
 
 @import AVFoundation;
 @import os.lock;
+@import Copus;
 
 #import "AudioDecoderRenderer.h"
 #import "Logger.h"
-
-#include "opus_multistream.h"
 
 @implementation AudioDecoderRenderer {
     OpusMSDecoder* _opusDecoder;

@@ -3,125 +3,88 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 90;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		8F2FCAF62E2D3B5B00F8282B /* GameStreamKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8F2FCAF52E2D3B5B00F8282B /* GameStreamKit */; };
+		8F6C948B2E4DEF37002030FD /* Copus in Frameworks */ = {isa = PBXBuildFile; productRef = 8F6C948A2E4DEF37002030FD /* Copus */; };
+		8F6C948D2E4DEF37002030FD /* Opus in Frameworks */ = {isa = PBXBuildFile; productRef = 8F6C948C2E4DEF37002030FD /* Opus */; };
 		F74BEFA42C1A80E400224667 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = F74BEFA32C1A80E400224667 /* OpenSSL */; };
-		FB1A67B1213245D500507771 /* HttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89461019F646E200339C8A /* HttpManager.m */; };
-		FB1A67B3213245D500507771 /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9AFD361A7E02DB00872C98 /* HttpRequest.m */; };
-		FB1A67B5213245D500507771 /* HttpResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9AFD271A7C84ED00872C98 /* HttpResponse.m */; };
-		FB1A67B7213245D500507771 /* ServerInfoResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9AFD391A7E05CE00872C98 /* ServerInfoResponse.m */; };
-		FB1A67B9213245D500507771 /* AppAssetResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9AFD3C1A7E111600872C98 /* AppAssetResponse.m */; };
-		FB1A67BB213245D500507771 /* AppListResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9AFD3F1A7E127D00872C98 /* AppListResponse.m */; };
-		FB1A67BD213245E000507771 /* DiscoveryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4678F91A55FFAD00377732 /* DiscoveryManager.m */; };
-		FB1A67BF213245E000507771 /* DiscoveryWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = FB6549551A57907E001C8F39 /* DiscoveryWorker.m */; };
-		FB1A67C1213245E000507771 /* MDNSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89461219F646E200339C8A /* MDNSManager.m */; };
-		FB1A67C3213245EA00507771 /* AppAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FBD3494219FC9C04002D2A60 /* AppAssetManager.m */; };
-		FB1A67C5213245EA00507771 /* AppAssetRetriever.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9AFD311A7D867C00872C98 /* AppAssetRetriever.m */; };
-		FB1A67C7213245EA00507771 /* PairManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89461419F646E200339C8A /* PairManager.m */; };
-		FB1A67C9213245EA00507771 /* WakeOnLanManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4678FE1A565DAC00377732 /* WakeOnLanManager.m */; };
-		FB1A67CB213245EA00507771 /* ConnectionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1F5A06206436B20037755F /* ConnectionHelper.m */; };
-		FB1A67E32132498A00507771 /* Selene.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FB290D0519B2C406004C83CF /* Selene.xcdatamodeld */; };
-		FB1A67E821324DE300507771 /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB8946EA19F6AFB800339C8A /* libopus.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8F4907FA2E2D4ABA008B1D7D /* Selene.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Selene.xcdatamodel; sourceTree = "<group>"; };
-		D4746EEA1CBC740C006FB401 /* Selene-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Selene-Bridging-Header.h"; sourceTree = "<group>"; };
-		DC1F5A05206436B10037755F /* ConnectionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionHelper.h; sourceTree = "<group>"; };
-		DC1F5A06206436B20037755F /* ConnectionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionHelper.m; sourceTree = "<group>"; };
 		FB1A67532132419700507771 /* Selene.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Selene.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FB4678F81A55FFAD00377732 /* DiscoveryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoveryManager.h; sourceTree = "<group>"; };
-		FB4678F91A55FFAD00377732 /* DiscoveryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoveryManager.m; sourceTree = "<group>"; };
-		FB4678FD1A565DAC00377732 /* WakeOnLanManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WakeOnLanManager.h; sourceTree = "<group>"; };
-		FB4678FE1A565DAC00377732 /* WakeOnLanManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WakeOnLanManager.m; sourceTree = "<group>"; };
-		FB6549541A57907E001C8F39 /* DiscoveryWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoveryWorker.h; sourceTree = "<group>"; };
-		FB6549551A57907E001C8F39 /* DiscoveryWorker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoveryWorker.m; sourceTree = "<group>"; };
-		FB89460F19F646E200339C8A /* HttpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpManager.h; sourceTree = "<group>"; };
-		FB89461019F646E200339C8A /* HttpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpManager.m; sourceTree = "<group>"; };
-		FB89461119F646E200339C8A /* MDNSManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDNSManager.h; sourceTree = "<group>"; };
-		FB89461219F646E200339C8A /* MDNSManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDNSManager.m; sourceTree = "<group>"; };
-		FB89461319F646E200339C8A /* PairManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PairManager.h; sourceTree = "<group>"; };
-		FB89461419F646E200339C8A /* PairManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PairManager.m; sourceTree = "<group>"; };
-		FB8946E519F6AFB800339C8A /* opus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = opus.h; sourceTree = "<group>"; };
-		FB8946E619F6AFB800339C8A /* opus_defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = opus_defines.h; sourceTree = "<group>"; };
-		FB8946E719F6AFB800339C8A /* opus_multistream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = opus_multistream.h; sourceTree = "<group>"; };
-		FB8946E819F6AFB800339C8A /* opus_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = opus_types.h; sourceTree = "<group>"; };
-		FB8946EA19F6AFB800339C8A /* libopus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libopus.a; sourceTree = "<group>"; };
-		FB9AFD261A7C84ED00872C98 /* HttpResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpResponse.h; sourceTree = "<group>"; };
-		FB9AFD271A7C84ED00872C98 /* HttpResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpResponse.m; sourceTree = "<group>"; };
-		FB9AFD301A7D867C00872C98 /* AppAssetRetriever.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppAssetRetriever.h; sourceTree = "<group>"; };
-		FB9AFD311A7D867C00872C98 /* AppAssetRetriever.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppAssetRetriever.m; sourceTree = "<group>"; };
-		FB9AFD351A7E02DB00872C98 /* HttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpRequest.h; sourceTree = "<group>"; };
-		FB9AFD361A7E02DB00872C98 /* HttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpRequest.m; sourceTree = "<group>"; };
-		FB9AFD381A7E05CE00872C98 /* ServerInfoResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerInfoResponse.h; sourceTree = "<group>"; };
-		FB9AFD391A7E05CE00872C98 /* ServerInfoResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerInfoResponse.m; sourceTree = "<group>"; };
-		FB9AFD3B1A7E111600872C98 /* AppAssetResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppAssetResponse.h; sourceTree = "<group>"; };
-		FB9AFD3C1A7E111600872C98 /* AppAssetResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppAssetResponse.m; sourceTree = "<group>"; };
-		FB9AFD3E1A7E127D00872C98 /* AppListResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppListResponse.h; sourceTree = "<group>"; };
-		FB9AFD3F1A7E127D00872C98 /* AppListResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppListResponse.m; sourceTree = "<group>"; };
-		FBD3494119FC9C04002D2A60 /* AppAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppAssetManager.h; sourceTree = "<group>"; };
-		FBD3494219FC9C04002D2A60 /* AppAssetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppAssetManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		8F2FCAA72E2D399500F8282B /* Exceptions for "Stats" folder in "Selene" target */ = {
+		8F3045192E4E26020059EAA5 /* Exceptions for "Limelight" folder in "Selene" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				GraphRenderer.m,
-				GraphView.m,
-				PlotDefinition.m,
-				PlotManager.m,
+				App/AppDelegate.m,
+				App/SceneDelegate.m,
+				Crypto/CertificateGenerator.m,
+				Crypto/CertificateManager.m,
+				Crypto/CertificateSecret.m,
+				Crypto/CryptoManager.m,
+				Crypto/IdManager.m,
+				Database/DataManager.m,
+				Database/TemporaryApp.m,
+				Database/TemporaryHost.m,
+				Database/TemporarySettings.m,
+				Input/Controller.m,
+				Input/ControllerSupport.m,
+				Input/HapticContext.m,
+				Input/KeyboardSupport.m,
+				Input/MouseSupport.m,
+				Input/RemoteTouchHandler.m,
+				Metal/MetalVideoRenderer.m,
+				Metal/MetalView.m,
+				Metal/MetalViewController.m,
+				Metal/Shaders.metal,
+				Network/AppList/AppAssetManager.m,
+				Network/AppList/AppAssetRetriever.m,
+				Network/ConnectionHelper.m,
+				Network/Discovery/DiscoveryManager.m,
+				Network/Discovery/DiscoveryWorker.m,
+				Network/Discovery/MDNSManager.m,
+				Network/Http/AppAssetResponse.m,
+				Network/Http/AppListResponse.m,
+				Network/Http/HttpManager.m,
+				Network/Http/HttpRequest.m,
+				Network/Http/HttpResponse.m,
+				Network/Http/ServerInfoResponse.m,
+				Network/PairManager.m,
+				Network/WakeOnLanManager.m,
+				Selene.xcdatamodeld,
+				Stats/GraphRenderer.m,
+				Stats/GraphView.m,
+				Stats/PlotDefinition.m,
+				Stats/PlotManager.m,
+				Stream/AudioDecoderRenderer.m,
+				Stream/Connection.m,
+				Stream/StreamConfiguration.m,
+				Stream/StreamManager.m,
+				Stream/VideoDecoderRenderer.m,
+				Utility/BandwidthTracker.m,
+				Utility/FloatBuffer.m,
+				Utility/Frame.m,
+				Utility/FrameQueue.m,
+				Utility/Logger.m,
+				Utility/PaddedLabel.m,
+				Utility/Utils.m,
+				ViewControllers/LoadingFrameViewController.m,
+				ViewControllers/MainFrameViewController.m,
+				ViewControllers/StreamFrameViewController.m,
+				Views/AppCollectionView.m,
+				Views/ComputerScrollView.m,
+				Views/StreamView.m,
+				Views/UIAppView.m,
+				Views/UIComputerView.m,
 			);
 			target = FB1A67522132419700507771 /* Selene */;
 		};
-		8F2FCAB22E2D399900F8282B /* Exceptions for "Crypto" folder in "Selene" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				CertificateGenerator.m,
-				CertificateManager.m,
-				CertificateSecret.m,
-				CryptoManager.m,
-				IdManager.m,
-			);
-			target = FB1A67522132419700507771 /* Selene */;
-		};
-		8F2FCAD02E2D39A500F8282B /* Exceptions for "Stream" folder in "Selene" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				AudioDecoderRenderer.m,
-				Connection.m,
-				StreamConfiguration.m,
-				StreamManager.m,
-				VideoDecoderRenderer.m,
-			);
-			target = FB1A67522132419700507771 /* Selene */;
-		};
-		8F2FCAE82E2D39A800F8282B /* Exceptions for "Utility" folder in "Selene" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				BandwidthTracker.m,
-				FloatBuffer.m,
-				Frame.m,
-				FrameQueue.m,
-				Logger.m,
-				PaddedLabel.m,
-				Utils.m,
-			);
-			target = FB1A67522132419700507771 /* Selene */;
-		};
-		8F2FCAF32E2D39AC00F8282B /* Exceptions for "ViewControllers" folder in "Selene" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				LoadingFrameViewController.m,
-				MainFrameViewController.m,
-				StreamFrameViewController.m,
-			);
-			target = FB1A67522132419700507771 /* Selene */;
-		};
-		8F2FCB1B2E2D49BA00F8282B /* Exceptions for "Selene" folder in "Selene" target */ = {
+		8F96DA0C2E4E102800EB596F /* Exceptions for "Selene" folder in "Selene" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -131,77 +94,20 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		8F2FCAA52E2D399500F8282B /* Stats */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				8F2FCAA72E2D399500F8282B /* Exceptions for "Stats" folder in "Selene" target */,
-			);
-			path = Stats;
-			sourceTree = "<group>";
-		};
-		8F2FCAAE2E2D399900F8282B /* Crypto */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				8F2FCAB22E2D399900F8282B /* Exceptions for "Crypto" folder in "Selene" target */,
-			);
-			path = Crypto;
-			sourceTree = "<group>";
-		};
-		8F2FCABC2E2D39A000F8282B /* Metal */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Metal;
-			sourceTree = "<group>";
-		};
-		8F2FCACB2E2D39A500F8282B /* Stream */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				8F2FCAD02E2D39A500F8282B /* Exceptions for "Stream" folder in "Selene" target */,
-			);
-			path = Stream;
-			sourceTree = "<group>";
-		};
-		8F2FCAE02E2D39A800F8282B /* Utility */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				8F2FCAE82E2D39A800F8282B /* Exceptions for "Utility" folder in "Selene" target */,
-			);
-			path = Utility;
-			sourceTree = "<group>";
-		};
-		8F2FCAEF2E2D39AC00F8282B /* ViewControllers */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				8F2FCAF32E2D39AC00F8282B /* Exceptions for "ViewControllers" folder in "Selene" target */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		8F2FCB062E2D49B600F8282B /* Input */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Input;
-			sourceTree = "<group>";
-		};
 		8F2FCB152E2D49BA00F8282B /* Selene */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				8F2FCB1B2E2D49BA00F8282B /* Exceptions for "Selene" folder in "Selene" target */,
+				8F96DA0C2E4E102800EB596F /* Exceptions for "Selene" folder in "Selene" target */,
 			);
 			path = Selene;
 			sourceTree = "<group>";
 		};
-		8F37BEA22E3533EB002284AA /* App */ = {
+		8F3044DB2E4E26020059EAA5 /* Limelight */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = App;
-			sourceTree = "<group>";
-		};
-		8F4908052E2D4C12008B1D7D /* Database */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Database;
-			sourceTree = "<group>";
-		};
-		8FD33E8F2E2D90C8008D0A29 /* Views */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Views;
+			exceptions = (
+				8F3045192E4E26020059EAA5 /* Exceptions for "Limelight" folder in "Selene" target */,
+			);
+			path = Limelight;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -209,13 +115,12 @@
 /* Begin PBXFrameworksBuildPhase section */
 		FB1A67502132419700507771 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				F74BEFA42C1A80E400224667 /* OpenSSL in Frameworks */,
-				FB1A67E821324DE300507771 /* libopus.a in Frameworks */,
 				8F2FCAF62E2D3B5B00F8282B /* GameStreamKit in Frameworks */,
+				8F6C948D2E4DEF37002030FD /* Opus in Frameworks */,
+				8F6C948B2E4DEF37002030FD /* Copus in Frameworks */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -223,9 +128,8 @@
 		FB290CE519B2C406004C83CF = {
 			isa = PBXGroup;
 			children = (
-				FB290CF919B2C406004C83CF /* Limelight */,
+				8F3044DB2E4E26020059EAA5 /* Limelight */,
 				8F2FCB152E2D49BA00F8282B /* Selene */,
-				FB290CF019B2C406004C83CF /* Frameworks */,
 				FB290CEF19B2C406004C83CF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -236,137 +140,6 @@
 				FB1A67532132419700507771 /* Selene.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		FB290CF019B2C406004C83CF /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				FB89468F19F6AFB800339C8A /* libs */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		FB290CF919B2C406004C83CF /* Limelight */ = {
-			isa = PBXGroup;
-			children = (
-				8F37BEA22E3533EB002284AA /* App */,
-				8F2FCAAE2E2D399900F8282B /* Crypto */,
-				8F4908052E2D4C12008B1D7D /* Database */,
-				8F2FCB062E2D49B600F8282B /* Input */,
-				8F2FCABC2E2D39A000F8282B /* Metal */,
-				FB89460E19F646E200339C8A /* Network */,
-				8F2FCAA52E2D399500F8282B /* Stats */,
-				8F2FCACB2E2D39A500F8282B /* Stream */,
-				8F2FCAE02E2D39A800F8282B /* Utility */,
-				8FD33E8F2E2D90C8008D0A29 /* Views */,
-				8F2FCAEF2E2D39AC00F8282B /* ViewControllers */,
-				D4746EEA1CBC740C006FB401 /* Selene-Bridging-Header.h */,
-				FB290D0519B2C406004C83CF /* Selene.xcdatamodeld */,
-			);
-			path = Limelight;
-			sourceTree = "<group>";
-		};
-		FB89460E19F646E200339C8A /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				FB9AFD2F1A7C979700872C98 /* Http */,
-				FB9AFD341A7D877B00872C98 /* Discovery */,
-				FB9AFD331A7D876F00872C98 /* AppList */,
-				FB89461319F646E200339C8A /* PairManager.h */,
-				FB89461419F646E200339C8A /* PairManager.m */,
-				FB4678FD1A565DAC00377732 /* WakeOnLanManager.h */,
-				FB4678FE1A565DAC00377732 /* WakeOnLanManager.m */,
-				DC1F5A05206436B10037755F /* ConnectionHelper.h */,
-				DC1F5A06206436B20037755F /* ConnectionHelper.m */,
-			);
-			path = Network;
-			sourceTree = "<group>";
-		};
-		FB89468F19F6AFB800339C8A /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				FB8946E219F6AFB800339C8A /* opus */,
-			);
-			path = libs;
-			sourceTree = "<group>";
-		};
-		FB8946E219F6AFB800339C8A /* opus */ = {
-			isa = PBXGroup;
-			children = (
-				FB8946E319F6AFB800339C8A /* include */,
-				FB8946E919F6AFB800339C8A /* lib */,
-			);
-			path = opus;
-			sourceTree = "<group>";
-		};
-		FB8946E319F6AFB800339C8A /* include */ = {
-			isa = PBXGroup;
-			children = (
-				FB8946E419F6AFB800339C8A /* opus */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		FB8946E419F6AFB800339C8A /* opus */ = {
-			isa = PBXGroup;
-			children = (
-				FB8946E519F6AFB800339C8A /* opus.h */,
-				FB8946E619F6AFB800339C8A /* opus_defines.h */,
-				FB8946E719F6AFB800339C8A /* opus_multistream.h */,
-				FB8946E819F6AFB800339C8A /* opus_types.h */,
-			);
-			path = opus;
-			sourceTree = "<group>";
-		};
-		FB8946E919F6AFB800339C8A /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				FB8946EA19F6AFB800339C8A /* libopus.a */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		FB9AFD2F1A7C979700872C98 /* Http */ = {
-			isa = PBXGroup;
-			children = (
-				FB89460F19F646E200339C8A /* HttpManager.h */,
-				FB89461019F646E200339C8A /* HttpManager.m */,
-				FB9AFD351A7E02DB00872C98 /* HttpRequest.h */,
-				FB9AFD361A7E02DB00872C98 /* HttpRequest.m */,
-				FB9AFD261A7C84ED00872C98 /* HttpResponse.h */,
-				FB9AFD271A7C84ED00872C98 /* HttpResponse.m */,
-				FB9AFD381A7E05CE00872C98 /* ServerInfoResponse.h */,
-				FB9AFD391A7E05CE00872C98 /* ServerInfoResponse.m */,
-				FB9AFD3B1A7E111600872C98 /* AppAssetResponse.h */,
-				FB9AFD3C1A7E111600872C98 /* AppAssetResponse.m */,
-				FB9AFD3E1A7E127D00872C98 /* AppListResponse.h */,
-				FB9AFD3F1A7E127D00872C98 /* AppListResponse.m */,
-			);
-			name = Http;
-			sourceTree = "<group>";
-		};
-		FB9AFD331A7D876F00872C98 /* AppList */ = {
-			isa = PBXGroup;
-			children = (
-				FBD3494119FC9C04002D2A60 /* AppAssetManager.h */,
-				FBD3494219FC9C04002D2A60 /* AppAssetManager.m */,
-				FB9AFD301A7D867C00872C98 /* AppAssetRetriever.h */,
-				FB9AFD311A7D867C00872C98 /* AppAssetRetriever.m */,
-			);
-			name = AppList;
-			sourceTree = "<group>";
-		};
-		FB9AFD341A7D877B00872C98 /* Discovery */ = {
-			isa = PBXGroup;
-			children = (
-				FB4678F81A55FFAD00377732 /* DiscoveryManager.h */,
-				FB4678F91A55FFAD00377732 /* DiscoveryManager.m */,
-				FB6549541A57907E001C8F39 /* DiscoveryWorker.h */,
-				FB6549551A57907E001C8F39 /* DiscoveryWorker.m */,
-				FB89461119F646E200339C8A /* MDNSManager.h */,
-				FB89461219F646E200339C8A /* MDNSManager.m */,
-			);
-			name = Discovery;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -382,20 +155,15 @@
 			);
 			buildRules = (
 			);
-			dependencies = (
-			);
 			fileSystemSynchronizedGroups = (
-				8F2FCABC2E2D39A000F8282B /* Metal */,
-				8F2FCB062E2D49B600F8282B /* Input */,
 				8F2FCB152E2D49BA00F8282B /* Selene */,
-				8F37BEA22E3533EB002284AA /* App */,
-				8F4908052E2D4C12008B1D7D /* Database */,
-				8FD33E8F2E2D90C8008D0A29 /* Views */,
 			);
 			name = Selene;
 			packageProductDependencies = (
 				F74BEFA32C1A80E400224667 /* OpenSSL */,
 				8F2FCAF52E2D3B5B00F8282B /* GameStreamKit */,
+				8F6C948A2E4DEF37002030FD /* Copus */,
+				8F6C948C2E4DEF37002030FD /* Opus */,
 			);
 			productName = Selene;
 			productReference = FB1A67532132419700507771 /* Selene.app */;
@@ -438,8 +206,9 @@
 			packageReferences = (
 				F74BEF9A2C1A705600224667 /* XCRemoteSwiftPackageReference "OpenSSL-Package" */,
 				8F2FCAF42E2D3B5B00F8282B /* XCLocalSwiftPackageReference "GameStreamKit" */,
+				8F6C94892E4DEF37002030FD /* XCRemoteSwiftPackageReference "swift-opus" */,
 			);
-			preferredProjectObjectVersion = 77;
+			preferredProjectObjectVersion = 90;
 			productRefGroup = FB290CEF19B2C406004C83CF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -452,149 +221,104 @@
 /* Begin PBXResourcesBuildPhase section */
 		FB1A67512132419700507771 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FB1A674F2132419700507771 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
-				FB1A67E32132498A00507771 /* Selene.xcdatamodeld in Sources */,
-				FB1A67C3213245EA00507771 /* AppAssetManager.m in Sources */,
-				FB1A67C5213245EA00507771 /* AppAssetRetriever.m in Sources */,
-				FB1A67C7213245EA00507771 /* PairManager.m in Sources */,
-				FB1A67C9213245EA00507771 /* WakeOnLanManager.m in Sources */,
-				FB1A67CB213245EA00507771 /* ConnectionHelper.m in Sources */,
-				FB1A67BD213245E000507771 /* DiscoveryManager.m in Sources */,
-				FB1A67BF213245E000507771 /* DiscoveryWorker.m in Sources */,
-				FB1A67C1213245E000507771 /* MDNSManager.m in Sources */,
-				FB1A67B1213245D500507771 /* HttpManager.m in Sources */,
-				FB1A67B3213245D500507771 /* HttpRequest.m in Sources */,
-				FB1A67B5213245D500507771 /* HttpResponse.m in Sources */,
-				FB1A67B7213245D500507771 /* ServerInfoResponse.m in Sources */,
-				FB1A67B9213245D500507771 /* AppAssetResponse.m in Sources */,
-				FB1A67BB213245D500507771 /* AppListResponse.m in Sources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		FB1A67662132419A00507771 /* Debug */ = {
+		FB1A67662132419A00507771 /* Debug configuration for PBXNativeTarget "Selene" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Launch Image";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/GameStreamKit/Sources/moonlight-common-c/**",
-					"$(PROJECT_DIR)/libs/**",
-				);
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Selene/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Selene;
+				INFOPLIST_KEY_GCSupportsControllerUserInteraction = YES;
+				INFOPLIST_KEY_GCSupportsGameMode = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Selene uses the local network to connect to your gaming PC for streaming.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				"LIBRARY_SEARCH_PATHS[sdk=appletvos*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/libs/opus/lib/tvOS",
-				);
-				"LIBRARY_SEARCH_PATHS[sdk=appletvsimulator*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/libs/opus/lib/tvOS-Sim",
-				);
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.noebarlet.Selene;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Limelight/Selene-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Selene-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 18.0;
 			};
 			name = Debug;
 		};
-		FB1A67672132419A00507771 /* Release */ = {
+		FB1A67672132419A00507771 /* Release configuration for PBXNativeTarget "Selene" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Launch Image";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/GameStreamKit/Sources/moonlight-common-c/**",
-					"$(PROJECT_DIR)/libs/**",
-				);
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Selene/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Selene;
+				INFOPLIST_KEY_GCSupportsControllerUserInteraction = YES;
+				INFOPLIST_KEY_GCSupportsGameMode = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Selene uses the local network to connect to your gaming PC for streaming.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				"LIBRARY_SEARCH_PATHS[sdk=appletvos*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/libs/opus/lib/tvOS",
-				);
-				"LIBRARY_SEARCH_PATHS[sdk=appletvsimulator*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/libs/opus/lib/tvOS-Sim",
-				);
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.noebarlet.Selene;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Limelight/Selene-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Selene-Swift.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 18.0;
 			};
 			name = Release;
 		};
-		FB290D1E19B2C406004C83CF /* Debug */ = {
+		FB290D1E19B2C406004C83CF /* Debug configuration for PBXProject "Selene" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -607,9 +331,11 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2B8H6LSHBD;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -620,46 +346,42 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
-					"CA_DEBUG_TRANSACTIONS=1",
-					"CA_ASSERT_MAIN_THREAD_TRANSACTIONS=1",
 					"$(inherited)",
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(OTHER_CFLAGS)",
-					"-D_POSIX_C_SOURCE=200809L",
-					"-D_DARWIN_C_SOURCE",
-				);
 				SDKROOT = appletvos;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 18.5;
 			};
 			name = Debug;
 		};
-		FB290D1F19B2C406004C83CF /* Release */ = {
+		FB290D1F19B2C406004C83CF /* Release configuration for PBXProject "Selene" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -672,9 +394,10 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 2B8H6LSHBD;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -688,16 +411,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(OTHER_CFLAGS)",
-					"-D_POSIX_C_SOURCE=200809L",
-					"-D_DARWIN_C_SOURCE",
-				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = appletvos;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 18.5;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -708,19 +427,17 @@
 		FB1A67682132419A00507771 /* Build configuration list for PBXNativeTarget "Selene" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FB1A67662132419A00507771 /* Debug */,
-				FB1A67672132419A00507771 /* Release */,
+				FB1A67662132419A00507771 /* Debug configuration for PBXNativeTarget "Selene" */,
+				FB1A67672132419A00507771 /* Release configuration for PBXNativeTarget "Selene" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		FB290CE919B2C406004C83CF /* Build configuration list for PBXProject "Selene" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FB290D1E19B2C406004C83CF /* Debug */,
-				FB290D1F19B2C406004C83CF /* Release */,
+				FB290D1E19B2C406004C83CF /* Debug configuration for PBXProject "Selene" */,
+				FB290D1F19B2C406004C83CF /* Release configuration for PBXProject "Selene" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
@@ -733,6 +450,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8F6C94892E4DEF37002030FD /* XCRemoteSwiftPackageReference "swift-opus" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/alta/swift-opus";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		F74BEF9A2C1A705600224667 /* XCRemoteSwiftPackageReference "OpenSSL-Package" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krzyzanowskim/OpenSSL-Package.git";
@@ -748,25 +473,22 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = GameStreamKit;
 		};
+		8F6C948A2E4DEF37002030FD /* Copus */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F6C94892E4DEF37002030FD /* XCRemoteSwiftPackageReference "swift-opus" */;
+			productName = Copus;
+		};
+		8F6C948C2E4DEF37002030FD /* Opus */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F6C94892E4DEF37002030FD /* XCRemoteSwiftPackageReference "swift-opus" */;
+			productName = Opus;
+		};
 		F74BEFA32C1A80E400224667 /* OpenSSL */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F74BEF9A2C1A705600224667 /* XCRemoteSwiftPackageReference "OpenSSL-Package" */;
 			productName = OpenSSL;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		FB290D0519B2C406004C83CF /* Selene.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				8F4907FA2E2D4ABA008B1D7D /* Selene.xcdatamodel */,
-			);
-			currentVersion = 8F4907FA2E2D4ABA008B1D7D /* Selene.xcdatamodel */;
-			path = Selene.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = FB290CE619B2C406004C83CF /* Project object */;
 }

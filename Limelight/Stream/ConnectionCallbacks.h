@@ -6,7 +6,7 @@
 //  Copyright © 2020 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import "Plot.h"
+@import Foundation;
 
 NS_ASSUME_NONNULL_BEGIN
 

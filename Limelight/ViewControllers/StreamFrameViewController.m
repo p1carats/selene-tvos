@@ -46,9 +46,7 @@
     PlotMetrics _decodeMetrics;
     PlotMetrics _frameDropMetrics;
     PlotMetrics _frameQueueMetrics;
-
-    UITapGestureRecognizer *_menuTapGestureRecognizer;
-    UITapGestureRecognizer *_menuDoubleTapGestureRecognizer;
+    
     UITapGestureRecognizer *_playPauseTapGestureRecognizer;
     UITapGestureRecognizer *_playPauseDoubleTapGestureRecognizer;
 }
@@ -56,13 +54,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-}
-
-- (void)controllerPauseButtonPressed:(id)sender { }
-
-- (void)controllerPauseButtonDoublePressed:(id)sender {
-    Log(LOG_I, @"Menu double-pressed -- backing out of stream");
-    [self returnToMainFrame];
 }
 
 - (void)controllerPlayPauseButtonPressed:(id)sender {
@@ -104,17 +95,14 @@
     [_spinner startAnimating];
     _spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 - _stageLabel.frame.size.height - _spinner.frame.size.height);
     
-    _controllerSupport = [[ControllerSupport alloc] initWithConfig:self.streamConfig delegate:self];
+    _controllerSupport = [[ControllerSupport alloc] initWithDelegate:self];
     self.mouseSupport = [[MouseSupport alloc] init];
     self.mouseSupport.delegate = self;
     self.keyboardSupport = [[KeyboardSupport alloc] init];
     self.keyboardSupport.delegate = self;
     _inactivityTimer = nil;
     
-    if (!_menuTapGestureRecognizer || !_menuDoubleTapGestureRecognizer || !_playPauseTapGestureRecognizer || !_playPauseDoubleTapGestureRecognizer) {
-        _menuTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(controllerPauseButtonPressed:)];
-        _menuTapGestureRecognizer.allowedPressTypes = @[@(UIPressTypeMenu)];
-
+    if (!_playPauseTapGestureRecognizer || !_playPauseDoubleTapGestureRecognizer) {
         _playPauseTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(controllerPlayPauseButtonPressed:)];
         _playPauseTapGestureRecognizer.allowedPressTypes = @[@(UIPressTypePlayPause)];
         
@@ -122,15 +110,8 @@
         _playPauseDoubleTapGestureRecognizer.numberOfTapsRequired = 2;
         _playPauseDoubleTapGestureRecognizer.allowedPressTypes = @[@(UIPressTypePlayPause)];
         [_playPauseTapGestureRecognizer requireGestureRecognizerToFail:_playPauseDoubleTapGestureRecognizer];
-        
-        _menuDoubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(controllerPauseButtonDoublePressed:)];
-        _menuDoubleTapGestureRecognizer.numberOfTapsRequired = 2;
-        [_menuTapGestureRecognizer requireGestureRecognizerToFail:_menuDoubleTapGestureRecognizer];
-        _menuDoubleTapGestureRecognizer.allowedPressTypes = @[@(UIPressTypeMenu)];
     }
     
-    [self.view addGestureRecognizer:_menuTapGestureRecognizer];
-    [self.view addGestureRecognizer:_menuDoubleTapGestureRecognizer];
     [self.view addGestureRecognizer:_playPauseTapGestureRecognizer];
     [self.view addGestureRecognizer:_playPauseDoubleTapGestureRecognizer];
 

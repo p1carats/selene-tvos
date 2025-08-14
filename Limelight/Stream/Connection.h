@@ -8,7 +8,6 @@
 
 @import Foundation;
 
-#import "ConnectionCallbacks.h"
 #import "Plot.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @class BandwidthTracker;
 @class StreamConfiguration;
 @class VideoDecoderRenderer;
+
+@protocol ConnectionCallbacks;
 
 #define CONN_TEST_SERVER "ios.conntest.moonlight-stream.org"
 

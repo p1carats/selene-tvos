@@ -8,9 +8,9 @@
 
 @import GameStreamKit;
 
+#import "StreamManager.h"
 #import "Connection.h"
 #import "VideoDecoderRenderer.h"
-#import "StreamManager.h"
 #import "BandwidthTracker.h"
 #import "CertificateManager.h"
 #import "StreamConfiguration.h"
@@ -18,7 +18,6 @@
 #import "Plot.h"
 #import "Utils.h"
 #import "ConnectionCallbacks.h"
-#import "StreamView.h"
 #import "ServerInfoResponse.h"
 #import "HttpResponse.h"
 #import "HttpRequest.h"

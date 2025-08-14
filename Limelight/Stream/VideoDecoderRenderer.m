@@ -13,18 +13,13 @@
 #import "DataManager.h"
 #import "TemporarySettings.h"
 #import "FrameQueue.h"
-#import "ConnectionCallbacks.h"
 #import "StreamView.h"
 #import "Plot.h"
 #import "Frame.h"
-#import "MetalViewController.h"
 #import "MetalVideoRenderer.h"
 #import "FloatBuffer.h"
 #import "PlotManager.h"
 #import "Logger.h"
-
-// Define for extra logging related to frame pacing
-#define DISPLAYLINK_VERBOSE
 
 @implementation VideoDecoderRenderer {
     dispatch_queue_t _sq, _vtq;
@@ -527,53 +522,6 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
         memcpy(&stats->frameQueueMetrics, &_frameQueueMetrics, sizeof(PlotMetrics));
         [_frameQueue.frameDropMetrics copyMetrics:&stats->frameDropMetrics];
     });
-}
-
-// When streaming lower framerate content on a ProMotion display, the screen refresh rate can be
-// reduced, optimizing battery life. Not currently used, it doesn't seem as reliable as I'd like.
-- (void)optimizeRefreshRate {
-    static NSArray<NSNumber *> *supportedRates;
-    static dispatch_once_t onceToken;
-    static int lastTargetRate = 0;
-    int targetRate = (int)_maxRefreshRate;
-
-    if (_maxRefreshRate <= 60 || _maxRefreshRate == 90) {
-        return;
-    }
-
-    dispatch_once(&onceToken, ^{
-        // https://developer.apple.com/documentation/quartzcore/optimizing-promotion-refresh-rates-for-iphone-13-pro-and-ipad-pro?language=objc
-        UIDevice *device = [UIDevice currentDevice];
-        if (device.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-            supportedRates = @[@24, @30, @40, @60, @120];
-        }
-        else if (device.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-            supportedRates = @[@10, @12, @15, @16, @20, @24, @30, @40, @48, @60, @80, @120];
-        }
-        else {
-            supportedRates = @[@30, @60];
-        }
-    });
-
-    CFTimeInterval streamFps = [_frameQueue estimatedFramerate];
-    if (streamFps > _maxRefreshRate) {
-        streamFps = _maxRefreshRate;
-    }
-
-    for (NSNumber *r in supportedRates) {
-        NSInteger rate = r.integerValue;
-        if (rate >= (int)streamFps) {
-            targetRate = (int)rate;
-            break;
-        }
-    }
-
-    if (targetRate == lastTargetRate) {
-        return;
-    }
-    lastTargetRate = targetRate;
-
-    Log(LOG_I, @"optimizeRefreshRate: new rate %d Hz based on streamFps of %.2f fps", targetRate, streamFps);
 }
 
 @end

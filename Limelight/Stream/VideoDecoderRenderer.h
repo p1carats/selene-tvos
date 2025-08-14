@@ -30,7 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setHdrMode:(BOOL)enabled;
 - (void)safeCopyMetricsTo:(PlotMetrics *)dst from:(PlotMetrics *)src;
 - (void)getAllStats:(VideoStats *)stats;
-- (void)optimizeRefreshRate;
 
 - (int)submitDecodeBuffer:(unsigned char *)data
                    length:(int)length

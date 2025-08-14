@@ -9,15 +9,9 @@
 @import Foundation;
 @import UIKit;
 
-#import "DiscoveryManager.h"
-#import "PairManager.h"
-#import "UIComputerView.h"
-#import "UIAppView.h"
-#import "AppAssetManager.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MainFrameViewController : UICollectionViewController <DiscoveryCallback, PairCallback, HostCallback, AppCallback, AppAssetCallback>
+@interface MainFrameViewController : UICollectionViewController
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
 

@@ -11,7 +11,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class Controller;
-@class StreamConfiguration;
 
 @protocol ControllerSupportDelegate <NSObject>
 
@@ -23,8 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ControllerSupport : NSObject
 
 // Initialization
-- (instancetype)initWithConfig:(StreamConfiguration *)streamConfig 
-                      delegate:(id<ControllerSupportDelegate>)delegate;
+- (instancetype)initWithDelegate:(id<ControllerSupportDelegate>)delegate;
 
 // Connection management
 - (void)connectionEstablished;
@@ -58,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Status queries
 - (NSUInteger)connectedGamepadCount;
-+ (int)connectedGamepadMask:(StreamConfiguration *)streamConfig;
++ (int)connectedGamepadMask;
 + (int)connectedGamepadCount;
 
 @end

@@ -38,7 +38,7 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
 
 #pragma mark - Initialization
 
-- (instancetype)initWithConfig:(StreamConfiguration *)streamConfig delegate:(id<ControllerSupportDelegate>)delegate {
+- (instancetype)initWithDelegate:(id<ControllerSupportDelegate>)delegate {
     self = [super init];
     if (self) {
         _controllers = [[NSMutableDictionary alloc] init];
@@ -690,7 +690,7 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
     return self.controllers.count;
 }
 
-+ (int)connectedGamepadMask:(StreamConfiguration *)streamConfig {
++ (int)connectedGamepadMask {
     int mask = 0;
     int i = 0;
     
