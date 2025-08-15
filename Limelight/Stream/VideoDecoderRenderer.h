@@ -1,9 +1,9 @@
 //
 //  VideoDecoderRenderer.h
-//  Moonlight
+//  Selene
 //
-//  Created by Cameron Gutman on 10/18/14.
-//  Copyright (c) 2014 Moonlight Stream. All rights reserved.
+//  Created by Cameron Gutman on 18/10/2014.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
 //
 
 @import Foundation;

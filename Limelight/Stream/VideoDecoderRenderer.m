@@ -1,9 +1,9 @@
 //
 //  VideoDecoderRenderer.m
-//  Moonlight
+//  Selene
 //
-//  Created by Cameron Gutman on 10/18/14.
-//  Copyright (c) 2014 Moonlight Stream. All rights reserved.
+//  Created by Cameron Gutman on 18/10/2014.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
 //
 
 @import VideoToolbox;
@@ -87,15 +87,31 @@
         CFRelease(_decompressionSession);
         _decompressionSession = nil;
     }
+    
+    NSDictionary *decoderSpec = @{
+        (__bridge NSString*)kVTVideoDecoderSpecification_RequireHardwareAcceleratedVideoDecoder: @YES
+    };
 
     int status = VTDecompressionSessionCreate(kCFAllocatorDefault,
                                               _formatDesc,
-                                              nil,
+                                              (__bridge CFDictionaryRef)decoderSpec,
                                               (__bridge CFDictionaryRef)destinationPixelBufferAttributes,
                                               nil,
                                               &_decompressionSession);
     if (status != noErr) {
         Log(LOG_E, @"Failed to create VTDecompressionSession, status %d", status);
+    }
+    
+    // Real-time
+    VTSessionSetProperty(_decompressionSession, kVTDecompressionPropertyKey_RealTime, kCFBooleanTrue);
+    
+    // Ensure we're using HW accelerated decoding
+    CFTypeRef v = NULL;
+    if (VTSessionCopyProperty(_decompressionSession,
+                              kVTDecompressionPropertyKey_UsingHardwareAcceleratedVideoDecoder,
+                              kCFAllocatorDefault, &v) == noErr) {
+        Log(LOG_I, @"Using HW decode: %@", (v == kCFBooleanTrue) ? @"YES" : @"NO");
+        if (v) CFRelease(v);
     }
 }
 
@@ -105,17 +121,28 @@
 #else
     NSNumber *pixelFormat = nil;
     if (self->_videoFormat & VIDEO_FORMAT_MASK_YUV444) {
-        pixelFormat = @(kCVPixelFormatType_444YpCbCr10BiPlanarVideoRange);
+        if (self->_videoFormat & VIDEO_FORMAT_MASK_10BIT) {
+            pixelFormat = @(kCVPixelFormatType_444YpCbCr10BiPlanarVideoRange);
+        }
+        else {
+            pixelFormat = @(kCVPixelFormatType_444YpCbCr8BiPlanarVideoRange);
+        }
     }
     else {
-        pixelFormat = @(kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange);
+        if (self->_videoFormat & VIDEO_FORMAT_MASK_10BIT) {
+            pixelFormat = @(kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange);
+        }
+        else {
+            pixelFormat = @(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange);
+        }
     }
 #endif
 
     NSDictionary *destinationPixelBufferAttributes = @{
         (id)kCVPixelBufferPixelFormatTypeKey : pixelFormat,
-        (id)kVTDecompressionPropertyKey_GeneratePerFrameHDRDisplayMetadata : @YES,
-        (id)kVTVideoDecoderSpecification_RequireHardwareAcceleratedVideoDecoder : @YES
+        (id)kCVPixelBufferIOSurfacePropertiesKey: @{},
+        (id)kCVPixelBufferMetalCompatibilityKey: @YES,
+        //(id)kCVPixelBufferPoolMinimumBufferCountKey: @12,
     };
 
     return [self setupDecompressionSessionWithAttributes:destinationPixelBufferAttributes];

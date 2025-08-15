@@ -1,3 +1,11 @@
+//
+//  MetalView.m
+//  Selene
+//
+//  Created by Andy Grundman on 03/07/2025.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
+//
+
 // This is based on the following Apple example
 // https://developer.apple.com/documentation/metal/achieving-smooth-frame-rates-with-a-metal-display-link?language=objc
 // https://developer.apple.com/wwdc23/10123/
@@ -112,7 +120,7 @@
     newSize.width *= scaleFactor;
     newSize.height *= scaleFactor;
 
-    if (newSize.width <= 0 || newSize.width <= 0) {
+    if (newSize.width <= 0 || newSize.height <= 0) {
         return;
     }
 

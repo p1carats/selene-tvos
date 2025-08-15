@@ -1,9 +1,14 @@
-@import CoreGraphics;
-@import CoreVideo;
-@import GameStreamKit;
+//
+//  MetalVideoRenderer.m
+//  Selene
+//
+//  Created by Andy Grundman on 03/07/2025.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
+//
+
 @import Metal;
 @import MetalKit;
-@import simd;
+@import GameStreamKit;
 
 #import "MetalVideoRenderer.h"
 #import "PlotManager.h"

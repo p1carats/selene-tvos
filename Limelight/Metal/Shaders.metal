@@ -1,3 +1,11 @@
+//
+//  Shaders.metal
+//  Selene
+//
+//  Created by Andy Grundman on 03/07/2025.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
+//
+
 #include <metal_stdlib>
 #include <simd/simd.h>
 

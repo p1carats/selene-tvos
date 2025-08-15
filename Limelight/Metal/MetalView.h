@@ -1,3 +1,11 @@
+//
+//  MetalView.h
+//  Selene
+//
+//  Created by Andy Grundman on 03/07/2025.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
+//
+
 @import Foundation;
 @import UIKit;
 @import Metal;

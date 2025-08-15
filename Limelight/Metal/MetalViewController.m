@@ -1,9 +1,10 @@
-/*
-See the LICENSE.txt file for this sample’s licensing information.
-
-Abstract:
-The implementation of the cross-platform game view controller.
-*/
+//
+//  MetalViewController.m
+//  Selene
+//
+//  Created by Andy Grundman on 03/07/2025.
+//  Copyright © 2025 Selene Game Streaming Project. All rights reserved.
+//
 
 #import "MetalViewController.h"
 #import "FrameQueue.h"
@@ -17,6 +18,7 @@ The implementation of the cross-platform game view controller.
     MetalView *_metalView;
     MetalVideoRenderer *_renderer;
     MetricsHandler _metricsHandler;
+    CADisplayLink *_displayLink;
 }
 
 - (nonnull instancetype)initWithFrame:(CGRect)bounds framerate:(float)framerate enableHdr:(BOOL)enableHdr metricsHandler:(MetricsHandler)metricsHandler {
@@ -38,7 +40,7 @@ The implementation of the cross-platform game view controller.
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     __block MetalView *view = (MetalView *)self.view;
     if (!view) {
         Log(LOG_E, @"The view attached to MetalViewController isn't a MetalView.");
@@ -47,7 +49,7 @@ The implementation of the cross-platform game view controller.
     _metalView = view;
     _metalView.delegate = self;
     _metalView.framerate = _framerate;
-
+    
     // Select the device to render with
     id<MTLDevice> device = MTLCreateSystemDefaultDevice();
     if (!device) {
@@ -56,7 +58,7 @@ The implementation of the cross-platform game view controller.
         return;
     }
     view.metalLayer.device = device;
-
+    
     // Initialize the renderer
     MetalVideoRenderer *renderer = [[MetalVideoRenderer alloc] initWithMetalDevice:device
                                                                drawablePixelFormat:MTLPixelFormatBGR10A2Unorm
@@ -67,10 +69,20 @@ The implementation of the cross-platform game view controller.
     }
     self->_renderer = renderer;
     Log(LOG_I, @"[MetalViewController] viewDidLoad, created renderer: %@", renderer);
-
+    
     // Initialize the renderer-dependent view properties
     view.metalLayer.pixelFormat = renderer.colorPixelFormat;
     view.metalLayer.maximumDrawableCount = 3;
+    
+    // We need a no-op displaylink timer or iOS can decide to run at 60fps
+    // The overhead from this should be minimal.
+    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkHandler:)];
+    _displayLink.preferredFrameRateRange = CAFrameRateRangeMake(_framerate, _framerate, _framerate);
+    [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+- (void)displayLinkHandler:(CADisplayLink *)link {
+    // Rendering does not use DisplayLink, this exists to fool iOS into keeping us running at the desired framerate
 }
 
 - (void)waitToRenderTo:(nonnull CAMetalLayer *)layer {
@@ -105,6 +117,10 @@ The implementation of the cross-platform game view controller.
     [super viewDidDisappear:animated];
 
     Log(LOG_I, @"[MetalViewController] viewDidDisappear");
+    
+    if (_displayLink) {
+        [_displayLink invalidate];
+    }
 
     [self shutdown];
 }
