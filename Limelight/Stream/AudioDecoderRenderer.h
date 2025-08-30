@@ -7,22 +7,22 @@
 //
 
 @import Foundation;
-@import GameStreamKit;
 
 NS_ASSUME_NONNULL_BEGIN
+
+@class OpusMultistreamConfiguration;
 
 @interface AudioDecoderRenderer : NSObject
 
 - (instancetype)init;
 
 - (int)setupWithAudioConfiguration:(int)audioConfiguration
-                        opusConfig:(POPUS_MULTISTREAM_CONFIGURATION)opusConfig
-                           context:(void*)context
+                        opusConfig:(OpusMultistreamConfiguration*)opusConfig
                              flags:(int)flags;
 
 - (void)cleanup;
 
-- (void)decodeAndPlaySample:(char*)sampleData length:(int)sampleLength;
+- (void)decodeAndPlaySample:(int8_t*)sampleData length:(int)sampleLength;
 
 @end
 

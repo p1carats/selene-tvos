@@ -160,22 +160,22 @@ static const float kMouseSpeedDivisor = 1.25f;
         int16_t truncatedDeltaY = (int16_t)strongSelf.accumulatedDeltaY;
         
         if (truncatedDeltaX != 0 || truncatedDeltaY != 0) {
-            LiSendMouseMoveEvent(truncatedDeltaX, truncatedDeltaY);
+            [GameStream sendMouseMoveEventWithDeltaX:truncatedDeltaX deltaY:truncatedDeltaY];
             strongSelf.accumulatedDeltaX -= truncatedDeltaX;
             strongSelf.accumulatedDeltaY -= truncatedDeltaY;
         }
     };
     
     mouse.mouseInput.leftButton.pressedChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
-        LiSendMouseButtonEvent(pressed ? BUTTON_ACTION_PRESS : BUTTON_ACTION_RELEASE, BUTTON_LEFT);
+        [GameStream sendMouseButtonEventWithAction:(pressed ? [InputConstants buttonActionPress] : [InputConstants buttonActionRelease]) button:[InputConstants buttonLeft]];
     };
     
     mouse.mouseInput.rightButton.pressedChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
-        LiSendMouseButtonEvent(pressed ? BUTTON_ACTION_PRESS : BUTTON_ACTION_RELEASE, BUTTON_RIGHT);
+        [GameStream sendMouseButtonEventWithAction:(pressed ? [InputConstants buttonActionPress] : [InputConstants buttonActionRelease]) button:[InputConstants buttonRight]];
     };
     
     mouse.mouseInput.middleButton.pressedChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
-        LiSendMouseButtonEvent(pressed ? BUTTON_ACTION_PRESS : BUTTON_ACTION_RELEASE, BUTTON_MIDDLE);
+        [GameStream sendMouseButtonEventWithAction:(pressed ? [InputConstants buttonActionPress] : [InputConstants buttonActionRelease]) button:[InputConstants buttonMiddle]];
     };
     
     // Auxiliary buttons
@@ -193,7 +193,7 @@ static const float kMouseSpeedDivisor = 1.25f;
         strongSelf.accumulatedScrollX += value;
         int16_t scrollDelta = (int16_t)strongSelf.accumulatedScrollX;
         if (scrollDelta != 0) {
-            LiSendScrollEvent(scrollDelta);
+            [GameStream sendScrollEventWithScrollClicks:scrollDelta];
             strongSelf.accumulatedScrollX -= scrollDelta;
         }
     };
@@ -205,7 +205,7 @@ static const float kMouseSpeedDivisor = 1.25f;
         strongSelf.accumulatedScrollY += value;
         int16_t scrollDelta = (int16_t)strongSelf.accumulatedScrollY;
         if (scrollDelta != 0) {
-            LiSendScrollEvent(scrollDelta);
+            [GameStream sendScrollEventWithScrollClicks:scrollDelta];
             strongSelf.accumulatedScrollY -= scrollDelta;
         }
     };

@@ -110,7 +110,7 @@
                 // This host was discovered over a permissible LAN address, so we can update our
                 // external address for this host.
                 struct in_addr wanAddr;
-                int err = LiFindExternalAddressIP4("stun.moonlight-stream.org", 3478, &wanAddr.s_addr);
+                int err = [GameStream findExternalAddressIPv4WithStunServer:@"stun.moonlight-stream.org" stunPort:3478 wanAddr:&wanAddr.s_addr];
                 if (err == 0) {
                     char addrStr[INET_ADDRSTRLEN];
                     inet_ntop(AF_INET, &wanAddr, addrStr, sizeof(addrStr));

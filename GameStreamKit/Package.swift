@@ -26,6 +26,11 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "GameStreamKit",
+            dependencies: ["moonlight-common-c"],
+            path: "Sources/GameStreamKit"
+        ),
+        .target(
+            name: "moonlight-common-c",
             dependencies: [
                 .product(name: "OpenSSL", package: "OpenSSL-Package")
             ],
@@ -42,6 +47,7 @@ let package = Package(
                 "moonlight-common-c/enet/protocol.c",
                 "moonlight-common-c/enet/unix.c"
             ],
+            publicHeadersPath: "include",
             cSettings: [
                 .headerSearchPath("moonlight-common-c/src"),
                 .headerSearchPath("moonlight-common-c/reedsolomon"),

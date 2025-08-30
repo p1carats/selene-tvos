@@ -14,7 +14,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class Frame;
+@class StreamDecodeUnit;
 
 @protocol ConnectionCallbacks;
 
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (int)submitDecodeBuffer:(unsigned char *)data
                    length:(int)length
                bufferType:(int)bufferType
-               decodeUnit:(PDECODE_UNIT)du
+               decodeUnit:(StreamDecodeUnit*)du
           decodeStartTime:(CFTimeInterval)decodeStartTime;
 
 - (OSStatus)decodeFrameWithSampleBuffer:(CMSampleBufferRef)sampleBuffer

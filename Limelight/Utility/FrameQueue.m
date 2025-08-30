@@ -78,7 +78,7 @@
     dispatch_semaphore_signal(_frameSemaphore);
 
 	FQLog(LOG_I, @"[-> %@ %d / %f] enqueue frame, queue size %d / %d",
-		frame.frameType == FRAME_TYPE_IDR ? @"IDR" : @"P",
+		frame.frameType == StreamFrameTypeIdrFrame ? @"IDR" : @"P",
 		frame.frameNumber, frame.pts, _count, _highWaterMark);
 }
 
@@ -125,7 +125,7 @@
 - (int)_unsafeEnqueue:(Frame *)frame withDropTarget:(int)frameDropTarget {
     int dropCount = 0;
     // Always accept IDR frames, allow exceeding HWM
-    if (frame.frameType == FRAME_TYPE_IDR || _count < frameDropTarget) {
+    if (frame.frameType == StreamFrameTypeIdrFrame || _count < frameDropTarget) {
         [self _pushFrame:frame];
         _droppedLast = NO;
     } else {
@@ -136,7 +136,7 @@
             _droppedLast = YES;
         } else {
             // and: drop oldest & enqueue new
-            if ([self _peekFrame].frameType != FRAME_TYPE_IDR) {
+            if ([self _peekFrame].frameType != StreamFrameTypeIdrFrame) {
 				Frame *oldest = [self _popFrame];
                 [oldest setDurationFromNext:[self _peekFrame]];
                 [self _noteDroppedFrame:oldest];

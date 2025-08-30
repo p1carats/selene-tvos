@@ -9,6 +9,7 @@
 @import AVFoundation;
 @import os.lock;
 @import Copus;
+@import GameStreamKit;
 
 #import "AudioDecoderRenderer.h"
 #import "Logger.h"
@@ -20,7 +21,7 @@
     AVAudioFormat* _audioFormat;
     NSMutableArray* _audioBufferQueue;
     os_unfair_lock _audioBufferLock;
-    OPUS_MULTISTREAM_CONFIGURATION _audioConfig;
+    OpusMultistreamConfiguration* _audioConfig;
     NSMutableData* _audioBuffer;
     int _audioFrameSize;
     BOOL _isCleaningUp;
@@ -36,8 +37,7 @@
 }
 
 - (int)setupWithAudioConfiguration:(int)audioConfiguration
-                        opusConfig:(POPUS_MULTISTREAM_CONFIGURATION)opusConfig
-                           context:(void*)context
+                        opusConfig:(OpusMultistreamConfiguration*)opusConfig
                              flags:(int)flags {
     int err;
     NSError* error = nil;
@@ -62,8 +62,8 @@
     _playerNode = [[AVAudioPlayerNode alloc] init];
     
     // Support full multi-channel audio (stereo, 5.1, 7.1)
-    double sampleRate = opusConfig->sampleRate;
-    AVAudioChannelCount channelCount = (AVAudioChannelCount)opusConfig->channelCount;
+    double sampleRate = opusConfig.sampleRate;
+    AVAudioChannelCount channelCount = (AVAudioChannelCount)opusConfig.channelCount;
     
     Log(LOG_I, @"Initializing audio with %d channels at %g Hz", channelCount, sampleRate);
     
@@ -104,8 +104,8 @@
         return -1;
     }
     
-    _audioConfig = *opusConfig;
-    _audioFrameSize = opusConfig->samplesPerFrame * sizeof(float) * opusConfig->channelCount;
+    _audioConfig = opusConfig;
+    _audioFrameSize = opusConfig.samplesPerFrame * sizeof(float) * opusConfig.channelCount;
     _audioBuffer = [NSMutableData dataWithLength:_audioFrameSize];
     if (_audioBuffer == nil || _audioBuffer.length != _audioFrameSize) {
         Log(LOG_E, @"Failed to allocate audio frame buffer");
@@ -116,11 +116,11 @@
     // Initialize buffer queue
     _audioBufferQueue = [[NSMutableArray alloc] init];
     
-    _opusDecoder = opus_multistream_decoder_create(opusConfig->sampleRate,
-                                                  opusConfig->channelCount,
-                                                  opusConfig->streams,
-                                                  opusConfig->coupledStreams,
-                                                  opusConfig->mapping,
+    _opusDecoder = opus_multistream_decoder_create(opusConfig.sampleRate,
+                                                  opusConfig.channelCount,
+                                                  opusConfig.streams,
+                                                  opusConfig.coupledStreams,
+                                                  opusConfig.mapping.bytes,
                                                   &err);
     if (_opusDecoder == NULL) {
         Log(LOG_E, @"Failed to create Opus decoder");
@@ -175,7 +175,7 @@
     }
 }
 
-- (void)decodeAndPlaySample:(char*)sampleData length:(int)sampleLength {
+- (void)decodeAndPlaySample:(int8_t*)sampleData length:(int)sampleLength {
     int decodeLen;
     
     // Check if we're cleaning up
@@ -188,7 +188,7 @@
     }
     
     // Don't queue if there's already more than 30 ms of audio data waiting in queue
-    if (LiGetPendingAudioDuration() > 30) {
+    if ([GameStream getPendingAudioDuration] > 30) {
         return;
     }
 

@@ -120,8 +120,8 @@
     NSNumber *pixelFormat = @(kCVPixelFormatType_32BGRA);
 #else
     NSNumber *pixelFormat = nil;
-    if (self->_videoFormat & VIDEO_FORMAT_MASK_YUV444) {
-        if (self->_videoFormat & VIDEO_FORMAT_MASK_10BIT) {
+    if (self->_videoFormat & [StreamVideoFormat maskYuv444]) {
+        if (self->_videoFormat & [StreamVideoFormat mask10Bit]) {
             pixelFormat = @(kCVPixelFormatType_444YpCbCr10BiPlanarVideoRange);
         }
         else {
@@ -129,7 +129,7 @@
         }
     }
     else {
-        if (self->_videoFormat & VIDEO_FORMAT_MASK_10BIT) {
+        if (self->_videoFormat & [StreamVideoFormat mask10Bit]) {
             pixelFormat = @(kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange);
         }
         else {
@@ -149,7 +149,7 @@
 }
 
 
-int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
+int DrSubmitDecodeUnit(StreamDecodeUnit* decodeUnit);
 
 
 - (void)cleanup
@@ -206,15 +206,15 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
 - (int)submitDecodeBuffer:(unsigned char *)data
                    length:(int)length
                bufferType:(int)bufferType
-               decodeUnit:(PDECODE_UNIT)du
+               decodeUnit:(StreamDecodeUnit*)du
           decodeStartTime:(CFTimeInterval)decodeStartTime
 {
     OSStatus status;
 
     // Construct a new format description object each time we receive an IDR frame
-    if (du->frameType == FRAME_TYPE_IDR) {
-        if (bufferType != BUFFER_TYPE_PICDATA) {
-            if (bufferType == BUFFER_TYPE_VPS || bufferType == BUFFER_TYPE_SPS || bufferType == BUFFER_TYPE_PPS) {
+    if (du.frameType == StreamFrameTypeIdrFrame) {
+        if (bufferType != StreamBufferTypePictureData) {
+            if (bufferType == StreamBufferTypeVps || bufferType == StreamBufferTypeSps || bufferType == StreamBufferTypePps) {
                 // Add new parameter set into the parameter set array
                 int startLen = data[2] == 0x01 ? 3 : 4;
                 [_parameterSetBuffers addObject:[NSData dataWithBytes:&data[startLen] length:length - startLen]];
@@ -223,7 +223,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
             // Data is NOT to be freed here. It's a direct usage of the caller's buffer.
 
             // No frame data to submit for these NALUs
-            return DR_OK;
+            return DecoderRendererStatusOk;
         }
 
         // Create the new format description when we get the first picture data buffer of an IDR frame.
@@ -237,7 +237,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
             _formatDesc = NULL;
         }
 
-        if (_videoFormat & VIDEO_FORMAT_MASK_H264) {
+        if (_videoFormat & StreamVideoFormat.maskH264) {
             // Construct parameter set arrays for the format description
             size_t parameterSetCount = [_parameterSetBuffers count];
             const uint8_t* parameterSetPointers[parameterSetCount];
@@ -265,7 +265,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
             // Free parameter set buffers after submission
             [_parameterSetBuffers removeAllObjects];
         }
-        else if (_videoFormat & VIDEO_FORMAT_MASK_H265) {
+        else if (_videoFormat & StreamVideoFormat.maskH265) {
             // Construct parameter set arrays for the format description
             size_t parameterSetCount = [_parameterSetBuffers count];
             const uint8_t* parameterSetPointers[parameterSetCount];
@@ -315,7 +315,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
     if (_formatDesc == NULL) {
         // Can't decode if we haven't gotten our parameter sets yet
         free(data);
-        return DR_NEED_IDR;
+        return DecoderRendererStatusNeedIdr;
     }
 
     // Now we're decoding actual frame data here
@@ -326,7 +326,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
     if (status != noErr) {
         Log(LOG_E, @"CMBlockBufferCreateWithMemoryBlock failed: %d", (int)status);
         free(data);
-        return DR_NEED_IDR;
+        return DecoderRendererStatusNeedIdr;
     }
 
     // From now on, CMBlockBuffer owns the data pointer and will free it when it's dereferenced
@@ -335,11 +335,11 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
     if (status != noErr) {
         Log(LOG_E, @"CMBlockBufferCreateEmpty failed: %d", (int)status);
         CFRelease(dataBlockBuffer);
-        return DR_NEED_IDR;
+        return DecoderRendererStatusNeedIdr;
     }
 
     // H.264 and HEVC formats require NAL prefix fixups from Annex B to length-delimited
-    if (_videoFormat & (VIDEO_FORMAT_MASK_H264 | VIDEO_FORMAT_MASK_H265)) {
+    if (_videoFormat & (StreamVideoFormat.maskH264 | StreamVideoFormat.maskH265)) {
         int lastOffset = -1;
         for (int i = 0; i < length - NALU_START_PREFIX_SIZE; i++) {
             // Search for a NALU
@@ -364,7 +364,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
         status = CMBlockBufferAppendBufferReference(frameBlockBuffer, dataBlockBuffer, 0, length, 0);
         if (status != noErr) {
             Log(LOG_E, @"CMBlockBufferAppendBufferReference failed: %d", (int)status);
-            return DR_NEED_IDR;
+            return DecoderRendererStatusNeedIdr;
         }
     }
 
@@ -372,7 +372,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
     // later in FrameQueue because it requires the next frame's timestamp.
     CMSampleTimingInfo sampleTiming = {
         .duration              = kCMTimeInvalid,
-        .presentationTimeStamp = CMTimeMake((int64_t)du->rtpTimestamp, 90000),
+        .presentationTimeStamp = CMTimeMake((int64_t)du.rtpTimestamp, 90000),
         .decodeTimeStamp       = kCMTimeInvalid,
     };
 
@@ -386,26 +386,26 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
         Log(LOG_E, @"CMSampleBufferCreate failed: %d", (int)status);
         CFRelease(dataBlockBuffer);
         CFRelease(frameBlockBuffer);
-        return DR_NEED_IDR;
+        return DecoderRendererStatusNeedIdr;
     }
 
     OSStatus decodeStatus = [self decodeFrameWithSampleBuffer:sampleBuffer
-                                                  frameNumber:du->frameNumber
-                                                    frameType:du->frameType
+                                                  frameNumber:du.frameNumber
+                                                    frameType:du.frameType
                                               decodeStartTime:decodeStartTime];
     // Dereference the buffers
     CFRelease(dataBlockBuffer);
     CFRelease(frameBlockBuffer);
     CFRelease(sampleBuffer);
 
-    return decodeStatus == noErr ? DR_OK : DR_NEED_IDR;
+    return decodeStatus == noErr ? DecoderRendererStatusOk : DecoderRendererStatusNeedIdr;
 }
 
 - (OSStatus)decodeFrameWithSampleBuffer:(CMSampleBufferRef)sampleBuffer
                             frameNumber:(int)frameNumber
                               frameType:(int)frameType
                         decodeStartTime:(CFTimeInterval)decodeStartTime {
-  if (frameType == FRAME_TYPE_IDR || _decompressionSession == nil) {
+  if (frameType == StreamFrameTypeIdrFrame || _decompressionSession == nil) {
     [self setupDecompressionSession];
   }
 
@@ -418,7 +418,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
           if (status != noErr || !imageBuffer) {
             NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:nil];
             Log(LOG_E, @"Decompression session error: %@", error);
-            LiRequestIdrFrame();
+            [GameStream requestIdrFrame];
             return;
           }
 
@@ -456,9 +456,9 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
 }
 
 - (void)setHdrMode:(BOOL)enabled {
-    SS_HDR_METADATA hdrMetadata;
+    SSHdrMetadata* hdrMetadata = [GameStream getHdrMetadata];
 
-    BOOL hasMetadata = enabled && LiGetHdrMetadata(&hdrMetadata);
+    BOOL hasMetadata = enabled && hdrMetadata;
     BOOL metadataChanged = NO;
 
     if (hasMetadata && hdrMetadata.displayPrimaries[0].x != 0 && hdrMetadata.maxDisplayLuminance != 0) {
@@ -529,7 +529,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
 
     // If the metadata changed, request an IDR frame to re-create the CMVideoFormatDescription
     if (metadataChanged) {
-        LiRequestIdrFrame();
+        [GameStream requestIdrFrame];
     }
 }
 

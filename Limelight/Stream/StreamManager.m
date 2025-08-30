@@ -165,7 +165,7 @@
     
     uint32_t rtt, variance;
     NSString* latencyString;
-    if (LiGetEstimatedRttInfo(&rtt, &variance)) {
+    if ([GameStream getEstimatedRttInfoWithEstimatedRtt:&rtt estimatedRttVariance:&variance]) {
         latencyString = [NSString stringWithFormat:@"%u ms (variance: %u ms)", rtt, variance];
     }
     else {

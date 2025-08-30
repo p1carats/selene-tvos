@@ -88,7 +88,7 @@
     int intDeltaY = (int)deltaY;
 
     if (intDeltaX != 0 || intDeltaY != 0) {
-        LiSendMouseMoveEvent(intDeltaX, intDeltaY);
+        [GameStream sendMouseMoveEventWithDeltaX:intDeltaX deltaY:intDeltaY];
         
         // Track movement for drag mode refinements
         if (isDragging) {
@@ -102,7 +102,7 @@
             
             // Start manual drag
             isDragging = YES;
-            LiSendMouseButtonEvent(BUTTON_ACTION_PRESS, BUTTON_LEFT);
+            [GameStream sendMouseButtonEventWithAction:[InputConstants buttonActionPress] button:[InputConstants buttonLeft]];
         }
     }
 }
@@ -124,8 +124,8 @@
     } else {
         // Single click = execute immediately
         lastClickTime = currentTime;
-        LiSendMouseButtonEvent(BUTTON_ACTION_PRESS, BUTTON_LEFT);
-        LiSendMouseButtonEvent(BUTTON_ACTION_RELEASE, BUTTON_LEFT);
+        [GameStream sendMouseButtonEventWithAction:[InputConstants buttonActionPress] button:[InputConstants buttonLeft]];
+        [GameStream sendMouseButtonEventWithAction:[InputConstants buttonActionRelease] button:[InputConstants buttonLeft]];
     }
 }
 
@@ -163,7 +163,7 @@
 - (void)startDragMode {
     isDragging = YES;
     hasMovedSinceDragStart = NO;
-    LiSendMouseButtonEvent(BUTTON_ACTION_PRESS, BUTTON_LEFT);
+    [GameStream sendMouseButtonEventWithAction:[InputConstants buttonActionPress] button:[InputConstants buttonLeft]];
     
     // Start timer to auto-cancel if no movement
     dragInactivityTimer = [NSTimer scheduledTimerWithTimeInterval:3.0
@@ -175,7 +175,7 @@
 
 - (void)endDragMode {
     if (isDragging) {
-        LiSendMouseButtonEvent(BUTTON_ACTION_RELEASE, BUTTON_LEFT);
+        [GameStream sendMouseButtonEventWithAction:[InputConstants buttonActionRelease] button:[InputConstants buttonLeft]];
         isDragging = NO;
         hasMovedSinceDragStart = NO;
         isLongPressing = NO; // Clear long press state
@@ -212,8 +212,8 @@
 - (void)executeLongPressRightClick:(NSTimer*)timer {
     if (isLongPressing && !hasMovedSinceDragStart) {
         // No movement detected during long press = execute right click
-        LiSendMouseButtonEvent(BUTTON_ACTION_PRESS, BUTTON_RIGHT);
-        LiSendMouseButtonEvent(BUTTON_ACTION_RELEASE, BUTTON_RIGHT);
+        [GameStream sendMouseButtonEventWithAction:[InputConstants buttonActionPress] button:[InputConstants buttonRight]];
+        [GameStream sendMouseButtonEventWithAction:[InputConstants buttonActionRelease] button:[InputConstants buttonRight]];
         isLongPressing = NO;
     }
     longPressRightClickTimer = nil;

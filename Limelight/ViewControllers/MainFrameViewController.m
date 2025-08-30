@@ -474,7 +474,7 @@ static NSMutableSet* hostList;
         [self showLoadingFrame:^{
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 // Perform the network test on a GCD worker thread. It may take a while.
-                unsigned int portTestResult = LiTestClientConnectivity(CONN_TEST_SERVER, 443, ML_PORT_FLAG_ALL);
+                unsigned int portTestResult = [GameStream testClientConnectivityWithTestServer:@CONN_TEST_SERVER referencePort:443 testPortFlags:PortConstants.flagAll];
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     [self hideLoadingFrame:^{
                         NSString* message;
@@ -482,13 +482,12 @@ static NSMutableSet* hostList;
                         if (portTestResult == 0) {
                             message = @"This network does not appear to be blocking Selene. If you still have trouble connecting, check your PC's firewall settings.\n\nVisit the Selene Setup Guide on GitHub for additional setup help and troubleshooting steps.";
                         }
-                        else if (portTestResult == ML_TEST_RESULT_INCONCLUSIVE) {
+                        else if (portTestResult == PortConstants.testResultInconclusive) {
                             message = @"The network test could not be performed because none of Selene's connection testing servers were reachable. Check your Internet connection or try again later.";
                         }
                         else {
-                            char blockedPorts[512];
-                            LiStringifyPortFlags(portTestResult, "\n", blockedPorts, sizeof(blockedPorts));
-                            message = [NSString stringWithFormat:@"Your current network connection seems to be blocking Selene. Streaming may not work while connected to this network.\n\nThe following network ports were blocked:\n%s", blockedPorts];
+                            NSString *blockedPorts = [GameStream stringifyPortFlagsWithPortFlags:portTestResult separator:@"\n"];
+                            message = [NSString stringWithFormat:@"Your current network connection seems to be blocking Selene. Streaming may not work while connected to this network.\n\nThe following network ports were blocked:\n%@", blockedPorts];
                         }
                         
                         UIAlertController* netTestAlert = [UIAlertController alertControllerWithTitle:@"Network Test Complete" message:message preferredStyle:UIAlertControllerStyleAlert];
@@ -533,9 +532,8 @@ static NSMutableSet* hostList;
                             }];
                         });
                     } else {
-                        unsigned int portTestResults = LiTestClientConnectivity(CONN_TEST_SERVER, 443,
-                                                                                ML_PORT_FLAG_TCP_47984 | ML_PORT_FLAG_TCP_47989);
-                        if (portTestResults != ML_TEST_RESULT_INCONCLUSIVE && portTestResults != 0) {
+                        unsigned int portTestResults = [GameStream testClientConnectivityWithTestServer:@CONN_TEST_SERVER referencePort:443 testPortFlags:PortConstants.flagTcp47984 | PortConstants.flagTcp47989];
+                        if (portTestResults != PortConstants.testResultInconclusive && portTestResults != 0) {
                             error = [error stringByAppendingString:@"\n\nYour device's network connection is blocking Selene. Streaming may not work while connected to this network."];
                         }
                         
@@ -597,13 +595,13 @@ static NSMutableSet* hostList;
     int numberOfChannels = MIN([streamSettings.audioConfig intValue], physicalOutputChannels);
     Log(LOG_I, @"Selected number of audio channels %d", numberOfChannels);
     if (numberOfChannels >= 8) {
-        _streamConfig.audioConfiguration = AUDIO_CONFIGURATION_71_SURROUND;
+        _streamConfig.audioConfiguration = StreamAudioConfiguration.surround71;
     }
     else if (numberOfChannels >= 6) {
-        _streamConfig.audioConfiguration = AUDIO_CONFIGURATION_51_SURROUND;
+        _streamConfig.audioConfiguration = StreamAudioConfiguration.surround51;
     }
     else {
-        _streamConfig.audioConfiguration = AUDIO_CONFIGURATION_STEREO;
+        _streamConfig.audioConfiguration = StreamAudioConfiguration.stereo;
     }
 
     _streamConfig.serverCodecModeSupport = app.host.serverCodecModeSupport;
@@ -612,30 +610,30 @@ static NSMutableSet* hostList;
     case CODEC_PREF_AUTO:
     case CODEC_PREF_HEVC:
         if (VTIsHardwareDecodeSupported(kCMVideoCodecType_HEVC)) {
-            _streamConfig.supportedVideoFormats |= VIDEO_FORMAT_H265;
+            _streamConfig.supportedVideoFormats |= StreamVideoFormat.h265;
             if (streamSettings.enableYUV444) {
-                _streamConfig.supportedVideoFormats |= VIDEO_FORMAT_H265_REXT8_444;
+                _streamConfig.supportedVideoFormats |= StreamVideoFormat.h265Rext8_444;
             }
         }
         // Fall-through
 
     case CODEC_PREF_H264:
-        _streamConfig.supportedVideoFormats |= VIDEO_FORMAT_H264;
+        _streamConfig.supportedVideoFormats |= StreamVideoFormat.h264;
         break;
     }
 
     // HEVC is supported if the user wants it (or it's required by the chosen resolution) and the SoC supports it
     if ((_streamConfig.width > 4096 || _streamConfig.height > 4096 || streamSettings.enableHdr) && VTIsHardwareDecodeSupported(kCMVideoCodecType_HEVC)) {
-        _streamConfig.supportedVideoFormats |= VIDEO_FORMAT_H265;
+        _streamConfig.supportedVideoFormats |= StreamVideoFormat.h265;
         if (streamSettings.enableYUV444) {
-            _streamConfig.supportedVideoFormats |= VIDEO_FORMAT_H265_REXT8_444;
+            _streamConfig.supportedVideoFormats |= StreamVideoFormat.h265Rext8_444;
         }
 
         // HEVC Main10 is supported if the user wants it and the display supports it
         if (streamSettings.enableHdr && (AVPlayer.availableHDRModes & AVPlayerHDRModeHDR10) != 0) {
-            _streamConfig.supportedVideoFormats |= VIDEO_FORMAT_H265_MAIN10;
+            _streamConfig.supportedVideoFormats |= StreamVideoFormat.h265Main10;
             if (streamSettings.enableYUV444) {
-                _streamConfig.supportedVideoFormats |= VIDEO_FORMAT_H265_REXT10_444;
+                _streamConfig.supportedVideoFormats |= StreamVideoFormat.h265Rext10_444;
             }
         }
     }

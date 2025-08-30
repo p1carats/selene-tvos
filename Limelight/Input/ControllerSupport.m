@@ -241,7 +241,7 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
 
 - (void)sendControllerUpdate:(Controller *)controller {
     // Check for exit combo
-    if (controller.lastButtonFlags == (PLAY_FLAG | BACK_FLAG | LB_FLAG | RB_FLAG)) {
+    if (controller.lastButtonFlags == ([ControllerConstants playFlag] | [ControllerConstants backFlag] | [ControllerConstants lbFlag] | [ControllerConstants rbFlag])) {
         controller.lastButtonFlags = 0;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.delegate streamExitRequested];
@@ -255,17 +255,15 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
     }
             
     // Network transmission
-    LiSendMultiControllerEvent(
-        (uint8_t)controller.playerIndex,
-        [self activeGamepadMask],
-        controller.lastButtonFlags,
-        controller.lastLeftTrigger,
-        controller.lastRightTrigger,
-        controller.lastLeftStickX,
-        controller.lastLeftStickY,
-        controller.lastRightStickX,
-        controller.lastRightStickY
-    );
+    [GameStream sendMultiControllerEventWithControllerNumber:(uint8_t)controller.playerIndex
+                                           activeGamepadMask:[self activeGamepadMask]
+                                                 buttonFlags:controller.lastButtonFlags
+                                                 leftTrigger:controller.lastLeftTrigger
+                                                rightTrigger:controller.lastRightTrigger
+                                                  leftStickX:controller.lastLeftStickX
+                                                  leftStickY:controller.lastLeftStickY
+                                                 rightStickX:controller.lastRightStickX
+                                                 rightStickY:controller.lastRightStickY];
 }
 
 #pragma mark - Controller Callbacks
@@ -311,29 +309,29 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
     uint32_t flags = 0;
     
     // Face buttons
-    if (gamepad.buttonA.pressed) flags |= A_FLAG;
-    if (gamepad.buttonB.pressed) flags |= B_FLAG;
-    if (gamepad.buttonX.pressed) flags |= X_FLAG;
-    if (gamepad.buttonY.pressed) flags |= Y_FLAG;
+    if (gamepad.buttonA.pressed) flags |= [ControllerConstants aFlag];
+    if (gamepad.buttonB.pressed) flags |= [ControllerConstants bFlag];
+    if (gamepad.buttonX.pressed) flags |= [ControllerConstants xFlag];
+    if (gamepad.buttonY.pressed) flags |= [ControllerConstants yFlag];
     
     // D-pad
-    if (gamepad.dpad.up.pressed) flags |= UP_FLAG;
-    if (gamepad.dpad.down.pressed) flags |= DOWN_FLAG;
-    if (gamepad.dpad.left.pressed) flags |= LEFT_FLAG;
-    if (gamepad.dpad.right.pressed) flags |= RIGHT_FLAG;
+    if (gamepad.dpad.up.pressed) flags |= [ControllerConstants upFlag];
+    if (gamepad.dpad.down.pressed) flags |= [ControllerConstants downFlag];
+    if (gamepad.dpad.left.pressed) flags |= [ControllerConstants leftFlag];
+    if (gamepad.dpad.right.pressed) flags |= [ControllerConstants rightFlag];
     
     // Shoulder buttons
-    if (gamepad.leftShoulder.pressed) flags |= LB_FLAG;
-    if (gamepad.rightShoulder.pressed) flags |= RB_FLAG;
+    if (gamepad.leftShoulder.pressed) flags |= [ControllerConstants lbFlag];
+    if (gamepad.rightShoulder.pressed) flags |= [ControllerConstants rbFlag];
     
     // Thumbstick clicks
-    if (gamepad.leftThumbstickButton.pressed) flags |= LS_CLK_FLAG;
-    if (gamepad.rightThumbstickButton.pressed) flags |= RS_CLK_FLAG;
+    if (gamepad.leftThumbstickButton.pressed) flags |= [ControllerConstants lsClkFlag];
+    if (gamepad.rightThumbstickButton.pressed) flags |= [ControllerConstants rsClkFlag];
     
     // System buttons
-    if (gamepad.buttonOptions.pressed) flags |= BACK_FLAG;
-    if (gamepad.buttonMenu.pressed) flags |= PLAY_FLAG;
-    if (gamepad.buttonHome.pressed) flags |= SPECIAL_FLAG;
+    if (gamepad.buttonOptions.pressed) flags |= [ControllerConstants backFlag];
+    if (gamepad.buttonMenu.pressed) flags |= [ControllerConstants playFlag];
+    if (gamepad.buttonHome.pressed) flags |= [ControllerConstants specialFlag];
     
     // Extended controller features
     [self addControllerButtons:gamepad.controller toFlags:&flags];
@@ -346,26 +344,26 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
     
     // Xbox Series X/S controller paddles
     if (profile.buttons[GCInputXboxPaddleOne].pressed) {
-        *flags |= PADDLE1_FLAG;
+        *flags |= [ControllerConstants paddle1Flag];
     }
     if (profile.buttons[GCInputXboxPaddleTwo].pressed) {
-        *flags |= PADDLE2_FLAG;
+        *flags |= [ControllerConstants paddle2Flag];
     }
     if (profile.buttons[GCInputXboxPaddleThree].pressed) {
-        *flags |= PADDLE3_FLAG;
+        *flags |= [ControllerConstants paddle3Flag];
     }
     if (profile.buttons[GCInputXboxPaddleFour].pressed) {
-        *flags |= PADDLE4_FLAG;
+        *flags |= [ControllerConstants paddle4Flag];
     }
     
     // Share button (Xbox, PlayStation)
     if (profile.buttons[GCInputButtonShare].pressed) {
-        *flags |= MISC_FLAG;
+        *flags |= [ControllerConstants miscFlag];
     }
     
     // DualShock/DualSense touchpad button
     if (profile.buttons[GCInputDualShockTouchpadButton].pressed) {
-        *flags |= TOUCHPAD_FLAG;
+        *flags |= [ControllerConstants touchpadFlag];
     }
 }
 
@@ -398,13 +396,13 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
     
     if (hadTouch && !hasTouch) {
         // Touch up
-        LiSendControllerTouchEvent((uint8_t)controller.playerIndex, LI_TOUCH_EVENT_UP, index, normalizedX, normalizedY, 1.0f);
+        [GameStream sendControllerTouchEventWithControllerNumber:(uint8_t)controller.playerIndex eventType:TouchEventTypeUp pointerId:index x:normalizedX y:normalizedY pressure:1.0f];
     } else if (!hadTouch && hasTouch) {
         // Touch down
-        LiSendControllerTouchEvent((uint8_t)controller.playerIndex, LI_TOUCH_EVENT_DOWN, index, normalizedX, normalizedY, 1.0f);
+        [GameStream sendControllerTouchEventWithControllerNumber:(uint8_t)controller.playerIndex eventType:TouchEventTypeDown pointerId:index x:normalizedX y:normalizedY pressure:1.0f];
     } else if (hasTouch && (currentContext.lastX != touchpad.xAxis.value || currentContext.lastY != touchpad.yAxis.value)) {
         // Touch move
-        LiSendControllerTouchEvent((uint8_t)controller.playerIndex, LI_TOUCH_EVENT_MOVE, index, normalizedX, normalizedY, 1.0f);
+        [GameStream sendControllerTouchEventWithControllerNumber:(uint8_t)controller.playerIndex eventType:TouchEventTypeMove pointerId:index x:normalizedX y:normalizedY pressure:1.0f];
     }
     
     // Update context
@@ -467,10 +465,10 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
         [self controllerTypeDescription:controller.gamepad], motionType, reportRateHz);
     
     switch (motionType) {
-        case LI_MOTION_TYPE_ACCEL:
+        case MotionTypeAccel:
             [self setupAccelerometerForController:controller reportRate:reportRateHz];
             break;
-        case LI_MOTION_TYPE_GYRO:
+        case MotionTypeGyro:
             [self setupGyroscopeForController:controller reportRate:reportRateHz];
             break;
     }
@@ -502,8 +500,8 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
             strongController.lastAccelSample = current;
             
             // Convert from g to m/s^2
-            LiSendControllerMotionEvent((uint8_t)strongController.playerIndex, LI_MOTION_TYPE_ACCEL,
-                                        current.x * -9.80665f, current.y * -9.80665f, current.z * -9.80665f);
+            [GameStream sendControllerMotionEventWithControllerNumber:(uint8_t)strongController.playerIndex motionType:MotionTypeAccel
+                                                                    x:(current.x * -9.80665f) y:(current.y * -9.80665f) z:(current.z * -9.80665f)];
         }];
     }
 }
@@ -530,8 +528,8 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
             strongController.lastGyroSample = current;
             
             // Convert from rad/s to deg/s
-            LiSendControllerMotionEvent((uint8_t)strongController.playerIndex, LI_MOTION_TYPE_GYRO,
-                                        current.x * 57.2957795f, current.z * 57.2957795f, current.y * -57.2957795f);
+            [GameStream sendControllerMotionEventWithControllerNumber:(uint8_t)strongController.playerIndex motionType:MotionTypeGyro
+                                                                    x:(current.x * 57.2957795f) y:(current.z * 57.2957795f) z:(current.y * -57.2957795f)];
         }];
     }
 }
@@ -555,7 +553,7 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
 - (BOOL)reportControllerArrival:(Controller *)controller {
     if (controller.reportedArrival) return YES;
     
-    uint8_t type = LI_CTYPE_UNKNOWN;
+    uint8_t type = [ControllerConstants typeUnknown];
     uint16_t capabilities = 0;
     uint32_t supportedButtonFlags = 0;
     
@@ -571,8 +569,8 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
         [self controllerTypeDescription:gcController], type, capabilities, supportedButtonFlags);
     
     // Report to host
-    if (LiSendControllerArrivalEvent((uint8_t)controller.playerIndex, [self activeGamepadMask],
-                                     type, supportedButtonFlags, capabilities) != 0) {
+    if ([GameStream sendControllerArrivalEventWithControllerNumber:(uint8_t)controller.playerIndex activeGamepadMask:[self activeGamepadMask]
+                                                              type:type supportedButtonFlags:supportedButtonFlags capabilities:capabilities] != 0) {
         return NO;
     }
     
@@ -592,52 +590,52 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
     
     // Type detection
     if ([gamepad isKindOfClass:[GCXboxGamepad class]]) {
-        *type = LI_CTYPE_XBOX;
+        *type = [ControllerConstants typeXbox];
     } else if ([gamepad isKindOfClass:[GCDualShockGamepad class]]) {
-        *type = LI_CTYPE_PS;
+        *type = [ControllerConstants typePlayStation];
     } else if ([gamepad isKindOfClass:[GCDualSenseGamepad class]]) {
-        *type = LI_CTYPE_PS;
+        *type = [ControllerConstants typePlayStation];
     } else {
-        *type = LI_CTYPE_UNKNOWN; // Treat all other controllers as standard MFi
+        *type = [ControllerConstants typeUnknown]; // Treat all other controllers as standard MFi
     }
     
     // Detect supported buttons
-    *supportedButtonFlags |= PLAY_FLAG; // Always present
+    *supportedButtonFlags |= [ControllerConstants playFlag]; // Always present
     
-    if (gamepad.dpad) *supportedButtonFlags |= UP_FLAG | DOWN_FLAG | LEFT_FLAG | RIGHT_FLAG;
-    if (gamepad.leftShoulder) *supportedButtonFlags |= LB_FLAG;
-    if (gamepad.rightShoulder) *supportedButtonFlags |= RB_FLAG;
-    if (gamepad.buttonOptions) *supportedButtonFlags |= BACK_FLAG;
-    if (gamepad.buttonHome) *supportedButtonFlags |= SPECIAL_FLAG;
-    if (gamepad.buttonA) *supportedButtonFlags |= A_FLAG;
-    if (gamepad.buttonB) *supportedButtonFlags |= B_FLAG;
-    if (gamepad.buttonX) *supportedButtonFlags |= X_FLAG;
-    if (gamepad.buttonY) *supportedButtonFlags |= Y_FLAG;
-    if (gamepad.leftThumbstickButton) *supportedButtonFlags |= LS_CLK_FLAG;
-    if (gamepad.rightThumbstickButton) *supportedButtonFlags |= RS_CLK_FLAG;
+    if (gamepad.dpad) *supportedButtonFlags |= [ControllerConstants upFlag] | [ControllerConstants downFlag] | [ControllerConstants leftFlag] | [ControllerConstants rightFlag];
+    if (gamepad.leftShoulder) *supportedButtonFlags |= [ControllerConstants lbFlag];
+    if (gamepad.rightShoulder) *supportedButtonFlags |= [ControllerConstants rbFlag];
+    if (gamepad.buttonOptions) *supportedButtonFlags |= [ControllerConstants backFlag];
+    if (gamepad.buttonHome) *supportedButtonFlags |= [ControllerConstants specialFlag];
+    if (gamepad.buttonA) *supportedButtonFlags |= [ControllerConstants aFlag];
+    if (gamepad.buttonB) *supportedButtonFlags |= [ControllerConstants bFlag];
+    if (gamepad.buttonX) *supportedButtonFlags |= [ControllerConstants xFlag];
+    if (gamepad.buttonY) *supportedButtonFlags |= [ControllerConstants yFlag];
+    if (gamepad.leftThumbstickButton) *supportedButtonFlags |= [ControllerConstants lsClkFlag];
+    if (gamepad.rightThumbstickButton) *supportedButtonFlags |= [ControllerConstants rsClkFlag];
     
     // Capabilities detection
     if (controller.haptics) {
         if ([controller.haptics.supportedLocalities containsObject:GCHapticsLocalityHandles]) {
-            *capabilities |= LI_CCAP_RUMBLE;
+            *capabilities |= [ControllerConstants capRumble];
         }
         if ([controller.haptics.supportedLocalities containsObject:GCHapticsLocalityTriggers]) {
-            *capabilities |= LI_CCAP_TRIGGER_RUMBLE;
+            *capabilities |= [ControllerConstants capTriggerRumble];
         }
     }
     
     if (controller.motion) {
-        if (controller.motion.hasGravityAndUserAcceleration) *capabilities |= LI_CCAP_ACCEL;
-        if (controller.motion.hasRotationRate) *capabilities |= LI_CCAP_GYRO;
+        if (controller.motion.hasGravityAndUserAcceleration) *capabilities |= [ControllerConstants capAccelerometer];
+        if (controller.motion.hasRotationRate) *capabilities |= [ControllerConstants capGyroscope];
     }
     
-    if (controller.light) *capabilities |= LI_CCAP_RGB_LED;
-    if (controller.battery) *capabilities |= LI_CCAP_BATTERY_STATE;
+    if (controller.light) *capabilities |= [ControllerConstants capRgbLed];
+    if (controller.battery) *capabilities |= [ControllerConstants capBatteryState];
     
     // Touchpad support (DualShock/DualSense)
     if (controller.physicalInputProfile.dpads[GCInputDualShockTouchpadOne]) {
-        *capabilities |= LI_CCAP_TOUCHPAD;
-        *supportedButtonFlags |= TOUCHPAD_FLAG;
+        *capabilities |= [ControllerConstants capTouchpad];
+        *supportedButtonFlags |= [ControllerConstants touchpadFlag];
     }
 }
 
@@ -659,7 +657,7 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
             uint8_t batteryState = [strongSelf convertBatteryState:battery.batteryState];
             uint8_t batteryLevel = (uint8_t)(battery.batteryLevel * 100);
             
-            LiSendControllerBatteryEvent((uint8_t)strongController.playerIndex, batteryState, batteryLevel);
+            [GameStream sendControllerBatteryEventWithControllerNumber:(uint8_t)strongController.playerIndex batteryState:batteryState batteryPercentage:batteryLevel];
             
             strongController.lastBatteryState = battery.batteryState;
             strongController.lastBatteryLevel = battery.batteryLevel;
@@ -672,11 +670,11 @@ static const NSTimeInterval kBatteryPollingInterval = 30.0;
 
 - (uint8_t)convertBatteryState:(GCDeviceBatteryState)state {
     switch (state) {
-        case GCDeviceBatteryStateFull: return LI_BATTERY_STATE_FULL;
-        case GCDeviceBatteryStateCharging: return LI_BATTERY_STATE_CHARGING;
-        case GCDeviceBatteryStateDischarging: return LI_BATTERY_STATE_DISCHARGING;
+        case GCDeviceBatteryStateFull: return BatteryStateFull;
+        case GCDeviceBatteryStateCharging: return BatteryStateCharging;
+        case GCDeviceBatteryStateDischarging: return BatteryStateDischarging;
         case GCDeviceBatteryStateUnknown:
-        default: return LI_BATTERY_STATE_UNKNOWN;
+        default: return BatteryStateUnknown;
     }
 }
 

@@ -17,10 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 @class VideoDecoderRenderer;
 
 @protocol ConnectionCallbacks;
+@protocol ConnectionDelegate;
+@protocol VideoDecoderDelegate;
+@protocol AudioRendererDelegate;
 
 #define CONN_TEST_SERVER "ios.conntest.moonlight-stream.org"
 
-@interface Connection : NSOperation <NSStreamDelegate>
+@interface Connection : NSOperation <NSStreamDelegate, ConnectionDelegate, VideoDecoderDelegate, AudioRendererDelegate>
 
 -(instancetype) initWithConfig:(StreamConfiguration*)config renderer:(VideoDecoderRenderer*)myRenderer connectionCallbacks:(id<ConnectionCallbacks>)callbacks;
 -(void) terminate;

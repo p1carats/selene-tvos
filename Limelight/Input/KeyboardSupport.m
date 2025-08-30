@@ -172,22 +172,22 @@
     char legacyModifierFlags = 0;
     // CapsLock (bit 0) is handled differently, don't include in modifier flags
     if (modifierFlags & (1 << 1)) { // Shift
-        legacyModifierFlags |= MODIFIER_SHIFT;
+        legacyModifierFlags |= [InputConstants modifierShift];
     }
     if (modifierFlags & (1 << 2)) { // Control
-        legacyModifierFlags |= MODIFIER_CTRL;
+        legacyModifierFlags |= [InputConstants modifierCtrl];
     }
     if (modifierFlags & (1 << 3)) { // Alt/Option
-        legacyModifierFlags |= MODIFIER_ALT;
+        legacyModifierFlags |= [InputConstants modifierAlt];
     }
     if (modifierFlags & (1 << 4)) { // Cmd/GUI
-        legacyModifierFlags |= MODIFIER_META;
+        legacyModifierFlags |= [InputConstants modifierMeta];
     }
     
     // Send keyboard event
-    LiSendKeyboardEvent(0x8000 | win32KeyCode,
-                        pressed ? KEY_ACTION_DOWN : KEY_ACTION_UP,
-                        legacyModifierFlags);
+    [GameStream sendKeyboardEventWithKeyCode:0x8000 | win32KeyCode
+                                   keyAction:(pressed ? [InputConstants keyActionDown] : [InputConstants keyActionUp])
+                                   modifiers:legacyModifierFlags];
 }
 
 #pragma mark - GCKeyCode to Win32 VK Mapping

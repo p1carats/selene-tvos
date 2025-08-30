@@ -26,7 +26,7 @@
         _duration90   = kCMTimeInvalid;
 
         FQLog(LOG_I, @"init Frame %d - type %@ [host pts %.3f]",
-              _frameNumber, _frameType == FRAME_TYPE_IDR ? @"IDR" : @"P",
+              _frameNumber, _frameType == StreamFrameTypeIdrFrame ? @"IDR" : @"P",
               CMTimeGetSeconds(_pts90));
     }
     return self;
@@ -45,7 +45,7 @@
         _duration90   = kCMTimeInvalid;
 
         FQLog(LOG_I, @"init Frame %d - type %@ [host pts %.3f]",
-            _frameNumber, _frameType == FRAME_TYPE_IDR ? @"IDR" : @"P",
+            _frameNumber, _frameType == StreamFrameTypeIdrFrame ? @"IDR" : @"P",
             CMTimeGetSeconds(_pts90));
     }
     return self;

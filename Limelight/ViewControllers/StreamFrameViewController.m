@@ -364,8 +364,8 @@
 - (void)connectionTerminated:(int)errorCode {
     Log(LOG_I, @"Connection terminated: %d", errorCode);
     
-    unsigned int portFlags = LiGetPortFlagsFromTerminationErrorCode(errorCode);
-    unsigned int portTestResults = LiTestClientConnectivity(CONN_TEST_SERVER, 443, portFlags);
+    unsigned int portFlags = [GameStream getPortFlagsFromTerminationErrorCodeWithErrorCode:errorCode];
+    unsigned int portTestResults = [GameStream testClientConnectivityWithTestServer:@CONN_TEST_SERVER referencePort:443 testPortFlags:portFlags];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         // Allow the display to go to sleep now
@@ -374,38 +374,37 @@
         NSString* title;
         NSString* message;
         
-        if (portTestResults != ML_TEST_RESULT_INCONCLUSIVE && portTestResults != 0) {
+        if (portTestResults != [PortConstants testResultInconclusive] && portTestResults != 0) {
             title = @"Connection Error";
             message = @"Your device's network connection is blocking Selene. Streaming may not work while connected to this network.";
         }
         else {
             switch (errorCode) {
-                case ML_ERROR_GRACEFUL_TERMINATION:
+                case StreamErrorCodeGracefulTermination:
                     [self returnToMainFrame];
                     return;
                     
-                case ML_ERROR_NO_VIDEO_TRAFFIC:
+                case StreamErrorCodeNoVideoTraffic:
                     title = @"Connection Error";
                     message = @"No video received from host.";
                     if (portFlags != 0) {
-                        char failingPorts[256];
-                        LiStringifyPortFlags(portFlags, "\n", failingPorts, sizeof(failingPorts));
-                        message = [message stringByAppendingString:[NSString stringWithFormat:@"\n\nCheck your firewall and port forwarding rules for port(s):\n%s", failingPorts]];
+                        NSString* failingPorts = [GameStream stringifyPortFlagsWithPortFlags:portFlags separator:@"\n"];
+                        message = [message stringByAppendingString:[NSString stringWithFormat:@"\n\nCheck your firewall and port forwarding rules for port(s):\n%@", failingPorts]];
                     }
                     break;
                     
-                case ML_ERROR_NO_VIDEO_FRAME:
+                case StreamErrorCodeNoVideoFrame:
                     title = @"Connection Error";
                     message = @"Your network connection isn't performing well. Reduce your video bitrate setting or try a faster connection.";
                     break;
                     
-                case ML_ERROR_UNEXPECTED_EARLY_TERMINATION:
-                case ML_ERROR_PROTECTED_CONTENT:
+                case StreamErrorCodeUnexpectedEarlyTermination:
+                case StreamErrorCodeProtectedContent:
                     title = @"Connection Error";
                     message = @"Something went wrong on your host PC when starting the stream.\n\nMake sure you don't have any DRM-protected content open on your host PC. You can also try restarting your host PC.\n\nIf the issue persists, try reinstalling your GPU drivers and GeForce Experience.";
                     break;
                     
-                case ML_ERROR_FRAME_CONVERSION:
+                case StreamErrorCodeFrameConversion:
                     title = @"Connection Error";
                     message = @"The host PC reported a fatal video encoding error.\n\nTry disabling HDR mode, changing the streaming resolution, or changing your host PC's display resolution.";
                     break;
@@ -458,7 +457,7 @@
 - (void) stageFailed:(const char*)stageName withError:(int)errorCode portTestFlags:(int)portTestFlags {
     Log(LOG_I, @"Stage %s failed: %d", stageName, errorCode);
     
-    unsigned int portTestResults = LiTestClientConnectivity(CONN_TEST_SERVER, 443, portTestFlags);
+    unsigned int portTestResults = [GameStream testClientConnectivityWithTestServer:@CONN_TEST_SERVER referencePort:443 testPortFlags:portTestFlags];
 
     dispatch_async(dispatch_get_main_queue(), ^{
         // Allow the display to go to sleep now
@@ -466,11 +465,10 @@
         
         NSString* message = [NSString stringWithFormat:@"%s failed with error %d", stageName, errorCode];
         if (portTestFlags != 0) {
-            char failingPorts[256];
-            LiStringifyPortFlags(portTestFlags, "\n", failingPorts, sizeof(failingPorts));
-            message = [message stringByAppendingString:[NSString stringWithFormat:@"\n\nCheck your firewall and port forwarding rules for port(s):\n%s", failingPorts]];
+            NSString* failingPorts = [GameStream stringifyPortFlagsWithPortFlags:portTestFlags separator:@"\n"];
+            message = [message stringByAppendingString:[NSString stringWithFormat:@"\n\nCheck your firewall and port forwarding rules for port(s):\n%@", failingPorts]];
         }
-        if (portTestResults != ML_TEST_RESULT_INCONCLUSIVE && portTestResults != 0) {
+        if (portTestResults != [PortConstants testResultInconclusive] && portTestResults != 0) {
             message = [message stringByAppendingString:@"\n\nYour device's network connection is blocking Selene. Streaming may not work while connected to this network."];
         }
         
@@ -537,11 +535,11 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         switch (status) {
-            case CONN_STATUS_OKAY:
+            case StreamConnectionStatusOkay:
                 [self updateOverlayText:nil];
                 break;
                 
-            case CONN_STATUS_POOR:
+            case StreamConnectionStatusPoor:
                 if (self->_streamConfig.bitRate > 5000) {
                     [self updateOverlayText:@"Slow connection to PC\nReduce your bitrate"];
                 }
@@ -574,7 +572,7 @@
     
     // This logic comes from Kodi and MrMC
     if (streamActive) {
-        int dynamicRange = LiGetCurrentHostDisplayHdrMode() ? 2 : 0; // 2 for HDR10, 0 for SDR
+        int dynamicRange = [GameStream getCurrentHostDisplayHdrMode] ? 2 : 0; // 2 for HDR10, 0 for SDR
         
         float refreshRate = [_settings.framerate floatValue];
         Log(LOG_I, @"Changing TV refresh rate to %f Hz %@", refreshRate, dynamicRange == 2 ? @"HDR" : @"SDR");

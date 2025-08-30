@@ -182,11 +182,11 @@ CFStringRef __currentColorSpace;
     // Colorspace
     CFStringRef frame_color = CFDictionaryGetValue(ext, kCVImageBufferColorPrimariesKey);
     if (CFEqual(frame_color, kCVImageBufferColorPrimaries_ITU_R_709_2)) {
-        return COLORSPACE_REC_709;
+        return ColorSpaceRec709;
     } else if (CFEqual(frame_color, kCVImageBufferColorPrimaries_ITU_R_2020)) {
-        return COLORSPACE_REC_2020;
+        return ColorSpaceRec2020;
     }
-    return COLORSPACE_REC_601;
+    return ColorSpaceRec601;
 }
 
 - (BOOL)updateColorSpaceForFrame:(Frame *)frame toLayer:(CAMetalLayer *)layer layerDidChange:(BOOL *)layerDidChange {
@@ -199,12 +199,12 @@ CFStringRef __currentColorSpace;
         struct ParamBuffer paramBuffer;
 
         switch (colorspace) {
-            case COLORSPACE_REC_709:
+            case ColorSpaceRec709:
                 newColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceITUR_709);
                 newPixelFormat = MTLPixelFormatBGRA8Unorm;
                 paramBuffer.cscParams = (fullRange ? k_CscParams_Bt709Full : k_CscParams_Bt709Lim);
                 break;
-            case COLORSPACE_REC_2020: {
+            case ColorSpaceRec2020: {
                 CFDictionaryRef ext = [frame getFormatDescExtensions];
                 CFStringRef frame_trc = CFDictionaryGetValue(ext, kCVImageBufferTransferFunctionKey);
                 if (CFEqual(frame_trc, kCVImageBufferTransferFunction_SMPTE_ST_2084_PQ)) {
@@ -218,7 +218,7 @@ CFStringRef __currentColorSpace;
                 paramBuffer.cscParams = (fullRange ? k_CscParams_Bt2020Full_10bit : k_CscParams_Bt2020Lim_10bit);
                 break;
             }
-            case COLORSPACE_REC_601:
+            case ColorSpaceRec601:
                 newColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
                 newPixelFormat = MTLPixelFormatBGRA8Unorm;
                 paramBuffer.cscParams = (fullRange ? k_CscParams_Bt601Full : k_CscParams_Bt601Lim);
@@ -230,9 +230,9 @@ CFStringRef __currentColorSpace;
             if (newColorSpace) {
                 Log(LOG_I,
                     @"Frame colorspace %@ - changing MetalLayer's colorspace to %@",
-                    colorspace == COLORSPACE_REC_709        ? @"REC_709"
-                        : colorspace == COLORSPACE_REC_2020 ? @"REC_2020"
-                        : colorspace == COLORSPACE_REC_601  ? @"REC_601 (sRGB)"
+                    colorspace == ColorSpaceRec709        ? @"REC_709"
+                        : colorspace == ColorSpaceRec2020 ? @"REC_2020"
+                        : colorspace == ColorSpaceRec601  ? @"REC_601 (sRGB)"
                                                             : [NSString stringWithFormat:@"Unknown: %d", colorspace],
                     newColorSpace);
             }
